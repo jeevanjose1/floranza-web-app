@@ -16,9 +16,7 @@ export default function ProductDetails({ slug }: Props) {
   const product = product_details?.data?.product;
   const catogery = product_details?.data?.category;
   const related = product_details?.data?.relatedProducts;
-  console.log('====================================');
-  console.log(product_details);
-  console.log('====================================');
+
   const filterd_data = related?.map((item: any) => {
     return {
       id: item?.id,
@@ -50,7 +48,7 @@ export default function ProductDetails({ slug }: Props) {
           </div>
           <div className="mb-3">
             <h3 className="text-main font-semibold text-xl">
-              {product?.variations?.[0]?.sale_price}
+            ₹{Math.round(Number(product?.variations?.[0]?.sale_price)).toLocaleString("en-IN")}
             </h3>
           </div>
           <div className="mb-4">

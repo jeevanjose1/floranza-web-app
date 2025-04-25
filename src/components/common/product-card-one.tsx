@@ -94,9 +94,10 @@ onClick={(e) => {
             {title}
           </h3>
           <p className="text-main text-xs text-center tablet:text-sm">
-            ₹{price.min.toLocaleString("en-IN")}
-            {price.max ? ` – ₹${price.max.toLocaleString("en-IN")}` : ""}
+          ₹{Math.round(Number(price.min)).toLocaleString("en-IN")}
+          {price.max ? ` – ₹${Math.round(Number(price.max)).toLocaleString("en-IN")}` : ""}
           </p>
+          
         </div>
       </div>
     </div>

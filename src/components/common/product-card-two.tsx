@@ -74,9 +74,9 @@ export default function ProductCardTwo({
             {title}
           </h3>
           <p className="text-main text-xs tablet:text-sm">
-            ₹{price.min.toLocaleString("en-IN")}
-            {price.max ? ` – ₹${price.max.toLocaleString("en-IN")}` : ""}
-          </p>
+  ₹{Math.round(Number(price.min)).toLocaleString("en-IN")}
+  {price.max ? ` – ₹${Math.round(Number(price.max)).toLocaleString("en-IN")}` : ""}
+</p>
         </div>
 
         {/* Spacer to push button to bottom */}
