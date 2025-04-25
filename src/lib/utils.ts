@@ -92,3 +92,10 @@ export  const generate_pagination = (currentPage: number, lastPage: number) => {
     lastPage,
   ];
 };
+
+export function capitalize_first_letters(sentence:string) {
+  return sentence.toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}

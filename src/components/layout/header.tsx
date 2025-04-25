@@ -18,6 +18,7 @@ import { Button } from "../ui/button";
 import MobileNavigation from "./mobile-navigation";
 import { useGetNavigation } from "@/services/queries/common";
 import { usePathname } from "next/navigation";
+import { capitalize_first_letters } from "@/lib/utils";
 
 
 export default function Header() {
@@ -48,14 +49,16 @@ export default function Header() {
               </div>
             </Link>
           </div>
-
-          <Image
+      <Link href={'/'}>
+      <Image
             src={images.logo}
             width={0}
             height={0}
             className="justify-self-center w-30 tablet:w-40"
             alt="Floranza Fashion  Boutique"
           />
+      </Link>
+          
 
           <div className="flex items-center justify-self-end tablet-lg:gap-2">
             <Button
@@ -107,15 +110,15 @@ export default function Header() {
           <nav>
             <ul className="flex items-center gap-4">
               <li className="   laptop:px-2">
-                <Link className="font-medium whitespace-nowrap" href={""}>
+                <Link className="font-medium whitespace-nowrap" href={"/"}>
                   Home
                 </Link>
               </li>
               {navigations?.data?.categories?.slice(0, 3)?.map((item: any) => {
                 return (
                   <li key={item?.id} className="   laptop:px-2">
-                    <Link className="font-medium whitespace-nowrap" href={"/product-catogery/kurthi"}>
-                      {item?.name}
+                    <Link className="font-medium  whitespace-nowrap" href={"/product-catogery/kurthi"}>
+                      {capitalize_first_letters(item?.name) }
                     </Link>
                   </li>
                 );
