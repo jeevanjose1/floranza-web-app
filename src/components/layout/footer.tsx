@@ -3,13 +3,15 @@ import { Facebook, Instagram } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { Separator } from "../ui/separator";
 
-type Props = {};
 
-export default function Footer({}: Props) {
+export default function Footer() {
   return (
-    <footer className="bg-[url(/images/footer-bg.jpeg)]  bottom-0 w-full font-poppins bg-no-repeat bg-size-[120%] bg-bottom h-90">
-      <div className="container flex gap-5 tablet:lg:gap-10 flex-col items-center justify-center">
+    <footer className="bg-[url(/images/footer-bg.jpeg)] flex justify-center  bottom-0 w-full font-poppins bg-no-repeat bg-size-[120%] bg-bottom h-90">
+     
+      <div className="container flex gap-5 tablet:lg:gap-10 pb-12 flex-col items-center justify-center">
+      <Separator className="mb-6 max-w-2/3"/>
         <Image src={images.logo} width={0} height={0} className=" w-40 tablet-lg:w-60" alt="logo" />
         <div className="flex items-center justify-center">
           <nav>

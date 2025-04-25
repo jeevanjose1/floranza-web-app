@@ -1,3 +1,5 @@
+"use client";
+
 import { images } from "@/shared/images/images";
 import {
   Facebook,
@@ -11,20 +13,29 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "../ui/button";
 import MobileNavigation from "./mobile-navigation";
+import { useGetNavigation } from "@/services/queries/common";
+import { usePathname } from "next/navigation";
 
-type Props = {};
 
-export default function Header({}: Props) {
+export default function Header() {
+  const { data: navigations } = useGetNavigation();
+
+  const pathname = usePathname();
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   return (
     <header className="  tablet-lg:h-36 flex justify-center font-poppins bg-white ">
       <div className="container py-2 flex flex-col  gap-4 justify-center">
         <div className="w-full grid grid-cols-3 ">
-            <div className="justify-self-start flex items-center tablet-lg:hidden">
-                <MobileNavigation/>
-            </div>
+          <div className="justify-self-start flex items-center tablet-lg:hidden">
+            <MobileNavigation />
+          </div>
           <div className=" justify-self-start hidden tablet-lg:flex  items-center gap-3">
             <Link href={""}>
               <div className="w-8 h-8 flex items-center justify-center ring-accent-foreground/40 rounded-full ring-2">
@@ -92,32 +103,26 @@ export default function Header({}: Props) {
             </Button>
           </div>
         </div>
-        <div className=" items-center hidden tablet-lg:flex justify-center">
+        <div className=" items-center hidden font-lora tablet-lg:flex justify-center">
           <nav>
-            <ul className="flex items-center gap-6">
+            <ul className="flex items-center gap-4">
               <li className="   laptop:px-2">
                 <Link className="font-medium whitespace-nowrap" href={""}>
                   Home
                 </Link>
               </li>
-              <li className="   laptop:px-2">
-                <Link className="font-medium whitespace-nowrap" href={""}>
-                  Kurtis
-                </Link>
-              </li>
-              <li className="   laptop:px-2">
-                <Link className="font-medium whitespace-nowrap" href={""}>
-                  Home Wear
-                </Link>
-              </li>
+              {navigations?.data?.categories?.slice(0, 3)?.map((item: any) => {
+                return (
+                  <li key={item?.id} className="   laptop:px-2">
+                    <Link className="font-medium whitespace-nowrap" href={"/product-catogery/kurthi"}>
+                      {item?.name}
+                    </Link>
+                  </li>
+                );
+              })}
               <li className="   laptop:px-2">
                 <Link className="font-medium whitespace-nowrap" href={""}>
                   Pre Book
-                </Link>
-              </li>
-              <li className="   laptop:px-2">
-                <Link className="font-medium whitespace-nowrap" href={""}>
-                  Bottom
                 </Link>
               </li>
               <li className="   laptop:px-2">

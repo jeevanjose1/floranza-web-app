@@ -7,23 +7,16 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import { images } from "@/shared/images/images";
+import { useGetSlide } from "@/services/queries/home";
 import Autoplay from "embla-carousel-autoplay";
 import Fade from "embla-carousel-fade";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useEffect } from "react";
 
-type Props = {};
 
-const data = [
-  {
-    image: images.hero_1,
-    title: "",
-  },
-];
-
-export default function Hero({}: Props) {
+export default function Hero() {
+  const { data: slide_date, isLoading } = useGetSlide();
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -64,50 +57,37 @@ export default function Hero({}: Props) {
           setApi={setApi}
         >
           <CarouselContent className="h-full">
-            <CarouselItem className="h-full  ">
-              <div
-                className={` w-full  aspect-3/2  tablet-lg:aspect-8/3 flex relative    items-center justify-center transition-opacity duration-500`}
-              >
-              
+            {slide_date?.data?.map((item: any) => {
+              return (
+                <CarouselItem key={item?.subTitle} className="h-full  ">
+                  <div
+                    className={` w-full  aspect-3/2  tablet-lg:aspect-8/3 flex relative    items-center justify-center transition-opacity duration-500`}
+                  >
+                    <div className="container text-white relative z-2">
+                      <h2 className=" text-xl tablet:text-2xl font-medium mb-1">
+                        {item?.subTitle}
+                      </h2>
+                      <h1 className=" text-3xl tablet:text-6xl font-bold mb-3">
+                        {item?.headTitle}
+                      </h1>
+                      <Button size={"sm"} variant={"primary"}>
+                        {item?.buttonTitle}
+                      </Button>
+                    </div>
 
-                <div className="container text-white relative z-2">
-                  <h2 className=" text-xl tablet:text-2xl font-medium mb-1">New Arrivals</h2>
-                  <h1 className=" text-3xl tablet:text-6xl font-bold mb-3">Stylish Kurtis</h1>
-                  <Button size={'sm'} variant={"primary"}> Explore Now </Button>
-                </div>
-
-                <div className="absolute w-full h-full bg-gradient-to-r from-black/70 to-gray-0 z-1"/>
-                <Image
-                  src={images.hero_1}
-                  width={0}
-                  height={0}
-                  className="w-full absolute top-0 left-0  h-full object-cover"
-                  alt="hero"
-                />
-              </div>
-            </CarouselItem>
-            <CarouselItem className="h-full">
-            <div
-                className={` w-full  aspect-3/2  tablet-lg:aspect-8/3 flex relative    items-center justify-center transition-opacity duration-500`}
-              >
-              
-
-                <div className="container text-white relative z-2">
-                  <h2 className=" text-xl tablet:text-2xl font-medium mb-1">New Arrivals</h2>
-                  <h1 className=" text-3xl tablet:text-6xl font-bold mb-3">Kids Collections</h1>
-                  <Button size={'sm'} variant={"primary"}> Explore Now </Button>
-                </div>
-
-                <div className="absolute w-full h-full bg-gradient-to-r from-black/70 to-gray-0 z-1"/>
-                <Image
-                  src={images.hero_2}
-                  width={0}
-                  height={0}
-                  className="w-full absolute top-0 left-0  h-full object-cover"
-                  alt="hero"
-                />
-              </div>
-            </CarouselItem>
+                    <div className="absolute w-full h-full bg-gradient-to-r from-black/70 to-gray-0 z-1" />
+                    <Image
+                      src={item?.image}
+                      loading="lazy"
+                      width={1000}
+                      height={1000}
+                      className="w-full absolute top-0 left-0  h-full object-cover"
+                      alt="hero"
+                    />
+                  </div>
+                </CarouselItem>
+              );
+            })}
           </CarouselContent>
         </Carousel>
         <div className="absolute bottom-8 right-[8%] flex gap-2">

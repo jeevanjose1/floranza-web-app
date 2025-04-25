@@ -10,6 +10,10 @@ import bottom from '../../../public/images/bottom.png'
 import feeding from '../../../public/images/feeding.jpg.png'
 import home from '../../../public/images/home-ware.png'
 import pre from '../../../public/images/prebook.jpg.png'
+import common_bg from '../../../public/images/common-bg.jpeg'
+import grid_4 from '../../../public/images/grid-4.svg'
+import grid_9 from '../../../public/images/grid-9.svg'
+import grid_16 from '../../../public/images/grid-16.svg'
 
 export const images = {
     logo,
@@ -23,5 +27,9 @@ export const images = {
     offer,
     saree,
     home,
-    pre
+    pre,
+    common_bg,
+    grid_4,
+    grid_9,
+    grid_16
 }

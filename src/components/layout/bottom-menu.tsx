@@ -2,9 +2,8 @@ import { Heart, House, MessageCircleMore, ShoppingBag, User } from "lucide-react
 import Link from "next/link";
 import React from "react";
 
-type Props = {};
 
-function BottomMenu({}: Props) {
+function BottomMenu() {
   return (
     <div className="sticky bottom-0 z-20 w-full font-sans min-h-15 border-t bg-white p-3 flex tablet-lg:hidden">
       <div className="w-full flex mx-6 items-center gap-2.5 justify-between">

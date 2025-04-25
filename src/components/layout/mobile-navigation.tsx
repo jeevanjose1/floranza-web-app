@@ -3,9 +3,8 @@ import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, Dr
 import { Button } from '../ui/button'
 import { Menu } from 'lucide-react'
 
-type Props = {}
 
-export default function MobileNavigation({}: Props) {
+export default function MobileNavigation() {
   return (
         <Drawer direction='left'>
   <DrawerTrigger><Menu strokeWidth={2} /></DrawerTrigger>
