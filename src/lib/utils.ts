@@ -77,6 +77,8 @@ export const fetcher = async ({
     if (axios.isAxiosError(error)) {
       throw error.response ?? error;
     }
+    console.log(error);
+    
     throw new Error("Unexpected error occurred");
   }
 };

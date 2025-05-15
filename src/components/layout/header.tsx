@@ -152,7 +152,7 @@ export default function Header() {
 							/>
 						)}
 						<ActionButton icon={<ShoppingBag strokeWidth={2} />} label="Cart" />
-						<Link href={'/signin'}>
+						{!is_authenticated()&&<Link href={'/signin'}>
 							<Button
 								className="rounded-full hidden laptop:flex px-4  has-[>svg]:px-4"
 								size="sm"
@@ -161,7 +161,7 @@ export default function Header() {
 						><LogIn strokeWidth={2}/>
 							Signin
 						</Button>
-						</Link>
+						</Link>}
 
 					</div>
 				</div>
