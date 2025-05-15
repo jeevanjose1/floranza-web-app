@@ -5,7 +5,6 @@ import { Button } from "../ui/button";
 import { Heart, Search } from "lucide-react";
 import Link from "next/link";
 
-
 interface ProductCardProps {
   title: string;
   price: {
@@ -14,7 +13,7 @@ interface ProductCardProps {
   };
   image: StaticImageData;
   variation: any[];
-  slug:string
+  slug: string;
 }
 
 export default function ProductCardTwo({
@@ -22,12 +21,15 @@ export default function ProductCardTwo({
   price,
   image,
   variation,
-  slug
+  slug,
 }: ProductCardProps) {
   return (
     <div className="h-full group flex flex-col">
       {/* Image Container */}
-      <Link href={`/product/${slug}`}  className="w-full aspect-[3/4] relative overflow-hidden bg-gray-100">
+      <Link
+        href={`/product/${slug}`}
+        className="w-full aspect-[3/4] relative overflow-hidden bg-gray-100"
+      >
         <div className="absolute right-2 hidden tablet-lg:flex items-center flex-col justify-center top-2 bg-white group-hover:w-10 opacity-0 group-hover:opacity-100 overflow-hidden gap-5 transition-all z-10 w-0 h-22">
           <Heart strokeWidth={2} />
           <Search strokeWidth={2} />
@@ -36,7 +38,7 @@ export default function ProductCardTwo({
           <Heart strokeWidth={1.5} size={15} />
         </div>
 
-        <Image
+        {image&&<Image
           src={image}
           alt={title}
           fill
@@ -46,9 +48,9 @@ export default function ProductCardTwo({
           className={`object-cover transition-opacity duration-300`}
           placeholder="blur"
           blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YxZjFmMSIvPjwvc3ZnPg=="
-        />
+        />}
 
-        <div className="absolute top-3 flex items-center text-xs text-white font-semibold justify-center rounded-full left-3 bg-main/90 h-10 overflow-hidden z-10 w-10">
+        <div className="absolute top-3 flex items-center text-xs text-white font-semibold justify-center rounded-full left-3 bg-main/90 h-10 overflow-hidden  w-10">
           -10%
         </div>
       </Link>
@@ -74,9 +76,11 @@ export default function ProductCardTwo({
             {title}
           </h3>
           <p className="text-main text-xs tablet:text-sm">
-  ₹{Math.round(Number(price.min)).toLocaleString("en-IN")}
-  {price.max ? ` – ₹${Math.round(Number(price.max)).toLocaleString("en-IN")}` : ""}
-</p>
+            ₹{Math.round(Number(price.min)).toLocaleString("en-IN")}
+            {price.max
+              ? ` – ₹${Math.round(Number(price.max)).toLocaleString("en-IN")}`
+              : ""}
+          </p>
         </div>
 
         {/* Spacer to push button to bottom */}

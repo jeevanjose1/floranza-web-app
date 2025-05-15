@@ -3,6 +3,9 @@ import { FetcherType } from "@/shared/types/common";
 import axios from "axios";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import {
+  getCookie,
+} from 'cookies-next/client';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -24,44 +27,61 @@ export const queryFilter = (filter: object) => {
 
   return `?${filterString}`;
 };
+const cache = new Map<string, any>();
+
+const cacheTimestamps = new Map<string, number>();
 
 export const fetcher = async ({
   url,
   data,
   authenticated = true,
-  type,
+  type = "get",
   headers,
   onUploadProgress,
+  cacheKey,
+  cacheTime = 0, 
 }: FetcherType) => {
-  try {
-    if (authenticated) {
-      const response = await instance({
-        method: type,
-        url: url,
-        data: data ? data : undefined,
-        headers: headers,
-        onUploadProgress: onUploadProgress,
-      });
-      return response.data;
-    } else {
-      const response = await axios({
-        method: type,
-        data: data ? data : undefined,
-        url: `${base_url}${url}`,
-        headers: headers,
-      });
-      return response.data;
+  const key = cacheKey ?? `${type}:${url}:${JSON.stringify(data)}`;
+
+  // Check for cached data
+  if (type === "get" && cacheTime > 0) {
+    const cached = cache.get(key);
+    const timestamp = cacheTimestamps.get(key);
+
+    if (cached && timestamp && Date.now() - timestamp < cacheTime) {
+      return cached;
     }
+  }
+
+  try {
+    const config = {
+      method: type,
+      url: authenticated ? url : `${base_url}${url}`,
+      data,
+      headers,
+      onUploadProgress,
+    };
+
+    const response = authenticated
+      ? await instance(config as any)
+      : await axios(config as any);
+
+    // Cache result if applicable
+    if (type === "get" && cacheTime > 0) {
+      cache.set(key, response.data);
+      cacheTimestamps.set(key, Date.now());
+    }
+
+    return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
-      throw error.response;
+      throw error.response ?? error;
     }
-    throw error;
+    throw new Error("Unexpected error occurred");
   }
 };
 
-
-export  const generate_pagination = (currentPage: number, lastPage: number) => {
+export const generate_pagination = (currentPage: number, lastPage: number) => {
   if (lastPage <= 5) {
     return Array.from({ length: lastPage }, (_, i) => i + 1);
   }
@@ -93,9 +113,16 @@ export  const generate_pagination = (currentPage: number, lastPage: number) => {
   ];
 };
 
-export function capitalize_first_letters(sentence:string) {
-  return sentence.toLowerCase()
-    .split(' ')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+export function capitalize_first_letters(sentence: string) {
+  return sentence
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+
+export const  is_authenticated = ()=>{
+       const token = getCookie('floranza-t-value')
+       return token ? true : false
 }

@@ -14,6 +14,8 @@ import common_bg from '../../../public/images/common-bg.jpeg'
 import grid_4 from '../../../public/images/grid-4.svg'
 import grid_9 from '../../../public/images/grid-9.svg'
 import grid_16 from '../../../public/images/grid-16.svg'
+import empty_cart from '../../../public/images/empty-cart.svg'
+import empty_box from '../../../public/images/empty-box.svg'
 
 export const images = {
     logo,
@@ -31,5 +33,7 @@ export const images = {
     common_bg,
     grid_4,
     grid_9,
-    grid_16
+    grid_16,
+    empty_box,
+    empty_cart
 }

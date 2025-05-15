@@ -35,24 +35,27 @@ export default function ProductCardOne({
             <Heart strokeWidth={1.5} size={15} />
           </div>
 
-          <Image
-            src={image}
-            alt={title}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            priority={false}
-            loading="lazy"
-            className={`object-cover transition-opacity duration-300 `}
-            placeholder="blur"
-            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YxZjFmMSIvPjwvc3ZnPg=="
-          />
+          {image && (
+  <Image
+    src={image}
+    alt={title}
+    fill
+    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+    priority={false}
+    loading="lazy"
+    className="object-cover transition-opacity duration-300"
+    placeholder="blur"
+    blurDataURL="data:image/svg+xml;base64,PHN2ZyB..."
+  />
+)}
 
           <div
-onClick={(e) => {
-  e.stopPropagation();
-  e.preventDefault(); // prevent the Link from triggering
-  // Do your logic here (e.g., open modal, add to cart, etc.)
-}}            className="absolute bottom-0 hidden tablet-lg:flex items-center justify-center opacity-0 group-hover:opacity-100 left-0 bg-main/90 h-0 group-hover:h-10 overflow-hidden transition-all z-10 w-full"
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault(); // prevent the Link from triggering
+              // Do your logic here (e.g., open modal, add to cart, etc.)
+            }}
+            className="absolute bottom-0 hidden tablet-lg:flex items-center justify-center opacity-0 group-hover:opacity-100 left-0 bg-main/90 h-0 group-hover:h-10 overflow-hidden transition-all z-10 w-full"
           >
             <Button
               variant={"transparant"}
@@ -61,11 +64,14 @@ onClick={(e) => {
               Select Option
             </Button>
           </div>
-          <div onClick={(e) => {
-    e.stopPropagation();
-    e.preventDefault(); // prevent the Link from triggering
-    // Do your logic here (e.g., open modal, add to cart, etc.)
-  }} className="absolute bottom-0 flex tablet-lg:hidden items-center justify-center left-0 bg-main/90 h-9 overflow-hidden z-10 w-10">
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault(); // prevent the Link from triggering
+              // Do your logic here (e.g., open modal, add to cart, etc.)
+            }}
+            className="absolute bottom-0 flex tablet-lg:hidden items-center justify-center left-0 bg-main/90 h-9 overflow-hidden z-10 w-10"
+          >
             <Button
               variant={"transparant"}
               className="text-white tablet:text-sm text-xs w-full rounded-none cursor-pointer [&_svg:not([class*='size-'])]:size-5"
@@ -94,10 +100,11 @@ onClick={(e) => {
             {title}
           </h3>
           <p className="text-main text-xs text-center tablet:text-sm">
-          ₹{Math.round(Number(price.min)).toLocaleString("en-IN")}
-          {price.max ? ` – ₹${Math.round(Number(price.max)).toLocaleString("en-IN")}` : ""}
+            ₹{Math.round(Number(price.min)).toLocaleString("en-IN")}
+            {price.max
+              ? ` – ₹${Math.round(Number(price.max)).toLocaleString("en-IN")}`
+              : ""}
           </p>
-          
         </div>
       </div>
     </div>

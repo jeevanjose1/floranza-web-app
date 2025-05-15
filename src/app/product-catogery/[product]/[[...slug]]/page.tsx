@@ -10,10 +10,12 @@ import {
 import { fetcher, queryFilter } from "@/lib/utils";
 import { PRODUCT } from "@/shared/urls/products";
 
-type Props = { params: any };
+type Props = { params: any,searchParams:any };
 
-export default async function Product({ params }: Props) {
+export default async function Product({ params,searchParams }: Props) {
   const param = await params;
+  const queryParams = await searchParams;
+  
   const slug = param.product;
   const page_no = param?.slug?.[1];
 
@@ -25,7 +27,11 @@ export default async function Product({ params }: Props) {
         type: "get",
         url: `${PRODUCT.PRODUCT_LIST}/${slug}/${queryFilter({
           page: page_no,
-          per_page: 2,
+          per_page: queryParams?.per_page ||2,
+          material:queryParams?.material,
+          size:queryParams?.size,
+          min_price:queryParams.min_price,
+          max_price:queryParams.max_price
         })}`,
         authenticated: false,
       }),
@@ -33,12 +39,12 @@ export default async function Product({ params }: Props) {
   });
 
   return (
-    < >
+    
       <div className="container-md">
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <ProductList page={page_no} slug={slug} />
+          <ProductList page={page_no} slug={slug} queryParams={queryParams} />
         </HydrationBoundary>
       </div>
-    </>
+    
   );
 }

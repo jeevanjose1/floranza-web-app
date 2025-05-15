@@ -15,7 +15,19 @@ const useGetProductList = (payload: any) => {
       }),
   });
 };
-
+const useGetProductListSearch = (payload: any) => {
+  return useQuery({
+    queryKey: ["PRODUCTS_LIST_sEARCH",payload],
+    queryFn: () =>
+      fetcher({
+        type: "get",
+        url: `${PRODUCT.SEARCH}/${queryFilter(
+          payload?.filter
+        )}`,
+        authenticated: false,
+      }),
+  });
+};
 const useGetProductDetails = (payload: any) => {
   return useQuery({
     queryKey: ["PRODUCT_DETAILS"],
@@ -29,4 +41,4 @@ const useGetProductDetails = (payload: any) => {
   });
 };
 
-export { useGetProductList, useGetProductDetails };
+export { useGetProductList, useGetProductDetails ,useGetProductListSearch};
