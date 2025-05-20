@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback, ReactElement } from "react";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { ChevronDown, SignalZero } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 // UI Components
 import AsyncSelectCustom from "@/components/ui/async-select";
@@ -63,19 +63,17 @@ interface GridViewOption {
 }
 
 interface Prop {
-	size?:boolean,
-	category?:boolean,
-	meterial?:boolean,
-	price?:boolean,
+	size?: boolean,
+	category?: boolean,
+	material?: boolean,  // Fixed typo from 'meterial' to 'material'
+	price?: boolean,
 }
 
-export default function FilterHead({size=true,category=true,meterial=true,price=true}:Prop): ReactElement {
+export default function FilterHead({size=true, category=true, material=true, price=true}: Prop): ReactElement {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const params = useParams();
 	const pathname = usePathname()
-
-
 
 	// State initialization
 	const [filters, setFilters] = useState<FilterState>({
@@ -202,7 +200,7 @@ export default function FilterHead({size=true,category=true,meterial=true,price=
 		if (filterName === 'category') {
 			// Get the current URL search params
 			const currentParams = new URLSearchParams(searchParams.toString());
-				const path = pathname.split('/')?.filter(Boolean)?.[0]
+			const path = pathname.split('/')?.filter(Boolean)?.[0]
 			if (selectedOption?.value) {
 				// Navigate to the new category path while preserving current query params
 				router.push(`/${path}/${selectedOption.value}?${currentParams.toString()}`);
@@ -245,84 +243,97 @@ export default function FilterHead({size=true,category=true,meterial=true,price=
 		{ id: "grid-16", src: images.grid_16, alt: "grid sixteen" }
 	];
 
-		const handleFilterPosition = ()=>{
-			const include_array = [size,category,meterial,price].filter(Boolean)
-			return `tablet-lg:grid-cols-${include_array.length}`
+	// Fixed handleFilterPosition function with explicit classes
+	const handleFilterPosition = () => {
+		const enabledFilterCount = [size, category, material, price].filter(Boolean).length;
+		
+		// Handle each possible case explicitly
+		switch (enabledFilterCount) {
+			case 1:
+				return "tablet-lg:grid-cols-1";
+			case 2:
+				return "tablet-lg:grid-cols-2";
+			case 3:
+				return "tablet-lg:grid-cols-3";
+			case 4:
+				return "tablet-lg:grid-cols-4";
+			default:
+				return "tablet-lg:grid-cols-1"; // Fallback
 		}
+	};
 
 	return (
 		<div className="w-full container-md mb-8">
 			{/* Filter Controls */}
 			<div className={`grid w-full mobile-lg:grid-cols-2 ${handleFilterPosition()} gap-3 laptop:gap-6`}>
 				{/* Size Filter */}
-			{size && <AsyncSelectCustom
-				cacheOptions
-				defaultOptions
-				loadOptions={loadOptions.size}
-				placeholder="Filter By Size"
-				value={filters.size}
-				onChange={(option:any) => handleFilterChange('size', option)}
-				isClearable
+				{size && <AsyncSelectCustom
+					cacheOptions
+					defaultOptions
+					loadOptions={loadOptions.size}
+					placeholder="Filter By Size"
+					value={filters.size}
+					onChange={(option:any) => handleFilterChange('size', option)}
+					isClearable
 				/>}
 
-				{/* Material Filter */}
-				{meterial&& <AsyncSelectCustom
+				{/* Material Filter - Fixed typo in prop name here */}
+				{material && <AsyncSelectCustom
 					cacheOptions
 					defaultOptions
 					loadOptions={loadOptions.material}
 					placeholder="Filter By Materials"
 					value={filters.material}
 					onChange={(option: any) => handleFilterChange('material', option)}
-						isClearable
+					isClearable
+				/>}
 
-					/>}
+				{/* Category Filter */}
+				{category && <AsyncSelectCustom
+					cacheOptions
+					defaultOptions
+					loadOptions={loadOptions.category}
+					placeholder="Filter By Categories"
+					value={filters.category}
+					onChange={(option: any) => handleFilterChange('category', option)}
+				/>}
 
-					{/* Category Filter */}
-					{category&&<AsyncSelectCustom
-						cacheOptions
-						defaultOptions
-						loadOptions={loadOptions.category}
-						placeholder="Filter By Categories"
-						value={filters.category}
-						onChange={(option: any) => handleFilterChange('category', option)}
-					/>}
-
-					{/* Price Range Filter */}
-			{price&& <Popover>
-				<PopoverTrigger>
-					<Button
-						className="w-full has-[>svg]:px-4 text-sm whitespace-nowrap h-10 justify-between text-muted-foreground/80 px-4 border-ring/70 focus-within:!border-ring focus-within:!ring-1 focus-within:!ring-ring focus-within:!bg-muted/30 rounded-full shadow-none"
-						variant="outline"
-					>
-						{`Price: ₹${filters.priceRange[0]} - ₹${filters.priceRange[1]}`}
-						<ChevronDown />
-					</Button>
-				</PopoverTrigger>
-				<PopoverContent>
-					<div>
-						<Slider
-							defaultValue={[0, 4000]}
-							value={filters.priceRange}
-							max={4000}
-							step={100}
-							onValueChange={handlePriceChange}
-						/>
-						<Separator className="my-4" />
-						<div className="flex items-center justify-between w-full">
-							<div className="flex items-center gap-2 text-sm">
-								<p>₹{filters.priceRange[0]}</p>-<p>₹{filters.priceRange[1]}</p>
+				{/* Price Range Filter */}
+				{price && <Popover>
+					<PopoverTrigger>
+						<Button
+							className="w-full has-[>svg]:px-4 text-sm whitespace-nowrap h-10 justify-between text-muted-foreground/80 px-4 border-ring/70 focus-within:!border-ring focus-within:!ring-1 focus-within:!ring-ring focus-within:!bg-muted/30 rounded-full shadow-none"
+							variant="outline"
+						>
+							{`Price: ₹${filters.priceRange[0]} - ₹${filters.priceRange[1]}`}
+							<ChevronDown />
+						</Button>
+					</PopoverTrigger>
+					<PopoverContent>
+						<div>
+							<Slider
+								defaultValue={[0, 4000]}
+								value={filters.priceRange}
+								max={4000}
+								step={100}
+								onValueChange={handlePriceChange}
+							/>
+							<Separator className="my-4" />
+							<div className="flex items-center justify-between w-full">
+								<div className="flex items-center gap-2 text-sm">
+									<p>₹{filters.priceRange[0]}</p>-<p>₹{filters.priceRange[1]}</p>
+								</div>
+								<Button
+									size="sm"
+									variant="secondary"
+									className="rounded-full"
+									onClick={applyPriceFilter}
+								>
+									Filter
+								</Button>
 							</div>
-							<Button
-								size="sm"
-								variant="secondary"
-								className="rounded-full"
-								onClick={applyPriceFilter}
-							>
-								Filter
-							</Button>
 						</div>
-					</div>
-				</PopoverContent>
+					</PopoverContent>
 				</Popover>}
 			</div>
 

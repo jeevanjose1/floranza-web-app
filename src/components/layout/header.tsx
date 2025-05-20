@@ -23,6 +23,9 @@ import { useGetNavigation } from "@/services/queries/common";
 import { usePathname, useRouter } from "next/navigation";
 import { capitalize_first_letters, is_authenticated } from "@/lib/utils";
 import { Input } from "../ui/input";
+import { AccountDropdown } from "./account-dropdown";
+import { getCookie, setCookie } from "cookies-next/client";
+import { useGustToken } from "@/services/queries/auth";
 
 // Define category type for better type safety
 type Category = {
@@ -37,7 +40,7 @@ export default function Header() {
 	const [searchValue, setSearchValue] = useState("");
 	const router = useRouter();
 	const searchInputRef = useRef<HTMLInputElement>(null);
-
+    const {mutateAsync:add_token} = useGustToken()
 	// Reset scroll position when pathname changes
 	useEffect(() => {
 		window.scrollTo(0, 0);
@@ -52,6 +55,13 @@ export default function Header() {
 
 			return () => clearTimeout(focusTimeout);
 		}
+
+		if(!getCookie('floranza-g-token')){
+            add_token().then(response=>{
+				setCookie('floranza-g-token',response?.data?.guest_token)
+			})
+		}
+
 	}, [isSearchOpen]);
 
 	const toggleSearch = useCallback(() => {
@@ -114,6 +124,16 @@ export default function Header() {
 
 					{/* Action Buttons */}
 					<div className="flex items-center justify-self-end tablet-lg:gap-2">
+						{!is_auth&&<Link href={'/signin'}>
+							<Button
+								className="rounded-full hidden laptop:flex px-4  has-[>svg]:px-4"
+								size="sm"
+								variant="outline"
+								aria-label="Open search"
+						><LogIn strokeWidth={2}/>
+							Signin / Register
+						</Button>
+						</Link>}
 						<Button
 							className="rounded-full hidden laptop:flex has-[>svg]:px-4"
 							size="sm"
@@ -134,34 +154,27 @@ export default function Header() {
 							<Search strokeWidth={2} />
 						</Button>
 
-						<ActionButton
+						{is_auth && <ActionButton
 							icon={<Send strokeWidth={2} />}
 							label="Messages"
 							className="hidden tablet-lg:flex"
-						/>
-						<ActionButton
+						/>}
+						{is_auth && <ActionButton
 							icon={<Heart strokeWidth={2} />}
 							label="Wishlist"
 							className="hidden tablet-lg:flex"
-						/>
+						/>}
 						{is_auth && (
-							<ActionButton
-								icon={<UserRound strokeWidth={2} />}
-								label="Account"
-								className="hidden tablet-lg:flex"
-							/>
+							<AccountDropdown  user={{
+								avatar:'',
+								email:'jeevanjose@gmail.com',
+								name:'jeevan'
+							}}/>
+								
+							
 						)}
 						<ActionButton icon={<ShoppingBag strokeWidth={2} />} label="Cart" />
-						{!is_authenticated()&&<Link href={'/signin'}>
-							<Button
-								className="rounded-full hidden laptop:flex px-4  has-[>svg]:px-4"
-								size="sm"
-								variant="outline"
-								aria-label="Open search"
-						><LogIn strokeWidth={2}/>
-							Signin
-						</Button>
-						</Link>}
+						
 
 					</div>
 				</div>

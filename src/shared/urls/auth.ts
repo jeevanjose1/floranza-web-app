@@ -3,5 +3,6 @@ export enum AUTH {
 	SIGNUP='/auth/register',
 	RESET_PASSWORD='/auth/forgot_password',
 	CHANGE_PASSWORD='/auth/reset_password',
-    VARIFY_TOKEN='/auth/verify-reset-token'
+    VARIFY_TOKEN='/auth/verify-reset-token',
+ GUST_TOKEN='/get_guest_token'
 }

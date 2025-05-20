@@ -12,7 +12,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   async (config) => {
-    const token = JSON.parse(Cookies.get("token") as string);
+    const token = Cookies.get("floranza-t-value");
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

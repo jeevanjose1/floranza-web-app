@@ -11,23 +11,24 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from "@/components/ui/pagination";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { generate_pagination } from "@/lib/utils";
 import NotFound from "@/components/common/not-found";
+import Loader from "@/components/common/loader";
 
 type Props = {
 	slug: string;
 	page?: number;
 	queryParams: any;
-  search?:string
+		search?:string
 };
 
 export default function ProductList({ slug, page = 1, queryParams,search }: Props) {
 	const pathname = usePathname();
 	const base_url = pathname.split("/page/")[0];
-  
-	const { data: product_list,isLoading } = useGetProductList({
+    const router = useRouter()
+	const { data: product_list,isLoading ,error} = useGetProductList({
 		slug: slug,
 		filter: {
 			page: page,
@@ -36,10 +37,10 @@ export default function ProductList({ slug, page = 1, queryParams,search }: Prop
 			size:queryParams?.size,
 			min_price:queryParams.min_price,
 			max_price:queryParams.max_price,
-      name:search
+				name:search
 		},
-	});
- 
+	}) as any
+
 	const pagination = product_list?.data?.pagination;
 
 	const filteredData =
@@ -76,10 +77,22 @@ export default function ProductList({ slug, page = 1, queryParams,search }: Prop
 		}
 	};
 
- if(!isLoading&&!filteredData.length) {
-			return  <NotFound type="product"/>
-		}
- 
+	if(isLoading){
+		return <div className="w-full h-100 flex items-center justify-center">
+
+			<Loader/>
+		</div>
+	}
+
+	if(!isLoading &&( error?.data?.message === 'Invalid Slug' || error?.status === 400)){
+		router.push('/404')
+		return null
+	}
+
+	if(!isLoading&&!filteredData.length  ) {
+		return <NotFound type="product"/>
+	}
+
 
 	return (
 		<>

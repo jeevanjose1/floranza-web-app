@@ -21,6 +21,9 @@ export default function FeaturedProducts() {
       slug:item?.slug
     }
   })
+  console.log('====================================');
+  console.log(featured_product);
+  console.log('====================================');
   return (
     <section className="container my-16 ppppppprrrr">
       <div className="mb-8">

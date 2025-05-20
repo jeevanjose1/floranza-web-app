@@ -66,10 +66,22 @@ const useChangePassword = ()=>{
 		onError:(error)=>error
 		})
 }
+const useGustToken = ()=>{
+	return useMutation({
+		mutationFn:()=>fetcher({
+			url:`${AUTH.GUST_TOKEN}`,
+			type:'get',
+            authenticated:false
+		}),
+		onSuccess:(data)=>data,
+		onError:(error)=>error
+		})
+}
 
 export {
 	useChangePassword,
 	useResetPassword,
+	useGustToken,
 	useSigin,
 	useSignup,
 	useVarifyToken,

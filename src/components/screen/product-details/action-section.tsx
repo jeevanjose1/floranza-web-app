@@ -24,7 +24,7 @@ export default function ActionSection({product}: Props) {
               variant={"outline"}
               
             >
-              {variation.attribute_option_name}
+              {variation.attribute_option_name}{variation?.option_title&& <span> - {variation?.option_title}</span>}
             </Badge>
           ))}
         </div>

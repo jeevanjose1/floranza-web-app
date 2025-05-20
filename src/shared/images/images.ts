@@ -16,6 +16,12 @@ import grid_9 from '../../../public/images/grid-9.svg'
 import grid_16 from '../../../public/images/grid-16.svg'
 import empty_cart from '../../../public/images/empty-cart.svg'
 import empty_box from '../../../public/images/empty-box.svg'
+import account from '../../../public/images/account.svg'
+import address from '../../../public/images/address.svg'
+import logout from '../../../public/images/logout.svg'
+import orders from '../../../public/images/orders.svg'
+import whishlist from '../../../public/images/wishlist.svg'
+import not_found from '../../../public/images/404.svg'
 
 export const images = {
     logo,
@@ -35,5 +41,12 @@ export const images = {
     grid_9,
     grid_16,
     empty_box,
-    empty_cart
+    empty_cart,
+    account,
+    address,
+    logout,
+    orders,
+    whishlist,
+    not_found
+
 }

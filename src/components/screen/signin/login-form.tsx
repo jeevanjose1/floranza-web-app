@@ -11,7 +11,7 @@ import { useSigin } from "@/services/queries/auth"
 import { login_schema } from "@/shared/validations/auth"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
-import { setCookie } from "cookies-next/client"
+import { getCookie, setCookie } from "cookies-next/client"
 import { useRouter } from "next/navigation"
 
 
@@ -33,8 +33,10 @@ export function LoginForm({
 
   function onSubmit(data: LoginFormValues) {
     const form_data = new FormData()
+    const g_token = getCookie('floranza-g-token') as string
     form_data.append('email',data.email)
     form_data.append('password',data.password)
+    form_data.append('guest_token',g_token)
 
     signin(form_data,{
       onSuccess:(response)=>{
