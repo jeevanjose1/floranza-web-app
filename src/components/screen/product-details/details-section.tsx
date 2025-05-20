@@ -15,9 +15,7 @@ import Additional from "./additional";
 type Props = {product:any};
 
 export default function DetailsSection({product}: Props) {
-  console.log('====================================');
-  console.log(product);
-  console.log('====================================');
+
   const [tab, setTab] = useState(1);
   const handleSetTab = (value: number) => setTab(value);
   return (

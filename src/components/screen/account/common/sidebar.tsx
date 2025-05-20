@@ -3,9 +3,11 @@
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { useAccountDetails } from '@/services/queries/account'
+import { useLogout } from '@/services/queries/auth'
+import { deleteCookie } from 'cookies-next/client'
 import { HeartIcon, HomeIcon, LogOutIcon, MapPinCheck, ShoppingCartIcon, UserCog, UserIcon } from 'lucide-react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React, { ReactNode } from 'react'
 
 type Props = {}
@@ -34,7 +36,15 @@ const MenuItem = ({ icon, label, href, active = false }: MenuItemProps) => {
 export default function Sidebar({}: Props) {
       const pathname = usePathname()
     const {data:user_data}=useAccountDetails()
-
+  const {mutateAsync:logout} = useLogout()
+  const router = useRouter();
+  const handleLogout = () => {
+	logout().then(()=>{
+ deleteCookie("floranza-t-value");
+    router.refresh();
+	})
+   
+  };
   return (
     <div className="laptop:flex-[.4]">
               <div className="bg-white p-4 rounded-md border">
@@ -92,7 +102,7 @@ export default function Sidebar({}: Props) {
                 <Separator className="my-3" />
                 
                 <div className="mt-4 px-4">
-                  <Button variant={'transparant'} className="flex items-center has-[>svg]:px-0 gap-3 text-sm text-gray-700 hover:text-red-600 transition-colors">
+                  <Button onClick={handleLogout} variant={'transparant'} className="flex items-center has-[>svg]:px-0 gap-3 text-sm text-gray-700 hover:text-red-600 transition-colors">
                     <LogOutIcon className="h-5 w-5 " />
                     <span>Sign Out</span>
                   </Button>

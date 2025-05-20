@@ -33,10 +33,10 @@ const MenuCard = ({ icon, title, link, onClick }: CardProp) => {
 }
 
 export default function AccountPage({}: Props) {
-    const handleLogout = () => {
-        deleteCookie('floranza-t-value')
-        window.location.reload()
-    }
+    // const handleLogout = () => {
+    //     deleteCookie('floranza-t-value')
+    //     window.location.reload()
+    // }
 
     const data = [
         {
@@ -70,11 +70,11 @@ export default function AccountPage({}: Props) {
                 {data.map(item => (
                     <MenuCard key={item.title} icon={item.icon} title={item.title} link={item.link} />
                 ))}
-                <MenuCard 
+                {/* <MenuCard 
                     icon={images.logout} 
                     title="Logout" 
-                    onClick={handleLogout} 
-                />
+                    // onClick={handleLogout} 
+                /> */}
             </div>
         </div>
     )

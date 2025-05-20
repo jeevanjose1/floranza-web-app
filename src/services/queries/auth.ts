@@ -77,7 +77,16 @@ const useGustToken = ()=>{
 		onError:(error)=>error
 		})
 }
-
+const useLogout = ()=>{
+	return useMutation({
+		mutationFn:()=>fetcher({
+			url:`${AUTH.LOGOUT}`,
+			type:'post',
+		}),
+		onSuccess:(data)=>data,
+		onError:(error)=>error
+		})
+}
 export {
 	useChangePassword,
 	useResetPassword,
@@ -85,4 +94,5 @@ export {
 	useSigin,
 	useSignup,
 	useVarifyToken,
+	useLogout
 }

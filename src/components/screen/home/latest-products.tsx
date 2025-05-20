@@ -11,10 +11,8 @@ export default function LatestProducts() {
     return {
       id: item?.id,
       title: item?.name,
-      price: {
-        min: item?.variations?.[0]?.reg_price,
-        max: item?.item?.variations?.[0]?.sale_price,
-      },
+           price: {  min: item?.is_variation ?  item?.variations?.[0]?.reg_price : item?.reg_price, max:item?.is_variation ? item?.item?.variations?.[0]?.sale_price:item?.sale_price },
+
       image: item?.images?.large,
       variations: item?.variations,
       slug: item?.slug,

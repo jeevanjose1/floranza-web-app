@@ -31,6 +31,7 @@ import { useGustToken } from "@/services/queries/auth";
 type Category = {
 	id: string;
 	name: string;
+	slug:string
 };
 
 export default function Header() {
@@ -231,6 +232,7 @@ function ActionButton({
 }
 
 function DesktopNavigation({ categories }: { categories: Category[] }) {
+
 	return (
 		<div className="items-center hidden font-lora tablet-lg:flex justify-center">
 			<nav aria-label="Main navigation">
@@ -240,7 +242,7 @@ function DesktopNavigation({ categories }: { categories: Category[] }) {
 					{categories.map((item) => (
 						<NavItem
 							key={item.id}
-							href={`/product-catogery/${item.name.toLowerCase()}`}
+							href={`/product-catogery/${item?.slug}`}
 						>
 							{capitalize_first_letters(item.name)}
 						</NavItem>
