@@ -36,6 +36,7 @@ export default function MostSellingProducts() {
             image={product.image}
             variation={product.variations}
             slug={product?.slug}
+            id={product.id}
 
           />
         ))}

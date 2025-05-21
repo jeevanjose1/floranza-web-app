@@ -26,6 +26,7 @@ import { Input } from "../ui/input";
 import { AccountDropdown } from "./account-dropdown";
 import { getCookie, setCookie } from "cookies-next/client";
 import { useGustToken } from "@/services/queries/auth";
+import CartSheet from "../common/cart-sheet";
 
 // Define category type for better type safety
 type Category = {
@@ -174,7 +175,7 @@ export default function Header() {
 								
 							
 						)}
-						<ActionButton icon={<ShoppingBag strokeWidth={2} />} label="Cart" />
+						<CartSheet/>
 						
 
 					</div>

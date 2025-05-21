@@ -17,7 +17,7 @@ const useGetProductList = (payload: any) => {
 };
 const useGetProductListSearch = (payload: any) => {
   return useQuery({
-    queryKey: ["PRODUCTS_LIST_sEARCH",payload],
+    queryKey: ["PRODUCTS_LIST_SEARCH",payload],
     queryFn: () =>
       fetcher({
         type: "get",

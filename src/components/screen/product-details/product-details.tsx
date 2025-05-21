@@ -12,78 +12,111 @@ import parse from "html-react-parser";
 type Props = { slug: string };
 
 export default function ProductDetails({ slug }: Props) {
-	const { data: product_details } = useGetProductDetails(slug);
-	const product = product_details?.data?.product;
-	const catogery = product_details?.data?.category;
-	const related = product_details?.data?.relatedProducts;
+  const { data: product_details } = useGetProductDetails(slug);
+  const product = product_details?.data?.product;
+  const catogery = product_details?.data?.category;
+  const related = product_details?.data?.relatedProducts;
 
-	const filterd_data = related?.map((item: any) => {
-		return {
-			id: item?.id,
-			title: item?.name,
-				price: { min: item?.is_variation ? item?.variations?.[0]?.reg_price : item?.reg_price, max:item?.is_variation ? item?.item?.variations?.[0]?.sale_price:item?.sale_price },
+  const filterd_data = related?.map((item: any) => {
+    return {
+      id: item?.id,
+      title: item?.name,
+      price: {
+        min: item?.is_variation
+          ? item?.variations?.[0]?.reg_price
+          : item?.reg_price,
+        max: item?.is_variation
+          ? item?.item?.variations?.[0]?.sale_price
+          : item?.sale_price,
+      },
 
-			image: item?.images?.large,
-			variations: item?.variations,
-			slug: item?.slug,
-		};
-	});
-	return (
-		<>
-			<div className="container-md flex flex-col tablet-lg:flex-row gap-6  ">
-				<div className="flex-1 ">
-					<ImageSection images_data={[product?.images?.large]} />
-				</div>
-				<div className="flex-1">
-					<div className="flex items-center flex-wrap gap-2.5 text-sm mb-2">
-						<p>Home</p> /<p>{catogery?.name}</p>/
-						<p className="tablet:inline-block hidden">{product?.name}</p>
-					</div>
-					<div className="mb-3">
-						<h1 className=" text-2xl tablet-lg:text-3xl font-medium">
-							{product?.name}
-						</h1>
-					</div>
-					<div className="mb-3">
-						<h3 className="text-main font-semibold text-xl">
-							{
-								product?.is_variation ? Math.round(Number(product?.variations?.[0]?.sale_price)).toLocaleString("en-IN") : Math.round(Number(product?.sale_price)).toLocaleString("en-IN")
-							}
-						</h3>
-					</div>
-					<div className="mb-4">
-						<h3 className="text-blue-400 font-semibold text-sm">Size Chart</h3>
-					</div>
+      image: item?.images?.large,
+      variations: item?.variations,
+      slug: item?.slug,
+    };
+  });
 
-					<div className="mb-4">
-						<div className="text-sm font-medium text-muted-foreground/90 mb-5">
-							{parse(product?.description || "")}
-						</div>
-					</div>
+  const price = {
+    min: product?.is_variation
+      ? product?.variations?.[0]?.reg_price
+      : product?.reg_price,
+    max: product?.is_variation
+      ? product?.item?.variations?.[0]?.sale_price
+      : product?.sale_price,
+  };
 
-					<Separator className="my-5" />
-					<ActionSection product={product} />
-				</div>
-			</div>
-			<DetailsSection product={product} />
-			<Separator className="mb-4 tablet-lg:mt-6" />
 
-			<div className="container-md">
-				<h3 className="text-lg font-medium mb-4">Related products</h3>
 
-				<div className="grid grid-cols-2 mb-12 font-poppins tablet-lg:grid-cols-3 laptop:grid-cols-4 gap-x-3 gap-y-6 tablet:gap-6">
-					{filterd_data?.slice(0, 4).map((product: any) => (
-						<ProductCardTwo
-							key={product.id}
-							title={product.title}
-							price={product.price}
-							image={product.image}
-							variation={product.variations}
-							slug={product.slug}
-						/>
-					))}
-				</div>
-			</div>
-		</>
-	);
+  return (
+    <>
+      <div className="container-md flex flex-col tablet-lg:flex-row gap-6  ">
+        <div className="flex-1 ">
+          <ImageSection images_data={[product?.images?.large]} />
+        </div>
+        <div className="flex-1">
+          <div className="flex items-center flex-wrap gap-2.5 text-sm mb-2">
+            <p>Home</p> /<p>{catogery?.name}</p>/
+            <p className="tablet:inline-block hidden">{product?.name}</p>
+          </div>
+          <div className="mb-3">
+            <h1 className=" text-2xl tablet-lg:text-3xl font-medium">
+              {product?.name}
+            </h1>
+          </div>
+          <div className="mb-3">
+            <h3 className="text-main font-semibold text-xl">
+              
+            ₹{Math.round(Number(price.min)).toLocaleString("en-IN")}
+            {price.max ? (
+              <>
+                {" "}
+                -{" "}
+                <span className="line-through text-muted-foreground/50">
+                  {" "}
+                  ₹{Math.round(Number(price.max)).toLocaleString("en-IN")}
+                </span>
+              </>
+            ) : (
+              ""
+            )}
+         
+            </h3>
+            <p className="text-main text-xs text-center tablet:text-sm"></p>
+          </div>
+          <div className="mb-4">
+            <h3 className="text-blue-400 font-semibold text-sm">Size Chart</h3>
+          </div>
+
+          <div className="mb-4">
+            <div className="text-sm font-medium text-muted-foreground/90 mb-5">
+              {parse(product?.description || "")}
+            </div>
+          </div>
+
+          <Separator className="my-5" />
+          <ActionSection product={product} />
+        </div>
+      </div>
+      <DetailsSection product={product} />
+      <Separator className="mb-4 tablet-lg:mt-6" />
+
+      <div className="container-md">
+        <h3 className="text-lg font-medium mb-4">Related products</h3>
+
+        <div className="grid grid-cols-2 mb-12 font-poppins tablet-lg:grid-cols-3 laptop:grid-cols-4 gap-x-3 gap-y-6 tablet:gap-6">
+          {filterd_data?.slice(0, 4).map((product: any) => (
+            <ProductCardTwo
+            
+              key={product.id}
+              title={product.title}
+              price={product.price}
+              image={product.image}
+              variation={product.variations}
+              slug={product.slug}
+            />
+          ))}
+        </div>
+      </div>
+    </>
+  );
 }

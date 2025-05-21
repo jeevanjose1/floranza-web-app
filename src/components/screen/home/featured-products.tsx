@@ -1,5 +1,6 @@
 'use client'
 import ProductCardTwo from "@/components/common/product-card-two";
+import ProductCardWrapper from "@/components/common/product-card-wrapper";
 import { useGetFeaturedProducts } from "@/services/queries/home";
 
 import React from "react";
@@ -34,14 +35,14 @@ export default function FeaturedProducts() {
       </div>
       <div className="grid grid-cols-2 font-poppins tablet-lg:grid-cols-3 laptop:grid-cols-4 gap-3 tablet:gap-6">
         {filterd_data?.map((product:any) => (
-          <ProductCardTwo 
+          <ProductCardWrapper 
             key={product.id}
             title={product.title}
             price={product.price}
             image={product.image}
             variation={product.variations}
             slug={product.slug}
-
+            id={product?.id}
           />
         ))}
       </div>

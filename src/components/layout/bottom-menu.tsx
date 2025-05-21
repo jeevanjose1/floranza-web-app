@@ -23,21 +23,21 @@ function BottomMenu() {
         </Link>
         <Link
           className="flex flex-col gap-1 text-light-gray items-center"
-          href={""}
+          href={"/"}
         >
           <House strokeWidth={2} size={20} />
           <p className="text-xs font-semibold">Home</p>
         </Link>
         <Link
           className="flex flex-col gap-1 text-light-gray items-center"
-          href={""}
+          href={"/cart"}
         >
           <ShoppingBag strokeWidth={2} size={20} />
           <p className="text-xs font-semibold">Cart</p>
         </Link>
         <Link
           className="flex flex-col gap-1 text-light-gray items-center"
-          href={""}
+          href={"/account/dashboard"}
         >
           <User strokeWidth={2} size={22} />
           <p className="text-xs font-semibold">Account</p>

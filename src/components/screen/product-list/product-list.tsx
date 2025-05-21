@@ -3,153 +3,176 @@
 import ProductCardTwo from "@/components/common/product-card-two";
 import { useGetProductList } from "@/services/queries/product";
 import {
-	Pagination,
-	PaginationContent,
-	PaginationEllipsis,
-	PaginationItem,
-	PaginationLink,
-	PaginationNext,
-	PaginationPrevious,
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 } from "@/components/ui/pagination";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { generate_pagination } from "@/lib/utils";
 import NotFound from "@/components/common/not-found";
 import Loader from "@/components/common/loader";
+import ProductCardWrapper from "@/components/common/product-card-wrapper";
 
 type Props = {
-	slug: string;
-	page?: number;
-	queryParams: any;
-		search?:string
+  slug: string;
+  page?: number;
+  queryParams: any;
+  search?: string;
 };
 
-export default function ProductList({ slug, page = 1, queryParams,search }: Props) {
-	const pathname = usePathname();
-	const base_url = pathname.split("/page/")[0];
-    const router = useRouter()
-	const { data: product_list,isLoading ,error} = useGetProductList({
-		slug: slug,
-		filter: {
-			page: page,
-			per_page: queryParams?.per_page || 2,
-			material:queryParams?.material,
-			size:queryParams?.size,
-			min_price:queryParams.min_price,
-			max_price:queryParams.max_price,
-			name:search
-		},
-	}) as any
+export default function ProductList({
+  slug,
+  page = 1,
+  queryParams,
+  search,
+}: Props) {
+  const pathname = usePathname();
+  const base_url = pathname.split("/page/")[0];
+  const router = useRouter();
+  const {
+    data: product_list,
+    isLoading,
+    error,
+  } = useGetProductList({
+    slug: slug,
+    filter: {
+      page: page,
+      per_page: queryParams?.per_page || 2,
+      material: queryParams?.material,
+      size: queryParams?.size,
+      min_price: queryParams.min_price,
+      max_price: queryParams.max_price,
+      name: search,
+    },
+  }) as any;
 
-	const pagination = product_list?.data?.pagination;
+  const pagination = product_list?.data?.pagination;
 
-	const filteredData =
-		product_list?.data?.products?.map((item: any) => {
-			return {
-				id: item?.id,
-				title: item?.name,
-				price: {  min: item?.is_variation ?  item?.variations?.[0]?.reg_price : item?.reg_price, max:item?.is_variation ? item?.item?.variations?.[0]?.sale_price:item?.sale_price },
+  const filteredData =
+    product_list?.data?.products?.map((item: any) => {
+      return {
+        id: item?.id,
+        title: item?.name,
+        price: {
+          min: item?.is_variation
+            ? item?.variations?.[0]?.reg_price
+            : item?.reg_price,
+          max: item?.is_variation
+            ? item?.item?.variations?.[0]?.sale_price
+            : item?.sale_price,
+        },
 
-				image: item?.images?.large,
-				variations: item?.variations,
-				slug: item?.slug,
-			};
-		}) || [];
+        image: item?.images?.large,
+        variations: item?.variations,
+        slug: item?.slug,
+      };
+    }) || [];
 
-	const paginationItems = pagination
-		? generate_pagination(pagination.current_page, pagination.last_page)
-		: [];
+  const paginationItems = pagination
+    ? generate_pagination(pagination.current_page, pagination.last_page)
+    : [];
 
-	const grid_filter = () => {
-		const grid = queryParams?.view;
-		if (grid) {
-			if (grid === "grid-4") {
-				return "mobile-lg:grid-cols-2  laptop:grid-cols-2";
-			} else if (grid === "grid-9") {
-				return "mobile-lg:grid-cols-1 tablet-lg:grid-cols-2 laptop:grid-cols-3";
-			} else if (grid === "grid-16") {
-				return "mobile-lg:grid-cols-2 tablet-lg:grid-cols-3 laptop:grid-cols-4";
-			}
-		} else {
-			return "mobile-lg:grid-cols-2 tablet-lg:grid-cols-3 laptop:grid-cols-4";
-		}
-	};
+  const grid_filter = () => {
+    const grid = queryParams?.view;
+    if (grid) {
+      if (grid === "grid-4") {
+        return "mobile-lg:grid-cols-2  laptop:grid-cols-2";
+      } else if (grid === "grid-9") {
+        return "mobile-lg:grid-cols-1 tablet-lg:grid-cols-2 laptop:grid-cols-3";
+      } else if (grid === "grid-16") {
+        return "mobile-lg:grid-cols-2 tablet-lg:grid-cols-3 laptop:grid-cols-4";
+      }
+    } else {
+      return "mobile-lg:grid-cols-2 tablet-lg:grid-cols-3 laptop:grid-cols-4";
+    }
+  };
 
-	if(isLoading){
-		return <div className="w-full h-100 flex items-center justify-center">
+  if (isLoading) {
+    return (
+      <div className="w-full h-100 flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
 
-			<Loader/>
-		</div>
-	}
+  if (
+    !isLoading &&
+    (error?.data?.message === "Invalid Slug" || error?.status === 400)
+  ) {
+    router.push("/404");
+    return null;
+  }
 
-	if(!isLoading &&( error?.data?.message === 'Invalid Slug' || error?.status === 400)){
-		router.push('/404')
-		return null
-	}
+  if (!isLoading && !filteredData.length) {
+    return <NotFound type="product" />;
+  }
 
-	if(!isLoading&&!filteredData.length  ) {
-		return <NotFound type="product"/>
-	}
+  return (
+    <>
+      <div
+        className={`grid mb-12 font-poppins ${grid_filter()} gap-y-6 gap-x-4 tablet:gap-6`}
+      >
+        {filteredData.map((product: any) => (
+          <ProductCardWrapper
+            id={product?.id}
+            key={product.id + Math.random()}
+            title={product.title}
+            price={product.price}
+            image={product.image}
+            variation={product.variations}
+            slug={product.slug}
+          />
+        ))}
+      </div>
 
+      {pagination?.last_page > 1 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                disabled={pagination?.current_page <= 1}
+                passHref
+                href={`${base_url}/page/${pagination?.current_page - 1}`}
+              />
+            </PaginationItem>
 
-	return (
-		<>
-			<div className={`grid mb-12 font-poppins ${grid_filter()} gap-y-6 gap-x-4 tablet:gap-6`}>
-				{filteredData.map((product: any) => (
-					<ProductCardTwo
-						key={product.id + Math.random()}
-						title={product.title}
-						price={product.price}
-						image={product.image}
-						variation={product.variations}
-						slug={product.slug}
-					/>
-				))}
-			</div>
+            {paginationItems?.map((item, index) => {
+              if (item === "ellipsis") {
+                return (
+                  <PaginationItem key={`ellipsis-${index}`}>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                );
+              }
 
-			{pagination?.last_page > 1 && (
-				<Pagination>
-					<PaginationContent>
-						<PaginationItem>
-							<PaginationPrevious
-								disabled={pagination?.current_page <= 1}
-								passHref
-								href={`${base_url}/page/${pagination?.current_page - 1}`}
-							/>
-						</PaginationItem>
+              return (
+                <PaginationItem key={`page-${item}`}>
+                  <PaginationLink
+                    href={`${base_url}/page/${item}`}
+                    passHref
+                    isActive={pagination.current_page === item}
+                  >
+                    {item}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
 
-						{paginationItems?.map((item, index) => {
-							if (item === "ellipsis") {
-								return (
-									<PaginationItem key={`ellipsis-${index}`}>
-										<PaginationEllipsis />
-									</PaginationItem>
-								);
-							}
-
-							return (
-								<PaginationItem key={`page-${item}`}>
-									<PaginationLink
-										href={`${base_url}/page/${item}`}
-										passHref
-										isActive={pagination.current_page === item}
-									>
-										{item}
-									</PaginationLink>
-								</PaginationItem>
-							);
-						})}
-
-						<PaginationItem>
-							<PaginationNext
-								disabled={pagination?.current_page === pagination?.last_page}
-								passHref
-								href={`${base_url}/page/${pagination?.current_page + 1}`}
-							/>
-						</PaginationItem>
-					</PaginationContent>
-				</Pagination>
-			)}
-		</>
-	);
+            <PaginationItem>
+              <PaginationNext
+                disabled={pagination?.current_page === pagination?.last_page}
+                passHref
+                href={`${base_url}/page/${pagination?.current_page + 1}`}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
+    </>
+  );
 }
