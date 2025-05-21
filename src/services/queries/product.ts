@@ -37,7 +37,7 @@ const useGetProductDetails = (payload: any) => {
         url: `${PRODUCT.PRODUCT_DETAILS}/${payload}`,
         authenticated: false,
       }),
-      
+      retry:false,
   });
 };
 

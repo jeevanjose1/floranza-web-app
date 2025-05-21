@@ -10,6 +10,7 @@ import { useGetProductDetails } from "@/services/queries/product";
 import parse from "html-react-parser";
 import NotFound from "@/components/common/not-found";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/common/loader";
 
 type Props = { slug: string };
 
@@ -47,7 +48,13 @@ export default function ProductDetails({ slug }: Props) {
       ? product?.item?.variations?.[0]?.sale_price
       : product?.sale_price,
   };
-
+if (isLoading) {
+    return (
+      <div className="w-full h-100 flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
  if (
     !isLoading &&
     (error?.data?.message === "Invalid Slug" || error?.status === 400)
@@ -55,6 +62,7 @@ export default function ProductDetails({ slug }: Props) {
     router.push("/404");
     return null;
   }
+
 
   return (
     <>
