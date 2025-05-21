@@ -8,14 +8,17 @@ import ActionSection from "./action-section";
 import ImageSection from "./image-section";
 import { useGetProductDetails } from "@/services/queries/product";
 import parse from "html-react-parser";
+import NotFound from "@/components/common/not-found";
+import { useRouter } from "next/navigation";
 
 type Props = { slug: string };
 
 export default function ProductDetails({ slug }: Props) {
-  const { data: product_details } = useGetProductDetails(slug);
+  const { data: product_details,isLoading,error } = useGetProductDetails(slug)  as any
   const product = product_details?.data?.product;
   const catogery = product_details?.data?.category;
   const related = product_details?.data?.relatedProducts;
+  const router = useRouter();
 
   const filterd_data = related?.map((item: any) => {
     return {
@@ -45,7 +48,13 @@ export default function ProductDetails({ slug }: Props) {
       : product?.sale_price,
   };
 
-
+ if (
+    !isLoading &&
+    (error?.data?.message === "Invalid Slug" || error?.status === 400)
+  ) {
+    router.push("/404");
+    return null;
+  }
 
   return (
     <>
