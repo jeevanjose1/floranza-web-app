@@ -10,8 +10,6 @@ export default function QueryProvider({ children }: Props) {
     defaultOptions:{
       queries:{
         refetchOnWindowFocus: false, // Disable automatic refetching when window regains focus
-        refetchOnReconnect: false, // Disable automatic refetching when reconnecting
-        refetchOnMount: false,
       }
     }
   }));
