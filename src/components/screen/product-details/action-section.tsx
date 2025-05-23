@@ -12,9 +12,10 @@ import Loader from "@/components/common/loader";
 
 type Props = {
   product: any;
+  setVariation:any
 };
 
-export default function ActionSection({ product }: Props) {
+export default function ActionSection({ product,setVariation }: Props) {
   const [count, setCount] = useState<number>(1);
   const [selectedVariation, setSelectedVariation] = useState<any>(null);
   const { mutateAsync: add, isPending } = useAddToCart();
@@ -43,6 +44,7 @@ export default function ActionSection({ product }: Props) {
       setSelectedVariation(null);
       return;
     }
+    setVariation(variation)
     setSelectedVariation(variation);
   };
 

@@ -6,12 +6,10 @@ import {
 	Heart,
 	Instagram,
 	LogIn,
-	ScanSearch,
 	Search,
 	SearchIcon,
 	Send,
-	ShoppingBag,
-	UserRound,
+	
 	X,
 } from "lucide-react";
 import Image from "next/image";
@@ -97,7 +95,7 @@ export default function Header() {
 				<div className="w-full grid grid-cols-3">
 					{/* Mobile Navigation */}
 					<div className="justify-self-start flex items-center tablet-lg:hidden">
-						<MobileNavigation />
+						<MobileNavigation  categories={categories}/>
 					</div>
 
 					{/* Social Media Links */}

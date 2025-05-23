@@ -30,7 +30,7 @@ export default function ProductCardTwo({
   selectedOptionId ,
   onOptionSelect,
   onAddToCart,
-  loading
+  loading=false
 }: ProductCardProps) {
   // Since this is a server component, we need to rely on props
   // rather than internal state for managing the selected option

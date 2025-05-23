@@ -23,6 +23,7 @@ import { Separator } from "../ui/separator";
 import Loader from "./loader";
 import { ScrollArea } from "../ui/scroll-area";
 import Link from "next/link";
+import { Badge } from "../ui/badge";
 
 type Props = {};
 const ItemCard = ({ data }: { data: any }) => {
@@ -32,7 +33,6 @@ const ItemCard = ({ data }: { data: any }) => {
   const [count, setCount] = useState(0);
   const prevCountRef = useRef(0);
 
- 
   useEffect(() => {
     setCount(data?.cart_qty);
     prevCountRef.current = data?.cart_qty;
@@ -42,16 +42,16 @@ const ItemCard = ({ data }: { data: any }) => {
   const handleChangeCount = (newCount: number) => {
     // Calculate if this is an increment (+1) or decrement (-1)
     const qtyChange = newCount > prevCountRef.current ? 1 : -1;
-    
+
     const form_data = new FormData();
     form_data.append("guest_token", token as string);
     form_data.append("prd_var_value_id", data?.prd_var_value_id);
     form_data.append("product_id", data?.product_id);
     form_data.append("qty", qtyChange.toString()); // Send +1 or -1 as requested
-    
+
     // Update the previous count reference
     prevCountRef.current = newCount;
-    
+
     // Make the API call to update the cart
     add(form_data);
   };
@@ -76,7 +76,7 @@ const ItemCard = ({ data }: { data: any }) => {
       token: token,
     });
   };
-  
+
   return (
     <div
       className={`flex items-start gap-4 p-3 border rounded-lg ${
@@ -94,6 +94,7 @@ const ItemCard = ({ data }: { data: any }) => {
       </div>
       <div className="flex-grow flex flex-col justify-between h-full">
         <h3 className="font-medium text-sm mb-1 line-clamp-2">{data?.name}</h3>
+        <Badge className="rounded-md" variant={'secondary'}>{data?.attributeOption}</Badge>
         <div className="flex items-center flex-wrap gap-3 mt-2">
           <div className="max-w-28">
             <Counter
@@ -111,11 +112,11 @@ const ItemCard = ({ data }: { data: any }) => {
             <span className="font-semibold">{data?.price}</span>
           </div>
         </div>
-        <div className="flex items-center justify-between mt-3">
+        <div className="flex items-center justify-between mt-1">
           <div className="text-sm text-gray-500">
             Total:{" "}
             <span className="font-medium text-gray-800">
-               ₹{data?.total_sale_value}
+              ₹{data?.total_sale_value}
             </span>
           </div>
           <Button
@@ -134,15 +135,15 @@ const ItemCard = ({ data }: { data: any }) => {
 
 export default function CartSheet({}: Props) {
   const token = getCookie("floranza-g-token");
-    const [open,setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   const { data: cart_items, isLoading } = useViewCart(token);
   const cart = cart_items?.data;
   const cartIsEmpty = !cart?.cart?.length;
-  const handleClose = ()=>setOpen(false)
+  const handleClose = () => setOpen(false);
 
   return (
-    <Sheet  open={open} onOpenChange={setOpen}>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button
           className={`rounded-full relative [&_svg:not([class*='size-'])]:size-5 `}
@@ -188,23 +189,20 @@ export default function CartSheet({}: Props) {
           <Separator className="my-3" />
           <div className="flex w-full justify-between mb-3 ">
             <p className="text-muted-foreground/80">Subtotal:</p>
-            <p className="text-main font-semibold">{cartIsEmpty ? '₹0' : cart?.total}</p>
+            <p className="text-main font-semibold">
+              {cartIsEmpty ? "₹0" : cart?.total}
+            </p>
           </div>
-          <Link               onClick={handleClose}
- href={"/cart"}>
-            <Button 
-              variant={"secondary"} 
+          <Link onClick={handleClose} href={"/cart"}>
+            <Button
+              variant={"secondary"}
               className="w-full mb-2"
               disabled={cartIsEmpty}
             >
               Go to cart
             </Button>
           </Link>
-          <Button 
-            variant={"primary"} 
-            className="w-full"
-            disabled={cartIsEmpty}
-          >
+          <Button variant={"primary"} className="w-full" disabled={cartIsEmpty}>
             Checkout
           </Button>
         </SheetFooter>

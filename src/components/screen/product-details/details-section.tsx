@@ -31,7 +31,7 @@ export default function DetailsSection({product}: Props) {
         >
           DESCRIPTION
         </Button>
-        <Button
+        {/* <Button
           onClick={() => handleSetTab(2)}
           variant={"transparant"}
           className={`relative before:absolute before:content-[""] before:z-10 group ${
@@ -39,7 +39,7 @@ export default function DetailsSection({product}: Props) {
           } hover:before:w-full cursor-pointer before:transition-all before:top-0 before:left-0 before:h-0.5 before:bg-main border-main text-sm rounded-none`}
         >
           ADDITIONAL INFO
-        </Button>
+        </Button> */}
         <Button
           onClick={() => handleSetTab(3)}
           variant={"transparant"}
@@ -62,7 +62,7 @@ export default function DetailsSection({product}: Props) {
       </div>
       <div className="tablet-lg:inline-block hidden ">
       {tab === 1 && <Description  description={product?.description} />}
-        {tab === 2 && <Additional />}
+        {/* {tab === 2 && <Additional />} */}
         {tab === 3 && <Important important_info = {product?.important_info} />}
         {tab === 4 && <Shipping shipping_info={product?.shipping_delivery} />}
       </div>
@@ -74,9 +74,9 @@ export default function DetailsSection({product}: Props) {
 
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-3">
-            <AccordionTrigger className="container-md">
+            {/* <AccordionTrigger className="container-md">
               ADDITIONAL INFORMATION
-            </AccordionTrigger>
+            </AccordionTrigger> */}
             <AccordionContent>
               <Additional />
             </AccordionContent>

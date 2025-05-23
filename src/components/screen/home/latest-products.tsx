@@ -7,9 +7,7 @@ import React from "react";
 
 export default function LatestProducts() {
   const { data: latest_products } = useGetLatestProducts();
-  console.log('====================================');
-  console.log(latest_products);
-  console.log('====================================');
+
   const filterd_data = latest_products?.data?.map((item: any) => {
     return {
       id: item?.id,

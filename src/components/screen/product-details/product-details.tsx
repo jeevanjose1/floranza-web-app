@@ -2,7 +2,7 @@
 
 import ProductCardTwo from "@/components/common/product-card-two";
 import { Separator } from "@/components/ui/separator";
-import React from "react";
+import React, { useState } from "react";
 import DetailsSection from "./details-section";
 import ActionSection from "./action-section";
 import ImageSection from "./image-section";
@@ -15,6 +15,7 @@ type Props = { slug: string };
 
 export default function ProductDetails({ slug }: Props) {
   const { data: product_details,isLoading,error } = useGetProductDetails(slug)  as any
+  const [variation,setVariation] = useState<any>(null)
   const product = product_details?.data?.product;
   const catogery = product_details?.data?.category;
   const related = product_details?.data?.relatedProducts;
@@ -41,10 +42,10 @@ export default function ProductDetails({ slug }: Props) {
 
   const price = {
     min: product?.is_variation
-      ? product?.variations?.[0]?.reg_price
+      ? variation?.reg_price || product?.variations?.[0]?.reg_price
       : product?.reg_price,
     max: product?.is_variation
-      ? product?.item?.variations?.[0]?.sale_price
+      ?variation?.sale_price || product?.variations?.[0]?.sale_price
       : product?.sale_price,
   };
 if (isLoading) {
@@ -110,7 +111,7 @@ if (isLoading) {
           </div>
 
           <Separator className="my-5" />
-          <ActionSection product={product} />
+          <ActionSection setVariation={setVariation} product={product} />
         </div>
       </div>
       <DetailsSection product={product} />
@@ -119,7 +120,7 @@ if (isLoading) {
       <div className="container-md">
         <h3 className="text-lg font-medium mb-4">Related products</h3>
 
-        <div className="grid grid-cols-2 mb-12 font-poppins tablet-lg:grid-cols-3 laptop:grid-cols-4 gap-x-3 gap-y-6 tablet:gap-6">
+        <div className="grid grid-cols-2 mb-12 font-lora tablet-lg:grid-cols-3 laptop:grid-cols-4 gap-x-3 gap-y-6 tablet:gap-6">
           {filterd_data?.slice(0, 4).map((product: any) => (
             <ProductCardTwo
             

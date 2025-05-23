@@ -18,9 +18,9 @@ type AsyncSelectCustomProps = AsyncProps<
 export default function AsyncSelectCustom(props: AsyncSelectCustomProps) {
   return (
     <AsyncSelect
+    
       classNames={{
-        container:() => "!w-full z-20",
-
+        container:() => "!w-full ",
         control: (state) =>
           `!min-h-10 !rounded-full  ${
             state.isFocused ? "!border-ring !ring-1 !ring-ring" : ""
@@ -29,7 +29,7 @@ export default function AsyncSelectCustom(props: AsyncSelectCustomProps) {
         placeholder: () => "text-sm px-2 whitespace-nowrap",
         input: () => `m-0 px-2 `,
         indicatorsContainer: () => "h-10 px-2 has-[span]:hidden rounded-xl",
-        menu: () => " !rounded-md p-1.5",
+        menu: () => " z-100 !rounded-md p-1.5",
         option: (state) =>
           ` ${state.isFocused ? "!bg-muted/30 text-black" : ""} ${
             state.isSelected ? "!bg-muted/50 !text-black" : ""

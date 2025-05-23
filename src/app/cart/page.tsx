@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingBag, X, ArrowLeft, Truck, CreditCard, ShoppingBasket } from "lucide-react";
 import Link from "next/link";
 import Loader from '@/components/common/loader';
+import { Badge } from '@/components/ui/badge';
 
 // Cart item component with the same functionality as in the drawer
 const CartItem = ({ data }: { data: any }) => {
@@ -78,7 +79,7 @@ const CartItem = ({ data }: { data: any }) => {
           {data?.attributeOption && (
             <div className="text-sm text-gray-500 space-y-1">
                 <div>
-                  <span className="font-medium ">{data.attributeOption} </span>
+                  <Badge variant={'secondary'} className="font-medium rounded-md ">{data.attributeOption} </Badge>
                  
                 </div>
               
