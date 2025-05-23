@@ -9,7 +9,6 @@ export default function QueryProvider({ children }: Props) {
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions:{
       queries:{
-        staleTime: Infinity, // Set all queries to never go stale by default
         refetchOnWindowFocus: false, // Disable automatic refetching when window regains focus
         refetchOnReconnect: false, // Disable automatic refetching when reconnecting
         refetchOnMount: false,
