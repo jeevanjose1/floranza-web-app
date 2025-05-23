@@ -35,7 +35,6 @@ export default async function Product({ params,searchParams }: Props) {
         })}`,
         authenticated: false,
       }),
-    staleTime: Infinity,
   });
 
   return (

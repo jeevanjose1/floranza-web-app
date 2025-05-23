@@ -8,7 +8,6 @@ import ActionSection from "./action-section";
 import ImageSection from "./image-section";
 import { useGetProductDetails } from "@/services/queries/product";
 import parse from "html-react-parser";
-import NotFound from "@/components/common/not-found";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/common/loader";
 
@@ -105,7 +104,7 @@ if (isLoading) {
           </div>
 
           <div className="mb-4">
-            <div className="text-sm font-medium text-muted-foreground/90 mb-5">
+            <div className="text-sm font-medium text-muted-foreground/70 mb-5">
               {parse(product?.description || "")}
             </div>
           </div>

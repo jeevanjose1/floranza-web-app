@@ -23,7 +23,6 @@ export default async function Product({ params }: Props) {
         url: `${PRODUCT.PRODUCT_DETAILS}/${slug}`,
         authenticated: false,
       }),
-    staleTime: Infinity,
   });
 
 

@@ -18,27 +18,27 @@ export default async function Home() {
     queryClient.prefetchQuery({
       queryKey: ["SLIDE"],
       queryFn: () => fetcher({ type: "get", url: HOME.SLIDE,authenticated:false }),
-      staleTime: Infinity,
+      
     }),
     queryClient.prefetchQuery({
       queryKey: ["LATEST_PRODUCTS"],
       queryFn: () => fetcher({ type: "get", url: HOME.LATEST_PRODUCTS,authenticated:false }),
-      staleTime: Infinity,
+      
     }),
     queryClient.prefetchQuery({
       queryKey: ["FEATURED_PRODUCTS"],
       queryFn: () => fetcher({ type: "get", url: HOME.FEATURED_PRODUCTS,authenticated:false }),
-      staleTime: Infinity,
+      
     }),
     queryClient.prefetchQuery({
       queryKey: ["MOST_SELLING_PRODUCTS"],
       queryFn: () => fetcher({ type: "get", url: HOME.MOST_SELLING,authenticated:false }),
-      staleTime: Infinity,
+      
     }),
     queryClient.prefetchQuery({
       queryKey: ["CATOGERIES"],
       queryFn: () => fetcher({ type: "get", url: HOME.CATOGERIES,authenticated:false }),
-      staleTime: Infinity,
+      
     }),
   ]);
   
