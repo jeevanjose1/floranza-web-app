@@ -39,9 +39,7 @@ export default function ProductCardTwo({
   const handleOptionClick = (e: React.MouseEvent, option: any) => {
     e.preventDefault();
     e.stopPropagation();
-     console.log('====================================');
-     console.log('asda');
-     console.log('====================================');
+
     if (onOptionSelect) {
       onOptionSelect(option);
     }

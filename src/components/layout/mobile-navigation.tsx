@@ -56,7 +56,7 @@ export default function MobileNavigation({ categories }: any) {
       <DrawerTrigger onClick={() => setOpen(true)}>
         <Menu strokeWidth={2} className="w-6 h-6" />
       </DrawerTrigger>
-      <DrawerContent className="h-full w-[320px] z-100 fixed inset-y-0 left-0 flex flex-col">
+      <DrawerContent className="h-full z-100  w-100">
         {/* Header */}
         <DrawerHeader className="border-b py-3">
           <DrawerTitle className="flex items-center justify-between p-2">
@@ -131,10 +131,10 @@ export default function MobileNavigation({ categories }: any) {
         {/* Account Section */}
         <div className="border-t p-4 mt-auto">
           {is_auth ? (
-            <div className="flex items-center justify-between">
+            <div className="flex  flex-col gap-3 ">
               {/* Simple User Info */}
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-muted-foreground/10  rounded-full flex items-center justify-center ext-sm font-medium">
+                <div className="w-6 h-6 bg-muted-foreground/10  rounded-full flex items-center justify-center ext-sm font-medium">
                   {user_data?.data?.username?.charAt(0)?.toUpperCase()}
                 </div>
                 <div>
@@ -148,12 +148,15 @@ export default function MobileNavigation({ categories }: any) {
               </div>
 
               {/* Logout Icon */}
+             
               <Button
-                variant="ghost"
-                size="icon"
+                variant="secondary"
+                
+                size="sm"
                 onClick={handleLogout}
                 className="text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400"
               >
+                Logout
                 <LogOut className="w-4 h-4" />
               </Button>
             </div>

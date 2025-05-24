@@ -146,7 +146,7 @@ export default function ProductCardOne({
       </Link>
 
       <div className="mt-3 w-full flex flex-col items-center">
-        <div className="flex gap-1 mb-2">
+        <div className="flex flex-wrap justify-center gap-1 mb-2">
           {variation?.map((sizeInfo, index) => (
             <Badge
               key={index}
