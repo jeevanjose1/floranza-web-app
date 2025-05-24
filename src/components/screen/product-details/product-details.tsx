@@ -11,6 +11,7 @@ import parse from "html-react-parser";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/common/loader";
 import ProductCardWrapper from "@/components/common/product-card-wrapper";
+import { calculate_product_price } from "@/lib/utils";
 
 type Props = { slug: string };
 
@@ -30,29 +31,15 @@ export default function ProductDetails({ slug }: Props) {
     return {
       id: item?.id,
       title: item?.name,
-      price: {
-        min: item?.is_variation
-          ? item?.variations?.[0]?.reg_price
-          : item?.reg_price,
-        max: item?.is_variation
-          ? item?.item?.variations?.[0]?.sale_price
-          : item?.sale_price,
-      },
+          price: calculate_product_price(item),
 
       image: item?.images?.large,
       variations: item?.variations,
       slug: item?.slug,
     };
   });
-
-  const price = {
-    min: product?.is_variation
-      ? variation?.reg_price || product?.variations?.[0]?.reg_price
-      : product?.reg_price,
-    max: product?.is_variation
-      ? variation?.sale_price || product?.variations?.[0]?.sale_price
-      : product?.sale_price,
-  };
+ 
+  const price =  calculate_product_price(product)
   if (isLoading) {
     return (
       <div className="w-full h-100 flex items-center justify-center">

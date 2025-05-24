@@ -17,21 +17,27 @@ import {
 } from "@/services/queries/cart";
 import { getCookie } from "cookies-next/client";
 import Image from "next/image";
-import { images } from "@/shared/images/images";
 import Counter from "../screen/product-details/counter";
 import { Separator } from "../ui/separator";
 import Loader from "./loader";
 import { ScrollArea } from "../ui/scroll-area";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
+import { useRouter } from "next/navigation";
 
 type Props = {};
-const ItemCard = ({ data }: { data: any }) => {
+const ItemCard = ({ data,setOpen }: { data: any,setOpen:any }) => {
   const token = getCookie("floranza-g-token");
   const { mutateAsync: remove, isPending } = useDeleteCart();
   const { mutateAsync: add } = useAddToCart();
   const [count, setCount] = useState(0);
   const prevCountRef = useRef(0);
+  const router = useRouter()
+  
+  const handleNavigate = ()=>{
+    router.push(`/product/${data?.slug}`)
+    setOpen(false)
+  }
 
   useEffect(() => {
     setCount(data?.cart_qty);
@@ -83,7 +89,7 @@ const ItemCard = ({ data }: { data: any }) => {
         data?.is_out_of_stock ? "opacity-80" : ""
       } `}
     >
-      <div className="flex-shrink-0">
+      <div  onClick={handleNavigate} className="flex-shrink-0 cursor-pointer">
         <Image
           src={data?.image?.large}
           width={90}
@@ -93,7 +99,7 @@ const ItemCard = ({ data }: { data: any }) => {
         />
       </div>
       <div className="flex-grow flex flex-col justify-between h-full">
-        <h3 className="font-medium text-sm mb-1 line-clamp-2">{data?.name}</h3>
+        <h3 onClick={handleNavigate} className="font-medium cursor-pointer text-sm mb-1 line-clamp-2">{data?.name}</h3>
         <Badge className="rounded-md" variant={'secondary'}>{data?.attributeOption}</Badge>
         <div className="flex items-center flex-wrap gap-3 mt-2">
           <div className="max-w-28">
@@ -137,11 +143,12 @@ export default function CartSheet({}: Props) {
   const token = getCookie("floranza-g-token");
   const [open, setOpen] = useState(false);
 
-  const { data: cart_items, isLoading } = useViewCart(token);
+  const { data: cart_items } = useViewCart(token);
   const cart = cart_items?.data;
   const cartIsEmpty = !cart?.cart?.length;
   const handleClose = () => setOpen(false);
-
+ 
+ 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -149,6 +156,7 @@ export default function CartSheet({}: Props) {
           className={`rounded-full relative [&_svg:not([class*='size-'])]:size-5 `}
           variant="ghost"
           size="icon"
+
         >
           {!cartIsEmpty && (
             <div className="absolute top-0 left-0 bg-main w-4 h-4 flex items-center justify-center rounded-full ">
@@ -178,7 +186,7 @@ export default function CartSheet({}: Props) {
             <div className="mt-3 flex flex-col gap-2 p-3">
               {cart?.cart?.map((item: any) => (
                 <Fragment key={item?.id}>
-                  <ItemCard data={item} />
+                  <ItemCard setOpen={setOpen} data={item} />
                 </Fragment>
               ))}
             </div>

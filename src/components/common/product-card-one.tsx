@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useAddToCart, useOutOfStock } from "@/services/queries/cart";
 import { getCookie } from "cookies-next/client";
 import Loader from "./loader";
+import { calculate_discount } from "@/lib/utils";
 
 interface ProductCardProps {
   title: string;
@@ -33,6 +34,11 @@ export default function ProductCardOne({
   const [option, setOption] = useState<any>(null);
   const { mutateAsync: add, isPending } = useAddToCart();
   const { mutateAsync: check } = useOutOfStock();
+  const discount =
+    price?.max !== 0
+      ? calculate_discount(Number(price.max), Number(price?.min) as number)
+      : null;
+
   useEffect(() => {
     if (option) {
       const form_data = new FormData();
@@ -74,7 +80,7 @@ export default function ProductCardOne({
       }
       form_data.append("qty", "1");
       add(form_data, {
-        onSuccess: (response) => {
+        onSuccess: () => {
           toast.success("Product added to cart");
         },
         onError: (error: any) => {
@@ -109,7 +115,11 @@ export default function ProductCardOne({
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB..."
             />
           )}
-
+          {discount && (
+            <div className="absolute top-3 flex items-center text-xs text-white font-semibold justify-center rounded-full left-3 bg-main/90 h-10 overflow-hidden w-10">
+              -{discount?.toFixed()}%
+            </div>
+          )}
           <div
             onClick={handleAddToCart}
             className="absolute bottom-0 hidden tablet-lg:flex items-center justify-center opacity-0 group-hover:opacity-100 left-0 bg-main/90 h-0 group-hover:h-10 overflow-hidden transition-all z-10 w-full"

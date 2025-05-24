@@ -1,22 +1,33 @@
-'use client'
+"use client";
+import Loader from "@/components/common/loader";
 import ProductCardOne from "@/components/common/product-card-one";
 import { Button } from "@/components/ui/button";
+import { calculate_product_price } from "@/lib/utils";
 import { useGetMostSelleingProducts } from "@/services/queries/home";
 import React from "react";
 
-
 export default function MostSellingProducts() {
-  const { data: most_selling_products } = useGetMostSelleingProducts();
-  const filterd_data = most_selling_products?.data?.map((item: any) => {
-    return {
-      id: item?.id,
-      title: item?.name,
-      price: {  min: item?.is_variation ?  item?.variations?.[0]?.reg_price : item?.reg_price, max:item?.is_variation ? item?.item?.variations?.[0]?.sale_price:item?.sale_price },
-      image: item?.images?.large,
-      variations: item?.variations,
-      slug:item?.slug
-    };
-  });
+  const {
+    data: most_selling_products,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetMostSelleingProducts();
+  const flat_product = most_selling_products?.pages
+    ?.map((item: any) => item?.data?.list)
+    ?.flat();
+
+  const filterd_data =
+    flat_product?.map((item: any) => {
+      return {
+        id: item?.id,
+        title: item?.name,
+        price: calculate_product_price(item),
+        image: item?.images?.large,
+        variations: item?.variations,
+        slug: item?.slug,
+      };
+    }) || [];
   return (
     <section className="container my-16">
       <div className="mb-8">
@@ -24,12 +35,12 @@ export default function MostSellingProducts() {
           Floranza Fashion Boutique
         </h2>
         <h1 className="text-2xl tablet:text-3xl font-lora font-semibold text-center">
-        Most Selling Products
+          Most Selling Products
         </h1>
       </div>
       <div className="grid grid-cols-2 font-poppins tablet-lg:grid-cols-3 laptop:grid-cols-4 gap-3 tablet:gap-6">
-        {filterd_data?.map((product:any) => (
-          <ProductCardOne 
+        {filterd_data?.map((product: any) => (
+          <ProductCardOne
             key={product.id}
             title={product.title}
             price={product.price}
@@ -37,13 +48,21 @@ export default function MostSellingProducts() {
             variation={product.variations}
             slug={product?.slug}
             id={product.id}
-
           />
         ))}
       </div>
-      <div className="w-full flex justify-center-safe mt-6">
-        <Button variant={'outline'} className="rounded-sm hover:bg-main hover:text-white cursor-pointer">Load More</Button>
-      </div>
+      {hasNextPage && (
+        <div className="w-full flex justify-center mt-6">
+          <Button
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            variant={"outline"}
+            className="rounded-sm hover:bg-main font-lora hover:text-white cursor-pointer"
+          >
+            {isFetchingNextPage ? <Loader/> : "Load More Product"}
+          </Button>
+        </div>
+      )}
     </section>
   );
 }

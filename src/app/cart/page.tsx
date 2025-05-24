@@ -11,6 +11,7 @@ import { ShoppingBag, X, ArrowLeft, Truck, CreditCard, ShoppingBasket } from "lu
 import Link from "next/link";
 import Loader from '@/components/common/loader';
 import { Badge } from '@/components/ui/badge';
+import { useRouter } from 'next/navigation';
 
 // Cart item component with the same functionality as in the drawer
 const CartItem = ({ data }: { data: any }) => {
@@ -19,6 +20,11 @@ const CartItem = ({ data }: { data: any }) => {
   const { mutateAsync: add } = useAddToCart();
   const [count, setCount] = useState(0);
   const prevCountRef = useRef(0);
+ const router = useRouter()
+
+  const handleNavigate = ()=>{
+    router.push(`/product/${data?.slug}`)
+  }
 
   // Initialize count from cart data
   useEffect(() => {
@@ -62,7 +68,7 @@ const CartItem = ({ data }: { data: any }) => {
 
   return (
     <div className="flex flex-col md:flex-row relative items-start gap-4 p-4 border rounded-lg mb-3">
-      <div className="flex-shrink-0">
+      <div onClick={handleNavigate} className="flex-shrink-0 cursor-pointer">
         <Image
           src={data?.image?.large}
           width={70}
@@ -74,7 +80,7 @@ const CartItem = ({ data }: { data: any }) => {
       
       <div className="flex-grow flex flex-col md:flex-row justify-between w-full">
         <div className="space-y-2">
-          <h3 className="font-medium text-base mb-1 max-w-120">{data?.name}</h3>
+          <h3 onClick={handleNavigate} className="font-medium text-base mb-1  cursor-pointer max-w-120">{data?.name}</h3>
           
           {data?.attributeOption && (
             <div className="text-sm text-gray-500 space-y-1">

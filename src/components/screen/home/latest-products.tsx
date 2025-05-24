@@ -1,31 +1,33 @@
 "use client";
 
+import Loader from "@/components/common/loader";
 import ProductCardOne from "@/components/common/product-card-one";
 import { Button } from "@/components/ui/button";
+import { calculate_product_price } from "@/lib/utils";
 import { useGetLatestProducts } from "@/services/queries/home";
 import React from "react";
 
 export default function LatestProducts() {
-  const { data: latest_products } = useGetLatestProducts();
+  const { 
+    data: latest_products, 
+    fetchNextPage, 
+    hasNextPage, 
+    isFetchingNextPage 
+  } = useGetLatestProducts();
 
-  const filterd_data = latest_products?.data?.map((item: any) => {
-    return {
-      id: item?.id,
-      title: item?.name,
-      price: {
-        min: item?.is_variation
-          ? item?.variations?.[0]?.reg_price
-          : item?.reg_price,
-        max: item?.is_variation
-          ? item?.item?.variations?.[0]?.sale_price
-          : item?.sale_price,
-      },
-
-      image: item?.images?.large,
-      variations: item?.variations,
-      slug: item?.slug,
-    };
-  });
+  const flat_product = latest_products?.pages?.map((item: any) => item?.data?.list)?.flat();
+ 
+  const filterd_data =
+    flat_product?.map((item: any) => {
+      return {
+        id: item?.id,
+        title: item?.name,
+        price: calculate_product_price(item),
+        image: item?.images?.large,
+        variations: item?.variations,
+        slug: item?.slug,
+      };
+    }) || [];
 
   return (
     <section className="container my-16">
@@ -50,14 +52,19 @@ export default function LatestProducts() {
           />
         ))}
       </div>
-      <div className="w-full flex justify-center-safe mt-6">
-        <Button
-          variant={"outline"}
-          className="rounded-sm hover:bg-main hover:text-white cursor-pointer"
-        >
-          Load More
-        </Button>
-      </div>
+      
+       {hasNextPage && <div className="w-full flex justify-center mt-6">
+          <Button
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            variant={"outline"}
+            
+            className="rounded-sm hover:bg-main font-lora hover:text-white cursor-pointer"
+          >
+            {isFetchingNextPage ? <Loader/> : "Load More Product"}
+          </Button>
+        </div>}
+      
     </section>
   );
 }

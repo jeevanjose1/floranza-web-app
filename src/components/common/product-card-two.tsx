@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { Heart, Search } from "lucide-react";
 import Link from "next/link";
 import Loader from "./loader";
+import { calculate_discount } from "@/lib/utils";
 
 interface ProductCardProps {
   title: string;
@@ -32,10 +33,12 @@ export default function ProductCardTwo({
   onAddToCart,
   loading = false,
 }: ProductCardProps) {
-  // Since this is a server component, we need to rely on props
-  // rather than internal state for managing the selected option
- 
-  // Function to handle option selection (passes to parent component)
+  const discount =
+    price?.max !== 0
+      ? calculate_discount(Number(price.max), Number(price?.min) as number)
+      : null;
+  console.log(price);
+
   const handleOptionClick = (e: React.MouseEvent, option: any) => {
     e.preventDefault();
     e.stopPropagation();
@@ -83,9 +86,11 @@ export default function ProductCardTwo({
           />
         )}
 
-        <div className="absolute top-3 flex items-center text-xs text-white font-semibold justify-center rounded-full left-3 bg-main/90 h-10 overflow-hidden w-10">
-          -10%
-        </div>
+        {discount && (
+          <div className="absolute top-3 flex items-center text-xs text-white font-semibold justify-center rounded-full left-3 bg-main/90 h-10 overflow-hidden w-10">
+            -{discount?.toFixed()}%
+          </div>
+        )}
       </Link>
 
       <div className="mt-3 w-full flex flex-col flex-grow">

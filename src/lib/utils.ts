@@ -128,3 +128,48 @@ export const  is_authenticated = ()=>{
        const token = getCookie('floranza-t-value')
        return token ? true : false
 }
+
+export const calculate_product_price = (item:any) => {
+  const isVariation = item?.is_variation;
+  
+  if (isVariation) {
+    const variation = item?.variations?.[0];
+    const salePrice = variation?.sale_price || 0;
+    const regPrice = variation?.reg_price || 0;
+    
+    if (salePrice == 0) {
+      return {
+        min: regPrice,
+        max: 0
+      };
+    }
+    
+    return {
+      min: salePrice,
+      max: regPrice
+    };
+  } else {
+    const salePrice = item?.sale_price || 0;
+    const regPrice = item?.reg_price || 0;
+    
+    if (salePrice == 0) {
+      return {
+        min: regPrice,
+        max: 0
+      };
+    }
+    
+    return {
+      min: salePrice,
+      max: regPrice
+    };
+  }
+};
+
+export function calculate_discount(regularPrice:number, salePrice:number) {
+  if (regularPrice <= 0) {
+    throw new Error("Regular price must be greater than zero.");
+  }
+  const discount = ((regularPrice - salePrice) / regularPrice) * 100;
+  return Math.round(discount * 100) / 100; // Round to 2 decimal places
+}

@@ -13,35 +13,64 @@ import {
 
 export default async function Home() {
   const queryClient = new QueryClient();
-   
+
   await Promise.all([
     queryClient.prefetchQuery({
       queryKey: ["SLIDE"],
-      queryFn: () => fetcher({ type: "get", url: HOME.SLIDE,authenticated:false }),
-      
+      queryFn: () =>
+        fetcher({ type: "get", url: HOME.SLIDE, authenticated: false }),
     }),
-    queryClient.prefetchQuery({
+    queryClient.prefetchInfiniteQuery({
       queryKey: ["LATEST_PRODUCTS"],
-      queryFn: () => fetcher({ type: "get", url: HOME.LATEST_PRODUCTS,authenticated:false }),
-      
+      queryFn: ({ pageParam = 1 }) =>
+        fetcher({
+          type: "get",
+          url: `${HOME.LATEST_PRODUCTS}?page=${pageParam}`,
+          authenticated: false,
+        }),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) => {
+        if (lastPage?.hasMore) {
+          return 2;
+        }
+        return undefined;
+      },
+      pages: 1,
     }),
     queryClient.prefetchQuery({
       queryKey: ["FEATURED_PRODUCTS"],
-      queryFn: () => fetcher({ type: "get", url: HOME.FEATURED_PRODUCTS,authenticated:false }),
-      
+      queryFn: () =>
+        fetcher({
+          type: "get",
+          url: HOME.FEATURED_PRODUCTS,
+          authenticated: false,
+        }),
     }),
-    queryClient.prefetchQuery({
+   
+    queryClient.prefetchInfiniteQuery({
       queryKey: ["MOST_SELLING_PRODUCTS"],
-      queryFn: () => fetcher({ type: "get", url: HOME.MOST_SELLING,authenticated:false }),
-      
+      queryFn: ({ pageParam = 1 }) =>
+        fetcher({
+          type: "get",
+          url: `${HOME.MOST_SELLING}?page=${pageParam}`,
+          authenticated: false,
+        }),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) => {
+        if (lastPage?.hasMore) {
+          return 2;
+        }
+        return undefined;
+      },
+      pages: 1,
     }),
     queryClient.prefetchQuery({
       queryKey: ["CATOGERIES"],
-      queryFn: () => fetcher({ type: "get", url: HOME.CATOGERIES,authenticated:false }),
-      
+      queryFn: () =>
+        fetcher({ type: "get", url: HOME.CATOGERIES, authenticated: false }),
     }),
   ]);
-  
+
   return (
     <main>
       <HydrationBoundary state={dehydrate(queryClient)}>

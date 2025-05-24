@@ -44,7 +44,7 @@ export default function ActionSection({ product, setVariation }: Props) {
       setSelectedVariation(null);
       return;
     }
-    setCount(0)
+    setCount(1)
     setVariation(variation);
     setSelectedVariation(variation);
   };
