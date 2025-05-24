@@ -45,7 +45,7 @@ export default function ProductCardWrapper({
       });
     }
   }, [selectedOption]);
-  
+
   const handleOptionSelect = (option: string): void => {
     if (selectedOption?.id === id) {
       setSelectedOption(null);
@@ -71,9 +71,11 @@ export default function ProductCardWrapper({
         onSuccess: (response) => {
           toast.success("Product added to cart");
         },
+        onError: (error: any) => {
+          toast.error(error?.data?.message);
+        },
       });
     }
-
   };
 
   return (

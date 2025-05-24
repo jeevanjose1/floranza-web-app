@@ -10,12 +10,17 @@ import { useGetProductDetails } from "@/services/queries/product";
 import parse from "html-react-parser";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/common/loader";
+import ProductCardWrapper from "@/components/common/product-card-wrapper";
 
 type Props = { slug: string };
 
 export default function ProductDetails({ slug }: Props) {
-  const { data: product_details,isLoading,error } = useGetProductDetails(slug)  as any
-  const [variation,setVariation] = useState<any>(null)
+  const {
+    data: product_details,
+    isLoading,
+    error,
+  } = useGetProductDetails(slug) as any;
+  const [variation, setVariation] = useState<any>(null);
   const product = product_details?.data?.product;
   const catogery = product_details?.data?.category;
   const related = product_details?.data?.relatedProducts;
@@ -45,24 +50,23 @@ export default function ProductDetails({ slug }: Props) {
       ? variation?.reg_price || product?.variations?.[0]?.reg_price
       : product?.reg_price,
     max: product?.is_variation
-      ?variation?.sale_price || product?.variations?.[0]?.sale_price
+      ? variation?.sale_price || product?.variations?.[0]?.sale_price
       : product?.sale_price,
   };
-if (isLoading) {
+  if (isLoading) {
     return (
       <div className="w-full h-100 flex items-center justify-center">
         <Loader />
       </div>
     );
   }
- if (
+  if (
     !isLoading &&
     (error?.data?.message === "Invalid Slug" || error?.status === 400)
   ) {
     router.push("/404");
     return null;
   }
-
 
   return (
     <>
@@ -82,21 +86,19 @@ if (isLoading) {
           </div>
           <div className="mb-3">
             <h3 className="text-main font-semibold text-xl">
-              
-            ₹{Math.round(Number(price.min)).toLocaleString("en-IN")}
-            {price.max ? (
-              <>
-                {" "}
-                -{" "}
-                <span className="line-through text-muted-foreground/50">
+              ₹{Math.round(Number(price.min)).toLocaleString("en-IN")}
+              {price.max ? (
+                <>
                   {" "}
-                  ₹{Math.round(Number(price.max)).toLocaleString("en-IN")}
-                </span>
-              </>
-            ) : (
-              ""
-            )}
-         
+                  -{" "}
+                  <span className="line-through text-muted-foreground/50">
+                    {" "}
+                    ₹{Math.round(Number(price.max)).toLocaleString("en-IN")}
+                  </span>
+                </>
+              ) : (
+                ""
+              )}
             </h3>
             <p className="text-main text-xs text-center tablet:text-sm"></p>
           </div>
@@ -122,9 +124,9 @@ if (isLoading) {
 
         <div className="grid grid-cols-2 mb-12 font-lora tablet-lg:grid-cols-3 laptop:grid-cols-4 gap-x-3 gap-y-6 tablet:gap-6">
           {filterd_data?.slice(0, 4).map((product: any) => (
-            <ProductCardTwo
-            
-              key={product.id}
+            <ProductCardWrapper
+              id={product?.id}
+              key={product.id + Math.random()}
               title={product.title}
               price={product.price}
               image={product.image}

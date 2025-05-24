@@ -12,16 +12,16 @@ import Loader from "@/components/common/loader";
 
 type Props = {
   product: any;
-  setVariation:any
+  setVariation: any;
 };
 
-export default function ActionSection({ product,setVariation }: Props) {
+export default function ActionSection({ product, setVariation }: Props) {
   const [count, setCount] = useState<number>(1);
   const [selectedVariation, setSelectedVariation] = useState<any>(null);
   const { mutateAsync: add, isPending } = useAddToCart();
   const { mutateAsync: check, data } = useOutOfStock();
 
-  const stocks = data?.data?.qty ||4
+  const stocks = data?.data?.qty || 4;
   useEffect(() => {
     if (selectedVariation) {
       const form_data = new FormData();
@@ -44,7 +44,8 @@ export default function ActionSection({ product,setVariation }: Props) {
       setSelectedVariation(null);
       return;
     }
-    setVariation(variation)
+    setCount(0)
+    setVariation(variation);
     setSelectedVariation(variation);
   };
 
@@ -136,23 +137,29 @@ export default function ActionSection({ product,setVariation }: Props) {
         </div>
       </div>
 
-      { (selectedVariation && data )&&( data?.data?.qty > 4 ? (
-        <div className="flex items-center gap-2 mb-4">
-          <Check className="text-main" size={18} />
-          <p className="text-sm font-semibold">In Stock</p>
-        </div>
-      ) : (
-        
-         <div className="flex items-center gap-2 mb-4">
-          <CircleAlert className="text-main" size={18} />
-          <p className="text-sm font-semibold text-red-500">
-          Only {data?.data?.qty} stocks left!
-        </p>
-        </div>
-      ))}
+      {selectedVariation &&
+        data &&
+        (data?.data?.qty > 4 ? (
+          <div className="flex items-center gap-2 mb-4">
+            <Check className="text-main" size={18} />
+            <p className="text-sm font-semibold">In Stock</p>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2 mb-4">
+            <CircleAlert className="text-main" size={18} />
+            <p className="text-sm font-semibold text-red-500">
+              Only {data?.data?.qty} stocks left!
+            </p>
+          </div>
+        ))}
 
       <div className="flex items-center gap-2 flex-wrap tablet:max-w-100 mb-4">
-        <Counter disabled={!selectedVariation} max={stocks} setCount={setCount} count={count} />
+        <Counter
+          disabled={!selectedVariation}
+          max={stocks}
+          setCount={setCount}
+          count={count}
+        />
         <Button
           onClick={handleAddToCart}
           variant={"primary"}

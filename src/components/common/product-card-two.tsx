@@ -18,7 +18,7 @@ interface ProductCardProps {
   selectedOptionId?: any;
   onOptionSelect?: (option: any) => void;
   onAddToCart?: (selectedOption: string) => void;
-  loading?:boolean
+  loading?: boolean;
 }
 
 export default function ProductCardTwo({
@@ -27,33 +27,35 @@ export default function ProductCardTwo({
   image,
   variation,
   slug,
-  selectedOptionId ,
+  selectedOptionId,
   onOptionSelect,
   onAddToCart,
-  loading=false
+  loading = false,
 }: ProductCardProps) {
   // Since this is a server component, we need to rely on props
   // rather than internal state for managing the selected option
-  
+ 
   // Function to handle option selection (passes to parent component)
   const handleOptionClick = (e: React.MouseEvent, option: any) => {
     e.preventDefault();
     e.stopPropagation();
-    
+     console.log('====================================');
+     console.log('asda');
+     console.log('====================================');
     if (onOptionSelect) {
       onOptionSelect(option);
     }
   };
-  
+
   // Function to handle add to cart (passes to parent component)
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
-    
+
     if (onAddToCart) {
       onAddToCart(selectedOptionId);
     }
   };
-  
+
   return (
     <div className="h-full group flex flex-col">
       {/* Image Container */}
@@ -95,11 +97,15 @@ export default function ProductCardTwo({
             <Badge
               key={index}
               onClick={(e) => handleOptionClick(e, sizeInfo)}
-              disabled={sizeInfo?.qty===0|| !sizeInfo.attribute_option_name}
+              disabled={sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name}
               className={`text-xs px-2 rounded-sm cursor-pointer transition-colors ${
-                selectedOptionId?.id === sizeInfo.id ? "bg-main text-white hover:bg-main/90" : ""
+                selectedOptionId?.id === sizeInfo.id
+                  ? "bg-main text-white hover:bg-main/90"
+                  : ""
               }`}
-              variant={selectedOptionId?.id === sizeInfo.id ? "default" : "outline"}
+              variant={
+                selectedOptionId?.id === sizeInfo.id ? "default" : "outline"
+              }
             >
               {sizeInfo.attribute_option_name}
             </Badge>
@@ -139,7 +145,13 @@ export default function ProductCardTwo({
             size={"sm"}
             className="text-xs rounded-full px-4"
           >
-            {loading ? <Loader className="text-white"/>:!variation?.length   ||selectedOptionId ? "ADD TO CART" : "SELECT OPTION"}
+            {loading ? (
+              <Loader className="text-white" />
+            ) : !variation?.length || selectedOptionId ? (
+              "ADD TO CART"
+            ) : (
+              "SELECT OPTION"
+            )}
           </Button>
         </div>
       </div>

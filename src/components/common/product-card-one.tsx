@@ -77,6 +77,9 @@ export default function ProductCardOne({
         onSuccess: (response) => {
           toast.success("Product added to cart");
         },
+        onError: (error: any) => {
+          toast.error(error?.data?.message);
+        },
       });
     }
   };
@@ -117,7 +120,7 @@ export default function ProductCardOne({
             >
               {isPending ? (
                 <Loader className="text-white" />
-              ) :(!variation?.length   || option )? (
+              ) : !variation?.length || option ? (
                 "Add to Cart"
               ) : (
                 "Select Option"
@@ -152,7 +155,7 @@ export default function ProductCardOne({
                 e.stopPropagation();
                 handleSetOption(sizeInfo);
               }}
-              disabled={sizeInfo?.qty===0||!sizeInfo.attribute_option_name}
+              disabled={sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name}
               className={`text-xs px-2 rounded-sm cursor-pointer transition-colors ${
                 option?.id === sizeInfo.id
                   ? "bg-main text-white hover:bg-main/90"

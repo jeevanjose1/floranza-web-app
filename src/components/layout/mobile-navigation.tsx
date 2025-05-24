@@ -45,7 +45,7 @@ export default function MobileNavigation({ categories }: any) {
 
   const navigationItems = [
     { href: "/", label: "Home" },
-    { href: "/pre-book", label: "Pre Book" },
+    // { href: "/pre-book", label: "Pre Book" },
     { href: "/orders-tracking", label: "Orders Tracking" },
     { href: "/about", label: "About Us" },
     { href: "/contact", label: "Contact" },

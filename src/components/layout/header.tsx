@@ -247,7 +247,7 @@ function DesktopNavigation({ categories }: { categories: Category[] }) {
 						</NavItem>
 					))}
 
-					<NavItem href="">Pre Book</NavItem>
+					{/* <NavItem href="">Pre Book</NavItem> */}
 					<NavItem href="">Orders Tracking</NavItem>
 					<NavItem href="">About Us</NavItem>
 					<NavItem href="">Contact</NavItem>
