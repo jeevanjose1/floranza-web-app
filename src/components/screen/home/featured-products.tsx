@@ -7,9 +7,10 @@ import { useGetFeaturedProducts } from "@/services/queries/home";
 import React from "react";
 
 export default function FeaturedProducts() {
-  const { data: featured_product, isPending } = useGetFeaturedProducts();
+  const { data: featured_product } = useGetFeaturedProducts();
+  
   const filterd_data =
-    featured_product?.data?.map((item: any) => {
+    featured_product?.data?.list?.map((item: any) => {
       return {
         id: item?.id,
         title: item?.name,

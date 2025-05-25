@@ -20,6 +20,7 @@ export default async function Home() {
       queryFn: () =>
         fetcher({ type: "get", url: HOME.SLIDE, authenticated: false }),
     }),
+
     queryClient.prefetchInfiniteQuery({
       queryKey: ["LATEST_PRODUCTS"],
       queryFn: ({ pageParam = 1 }) =>
@@ -46,7 +47,7 @@ export default async function Home() {
           authenticated: false,
         }),
     }),
-   
+
     queryClient.prefetchInfiniteQuery({
       queryKey: ["MOST_SELLING_PRODUCTS"],
       queryFn: ({ pageParam = 1 }) =>
@@ -64,6 +65,7 @@ export default async function Home() {
       },
       pages: 1,
     }),
+
     queryClient.prefetchQuery({
       queryKey: ["CATOGERIES"],
       queryFn: () =>

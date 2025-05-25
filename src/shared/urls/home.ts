@@ -1,7 +1,7 @@
 export enum HOME {
     SLIDE='/slider',
-    LATEST_PRODUCTS='/v1/home/latestProducts',
+    LATEST_PRODUCTS='/home/latestProducts',
     FEATURED_PRODUCTS='/home/featuredProducts',
-    MOST_SELLING='/v1/home/mostSellingProduct',
+    MOST_SELLING='/home/mostSellingProduct',
     CATOGERIES='/home/categories'
 }

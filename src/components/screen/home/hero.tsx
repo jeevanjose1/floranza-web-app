@@ -16,7 +16,7 @@ import { useEffect } from "react";
 
 
 export default function Hero() {
-  const { data: slide_date, isLoading } = useGetSlide();
+  const { data: slide_date } = useGetSlide();
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
