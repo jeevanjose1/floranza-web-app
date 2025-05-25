@@ -15,7 +15,7 @@ export default function MostSellingProducts() {
   } = useGetMostSelleingProducts();
   const flat_product = most_selling_products?.pages
     ?.map((item: any) => item?.data?.list)
-    ?.flat();
+    ?.flat() ||[]
 
   const filterd_data =
     flat_product?.map((item: any) => {

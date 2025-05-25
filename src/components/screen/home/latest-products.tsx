@@ -15,7 +15,7 @@ export default function LatestProducts() {
     isFetchingNextPage 
   } = useGetLatestProducts();
 
-  const flat_product = latest_products?.pages?.map((item: any) => item?.data?.list)?.flat();
+  const flat_product = latest_products?.pages?.map((item: any) => item?.data?.list)?.flat() || [];
  
   const filterd_data =
     flat_product?.map((item: any) => {
