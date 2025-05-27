@@ -37,7 +37,6 @@ export default function ProductCardTwo({
     price?.max !== 0
       ? calculate_discount(Number(price.max), Number(price?.min) as number)
       : null;
-  console.log(price);
 
   const handleOptionClick = (e: React.MouseEvent, option: any) => {
     e.preventDefault();

@@ -59,8 +59,6 @@ export default function ProductCardWrapper({
       });
     }
     
-    // Add to cart logic here
-    console.log(`Adding to cart with option: ${selectedOption}`);
   };
   
   return (

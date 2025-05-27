@@ -1,4 +1,4 @@
-import { fetcher } from "@/lib/utils"
+import { fetcher, is_authenticated } from "@/lib/utils"
 import { ACCOUNT } from "@/shared/urls/account"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
@@ -36,7 +36,8 @@ const useAccountDetails = ()=>{
         queryFn:()=>fetcher({
             url:ACCOUNT.ACCOUNT_COMMON,
             type:'get'
-        })
+        }),
+        enabled:is_authenticated()
     })
 }
 const useEditAccount = ()=>{

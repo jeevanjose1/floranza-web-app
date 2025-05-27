@@ -12,10 +12,10 @@ import Loader from "@/components/common/loader";
 
 type Props = {
   product: any;
-  setVariation: any;
+  setVariationIndex: any;
 };
 
-export default function ActionSection({ product, setVariation }: Props) {
+export default function ActionSection({ product, setVariationIndex }: Props) {
   const [count, setCount] = useState<number>(1);
   const [selectedVariation, setSelectedVariation] = useState<any>(null);
   const { mutateAsync: add, isPending } = useAddToCart();
@@ -39,13 +39,13 @@ export default function ActionSection({ product, setVariation }: Props) {
     }
   }, [selectedVariation]);
 
-  const handleSelectVariation = (variation: any) => {
+  const handleSelectVariation = (variation: any,index:number) => {
     if (selectedVariation?.id === variation.id) {
       setSelectedVariation(null);
       return;
     }
     setCount(1)
-    setVariation(variation);
+    setVariationIndex(index);
     setSelectedVariation(variation);
   };
 
@@ -116,7 +116,7 @@ export default function ActionSection({ product, setVariation }: Props) {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                handleSelectVariation(variation);
+                handleSelectVariation(variation,index);
               }}
               disabled={!variation.qty}
               className={`text-xs px-2 rounded-sm cursor-pointer transition-colors ${

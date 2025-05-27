@@ -137,7 +137,6 @@ export function LoginForm({
               disabled={isLoading}
               onClick={() => {
                 // Handle Google sign-in
-                console.log("Google sign-in clicked")
               }}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="mr-2 h-4 w-4">

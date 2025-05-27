@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation';
 const CartItem = ({ data }: { data: any }) => {
   const token = getCookie("floranza-g-token");
   const { mutateAsync: remove, isPending } = useDeleteCart();
-  const { mutateAsync: add } = useAddToCart();
+  const { mutateAsync: add,error } = useAddToCart();
   const [count, setCount] = useState(0);
   const prevCountRef = useRef(0);
  const router = useRouter()
@@ -52,7 +52,6 @@ const CartItem = ({ data }: { data: any }) => {
       if (newCount === 0) {
         handleRemove();
       } else {
-        setCount(newCount);
         handleChangeCount(newCount);
       }
     }
@@ -86,7 +85,6 @@ const CartItem = ({ data }: { data: any }) => {
             <div className="text-sm text-gray-500 space-y-1">
                 <div>
                   <Badge variant={'secondary'} className="font-medium rounded-md ">{data.attributeOption} </Badge>
-                 
                 </div>
               
             </div>
@@ -99,10 +97,12 @@ const CartItem = ({ data }: { data: any }) => {
           <div className="w-32">
               <Counter
                 disabled={data?.is_out_of_stock}
+                              disableAdd={error?.data?.message=='the product is currently out of stock.'}
+
                 count={count}
                 setCount={handleCounterChange}
               />
-              {data?.is_out_of_stock && (
+              {(data?.is_out_of_stock || error?.data?.message==='the product is currently out of stock.')&& (
                 <p className="mt-1 text-xs text-main italic">Out of stock</p>
               )}
             </div>

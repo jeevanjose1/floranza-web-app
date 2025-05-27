@@ -29,7 +29,8 @@ type Props = {};
 const ItemCard = ({ data,setOpen }: { data: any,setOpen:any }) => {
   const token = getCookie("floranza-g-token");
   const { mutateAsync: remove, isPending } = useDeleteCart();
-  const { mutateAsync: add } = useAddToCart();
+  const { mutateAsync: add ,error} = useAddToCart();
+  
   const [count, setCount] = useState(0);
   const prevCountRef = useRef(0);
   const router = useRouter()
@@ -55,10 +56,8 @@ const ItemCard = ({ data,setOpen }: { data: any,setOpen:any }) => {
     form_data.append("product_id", data?.product_id);
     form_data.append("qty", qtyChange.toString()); // Send +1 or -1 as requested
 
-    // Update the previous count reference
-    prevCountRef.current = newCount;
+        prevCountRef.current = newCount;
 
-    // Make the API call to update the cart
     add(form_data);
   };
 
@@ -70,8 +69,7 @@ const ItemCard = ({ data,setOpen }: { data: any,setOpen:any }) => {
       if (newCount === 0) {
         handleRemove();
       } else {
-        setCount(newCount);
-        handleChangeCount(newCount);
+        handleChangeCount(newCount)
       }
     }
   };
@@ -101,19 +99,20 @@ const ItemCard = ({ data,setOpen }: { data: any,setOpen:any }) => {
       <div className="flex-grow flex flex-col justify-between h-full">
         <h3 onClick={handleNavigate} className="font-medium cursor-pointer text-sm mb-1 line-clamp-2">{data?.name}</h3>
         <Badge className="rounded-md" variant={'secondary'}>{data?.attributeOption}</Badge>
-        <div className="flex items-center flex-wrap gap-3 mt-2">
+        <div className="flex items-start flex-wrap gap-3 mt-2">
           <div className="max-w-28">
             <Counter
               disabled={data?.is_out_of_stock}
+              disableAdd={error?.data?.message=='the product is currently out of stock.'}
               count={count}
               setCount={handleCounterChange} // Use our custom handler
             />
-            {data?.is_out_of_stock && (
+            {data?.is_out_of_stock || error?.data?.message==='the product is currently out of stock.' && (
               <p className="mt-1 text-xs text-main italic">Out of stock</p>
             )}
           </div>
 
-          <div className="flex items-center gap-1 text-gray-700">
+          <div className="flex items-center gap-1 py-1 text-gray-700">
             <span className="text-sm">₹</span>
             <span className="font-semibold">{data?.price}</span>
           </div>

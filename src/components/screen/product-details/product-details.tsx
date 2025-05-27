@@ -21,7 +21,7 @@ export default function ProductDetails({ slug }: Props) {
     isLoading,
     error,
   } = useGetProductDetails(slug) as any;
-  const [variation, setVariation] = useState<any>(null);
+  const [variationIndex, setVariationIndex] = useState<any>(null);
   const product = product_details?.data?.product;
   const catogery = product_details?.data?.category;
   const related = product_details?.data?.relatedProducts;
@@ -31,15 +31,16 @@ export default function ProductDetails({ slug }: Props) {
     return {
       id: item?.id,
       title: item?.name,
-          price: calculate_product_price(item),
-
+      price: calculate_product_price(item),
       image: item?.images?.large,
       variations: item?.variations,
       slug: item?.slug,
     };
   });
  
-  const price =  calculate_product_price(product)
+  const price =  calculate_product_price(product,variationIndex)
+
+  
   if (isLoading) {
     return (
       <div className="w-full h-100 flex items-center justify-center">
@@ -100,7 +101,7 @@ export default function ProductDetails({ slug }: Props) {
           </div>
 
           <Separator className="my-5" />
-          <ActionSection setVariation={setVariation} product={product} />
+          <ActionSection setVariationIndex={setVariationIndex} product={product} />
         </div>
       </div>
       <DetailsSection product={product} />

@@ -3,9 +3,7 @@ import { FetcherType } from "@/shared/types/common";
 import axios from "axios";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import {
-  getCookie,
-} from 'cookies-next/client';
+import { getCookie } from "cookies-next/client";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -39,7 +37,7 @@ export const fetcher = async ({
   headers,
   onUploadProgress,
   cacheKey,
-  cacheTime = 0, 
+  cacheTime = 0,
 }: FetcherType) => {
   const key = cacheKey ?? `${type}:${url}:${JSON.stringify(data)}`;
 
@@ -77,8 +75,7 @@ export const fetcher = async ({
     if (axios.isAxiosError(error)) {
       throw error.response ?? error;
     }
-    console.log(error);
-    
+
     throw new Error("Unexpected error occurred");
   }
 };
@@ -123,52 +120,64 @@ export function capitalize_first_letters(sentence: string) {
     .join(" ");
 }
 
+export const is_authenticated = () => {
+  const token = getCookie("floranza-t-value");
+  return token ? true : false;
+};
 
-export const  is_authenticated = ()=>{
-       const token = getCookie('floranza-t-value')
-       return token ? true : false
-}
-
-export const calculate_product_price = (item:any) => {
+export const calculate_product_price = (item: any,index?:number) => {
   const isVariation = item?.is_variation;
-  
+ 
   if (isVariation) {
-    const variation = item?.variations?.[0];
-    const salePrice = variation?.sale_price || 0;
-    const regPrice = variation?.reg_price || 0;
+    const variation = item?.variations?.[index ? index:0];
+    const salePrice = Number(variation?.sale_price) || 0;
+    const regPrice = Number(variation?.reg_price) || 0;
     
-    if (salePrice == 0) {
+    if (regPrice == 0) {
       return {
-        min: regPrice,
-        max: 0
+        min: salePrice,
+        max: 0,
       };
     }
-    
+
+    if (regPrice <= salePrice) {
+      return {
+        min: salePrice,
+        max: 0,
+      };
+    }
+  
     return {
       min: salePrice,
-      max: regPrice
+      max: regPrice,
     };
+
   } else {
-    const salePrice = item?.sale_price || 0;
-    const regPrice = item?.reg_price || 0;
-    
-    if (salePrice == 0) {
+    const salePrice = Number(item?.sale_price) || 0;
+    const regPrice = Number(item?.reg_price) || 0;
+
+    if (regPrice == 0) {
       return {
-        min: regPrice,
-        max: 0
+        min: salePrice,
+        max: 0,
       };
     }
-    
+    if (salePrice >= regPrice) {
+      return {
+        min: salePrice,
+        max: 0,
+      };
+    }
     return {
       min: salePrice,
-      max: regPrice
+      max: regPrice,
     };
   }
 };
 
-export function calculate_discount(regularPrice:number, salePrice:number) {
+export function calculate_discount(regularPrice: number, salePrice: number) {
   if (regularPrice <= 0) {
-    throw new Error("Regular price must be greater than zero.");
+    return false;
   }
   const discount = ((regularPrice - salePrice) / regularPrice) * 100;
   return Math.round(discount * 100) / 100; // Round to 2 decimal places
