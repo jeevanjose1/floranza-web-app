@@ -142,7 +142,7 @@ export default function CartSheet({}: Props) {
   const token = getCookie("floranza-g-token");
   const [open, setOpen] = useState(false);
 
-  const { data: cart_items } = useViewCart(token);
+  const { data: cart_items } = useViewCart({token: token,filter:{state:null}});
   const cart = cart_items?.data;
   const cartIsEmpty = !cart?.cart?.length;
   const handleClose = () => setOpen(false);
@@ -209,9 +209,12 @@ export default function CartSheet({}: Props) {
               Go to cart
             </Button>
           </Link>
-          <Button variant={"primary"} className="w-full" disabled={cartIsEmpty}>
+          <Link href={'/checkout'}>
+           <Button variant={"primary"} className="w-full" disabled={cartIsEmpty}>
             Checkout
           </Button>
+          </Link>
+         
         </SheetFooter>
       </SheetContent>
     </Sheet>

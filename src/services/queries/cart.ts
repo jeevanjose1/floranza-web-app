@@ -1,4 +1,4 @@
-import { fetcher } from "@/lib/utils";
+import { fetcher, queryFilter } from "@/lib/utils";
 import { CART } from "@/shared/urls/cart";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -7,7 +7,7 @@ const useViewCart = (payload: any) => {
     queryKey: ["CART", payload],
     queryFn: () =>
       fetcher({
-        url: `${CART.VIEW_CART}/${payload}`,
+        url: `${CART.VIEW_CART}/${payload?.token}/${queryFilter(payload.filter)}`,
         type: "get",
       }),
   });

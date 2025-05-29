@@ -10,7 +10,7 @@ export default function CustomSelect(props: any) {
     <Select
       
       classNames={{
-        container: () => "!w-full z-20",
+        container: () => "!w-full ",
         control: (state) =>
           `!min-h-8 !rounded-md ${
             state.isFocused ? "!border-ring !ring-1 !ring-ring" : ""
@@ -19,7 +19,7 @@ export default function CustomSelect(props: any) {
         placeholder: () => "text-sm px-2 whitespace-nowrap",
         input: () => "m-0 px-2",
         indicatorsContainer: () => "h-8 px-2 rounded-xl", // Removed the has-[span]:hidden which might be hiding indicators
-        menu: () => "!rounded-md p-1.5",
+        menu: () => "!rounded-md p-1.5 z-50",
         option: (state) =>
           `${state.isFocused ? "!bg-muted/30 text-black" : ""} ${
             state.isSelected ? "!bg-muted/50 !text-black" : ""

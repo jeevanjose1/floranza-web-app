@@ -2,13 +2,15 @@ import { fetcher, is_authenticated } from "@/lib/utils"
 import { ACCOUNT } from "@/shared/urls/account"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
-const useListAdderss = ()=>{
+const useListAdderss = (enabled=true)=>{
     return useQuery({
         queryKey:['ADDRESS'],
         queryFn:()=>fetcher({
             url:ACCOUNT.ADDRESS_COMMON,
             type:'get'
-        })
+            
+        }),
+        enabled:enabled
     })
 }
 const useAddAddress = ()=>{
