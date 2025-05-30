@@ -40,6 +40,7 @@ import { useRouter } from "next/navigation";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 import { useRazorpayStatus } from "@/services/queries/payment";
 import Loader from "@/components/common/loader";
+import { toast } from "sonner";
 
 const filterd_state = indianStates.map((item) => {
   return {
@@ -75,10 +76,7 @@ export default function CheckoutPage() {
   const { mutateAsync: checkout, isPending } = useCheckoutCart();
   const [existingAddress, setExistingAddress] = useState<any>(false);
   const { data: account } = useAccountDetails();
-  const { data: cart_items } = useViewCart({
-    token: token,
-    filter: { state: null },
-  });
+ 
   const router = useRouter();
  const {mutateAsync:get_status,isPending:rasorPending} = useRazorpayStatus()
   const state_cookie = getCookie("floranza-c-data")
@@ -111,7 +109,10 @@ export default function CheckoutPage() {
       notes: "",
     },
   });
-
+ const { data: cart_items } = useViewCart({
+    token: token,
+    filter: { state: form.watch('state') },
+  });
   const handleRazorpaySubmit = (response: any) => {
     const razorpay_data = response?.pg?.RAZORPAY;
     const options: RazorpayOrderOptions = {
@@ -176,17 +177,17 @@ export default function CheckoutPage() {
             handleRazorpaySubmit(response?.data);
           }
         },
-        onError: (error) => {
-          console.log(error);
+        onError: (error:any) => {
+          toast.error(error?.data?.message)
         },
       }
     );
     // Handle form submission
   };
 
-  if (!cart_items?.data?.cart?.length) {
-    router.replace("/");
-  }
+//   if (!cart_items?.data?.cart?.length) {
+//     router.replace("/");
+//   }
 
   if(rasorPending){
     return <div className="min-h-screen w-full flex items-center justify-center">
@@ -635,10 +636,7 @@ export default function CheckoutPage() {
                         : cart_items?.data?.shipping_charge}
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm text-gray-600">
-                    <span>Tax (IGST)</span>
-                    <span>₹192.75</span>
-                  </div>
+                 
                   <Separator />
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-bold">Total</span>

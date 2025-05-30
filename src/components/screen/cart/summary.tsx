@@ -16,9 +16,9 @@ type AddressFormValues = z.infer<typeof address_schema_cart>;
 
 export const OrderSummary = ({ cart, setState }: { cart: any, setState: any }) => {
   const [showAddressForm, setShowAddressForm] = useState(false);
-  const subtotal = Number(cart?.total) || 0;
+  const subtotal = Number(cart?.sub_total) || 0;
   const shipping = Number(cart?.shipping_charge) || 0;
-  const tax = Math.round(subtotal * 0.18);
+  // const tax = Math.round(subtotal * 0.18);
   const total = Number(cart?.total);
   const authenticated = is_authenticated();
   const curr_address = getCookie("floranza-c-data")
@@ -64,7 +64,7 @@ export const OrderSummary = ({ cart, setState }: { cart: any, setState: any }) =
       <div className="space-y-3 mb-6">
         <div className="flex justify-between text-sm">
           <span className="text-gray-600">Subtotal</span>
-          <span className="font-medium">₹{subtotal.toLocaleString()}</span>
+          <span className="font-medium">₹{subtotal.toFixed(2)}</span>
         </div>
 
         <div className="flex justify-between text-sm">
@@ -74,10 +74,10 @@ export const OrderSummary = ({ cart, setState }: { cart: any, setState: any }) =
           </span>
         </div>
 
-        <div className="flex justify-between text-sm">
+        {/* <div className="flex justify-between text-sm">
           <span className="text-gray-600">Tax (18% GST)</span>
           <span className="font-medium">₹{tax.toLocaleString()}</span>
-        </div>
+        </div> */}
 
         <Separator className="my-3" />
 
