@@ -66,6 +66,7 @@ export default function AddressForm() {
     form_data.append("postcode", values.postcode);
     form_data.append("phone", values.phone);
     form_data.append("state", values.state);
+    form_data.append("city", values.city);
 
     add(form_data, {
       onSuccess: () => {

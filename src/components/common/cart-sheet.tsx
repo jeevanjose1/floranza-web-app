@@ -26,19 +26,19 @@ import { Badge } from "../ui/badge";
 import { useRouter } from "next/navigation";
 
 type Props = {};
-const ItemCard = ({ data,setOpen }: { data: any,setOpen:any }) => {
+const ItemCard = ({ data, setOpen }: { data: any; setOpen: any }) => {
   const token = getCookie("floranza-g-token");
   const { mutateAsync: remove, isPending } = useDeleteCart();
-  const { mutateAsync: add ,error} = useAddToCart();
-  
+  const { mutateAsync: add, error } = useAddToCart();
+
   const [count, setCount] = useState(0);
   const prevCountRef = useRef(0);
-  const router = useRouter()
-  
-  const handleNavigate = ()=>{
-    router.push(`/product/${data?.slug}`)
-    setOpen(false)
-  }
+  const router = useRouter();
+
+  const handleNavigate = () => {
+    router.push(`/product/${data?.slug}`);
+    setOpen(false);
+  };
 
   useEffect(() => {
     setCount(data?.cart_qty);
@@ -56,7 +56,7 @@ const ItemCard = ({ data,setOpen }: { data: any,setOpen:any }) => {
     form_data.append("product_id", data?.product_id);
     form_data.append("qty", qtyChange.toString()); // Send +1 or -1 as requested
 
-        prevCountRef.current = newCount;
+    prevCountRef.current = newCount;
 
     add(form_data);
   };
@@ -69,7 +69,7 @@ const ItemCard = ({ data,setOpen }: { data: any,setOpen:any }) => {
       if (newCount === 0) {
         handleRemove();
       } else {
-        handleChangeCount(newCount)
+        handleChangeCount(newCount);
       }
     }
   };
@@ -87,7 +87,7 @@ const ItemCard = ({ data,setOpen }: { data: any,setOpen:any }) => {
         data?.is_out_of_stock ? "opacity-80" : ""
       } `}
     >
-      <div  onClick={handleNavigate} className="flex-shrink-0 cursor-pointer">
+      <div onClick={handleNavigate} className="flex-shrink-0 cursor-pointer">
         <Image
           src={data?.image?.large}
           width={90}
@@ -97,19 +97,30 @@ const ItemCard = ({ data,setOpen }: { data: any,setOpen:any }) => {
         />
       </div>
       <div className="flex-grow flex flex-col justify-between h-full">
-        <h3 onClick={handleNavigate} className="font-medium cursor-pointer text-sm mb-1 line-clamp-2">{data?.name}</h3>
-        <Badge className="rounded-md" variant={'secondary'}>{data?.attributeOption}</Badge>
+        <h3
+          onClick={handleNavigate}
+          className="font-medium cursor-pointer text-sm mb-1 line-clamp-2"
+        >
+          {data?.name}
+        </h3>
+        <Badge className="rounded-md" variant={"secondary"}>
+          {data?.attributeOption}
+        </Badge>
         <div className="flex items-start flex-wrap gap-3 mt-2">
           <div className="max-w-28">
             <Counter
               disabled={data?.is_out_of_stock}
-              disableAdd={error?.data?.message=='the product is currently out of stock.'}
+              disableAdd={
+                error?.data?.message == "the product is currently out of stock."
+              }
               count={count}
               setCount={handleCounterChange} // Use our custom handler
             />
-            {data?.is_out_of_stock || error?.data?.message==='the product is currently out of stock.' && (
-              <p className="mt-1 text-xs text-main italic">Out of stock</p>
-            )}
+            {data?.is_out_of_stock ||
+              (error?.data?.message ===
+                "the product is currently out of stock." && (
+                <p className="mt-1 text-xs text-main italic">Out of stock</p>
+              ))}
           </div>
 
           <div className="flex items-center gap-1 py-1 text-gray-700">
@@ -142,12 +153,14 @@ export default function CartSheet({}: Props) {
   const token = getCookie("floranza-g-token");
   const [open, setOpen] = useState(false);
 
-  const { data: cart_items } = useViewCart({token: token,filter:{state:null}});
+  const { data: cart_items } = useViewCart({
+    token: token,
+    filter: { state: null },
+  });
   const cart = cart_items?.data;
   const cartIsEmpty = !cart?.cart?.length;
   const handleClose = () => setOpen(false);
- 
- 
+
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -155,7 +168,6 @@ export default function CartSheet({}: Props) {
           className={`rounded-full relative [&_svg:not([class*='size-'])]:size-5 `}
           variant="ghost"
           size="icon"
-
         >
           {!cartIsEmpty && (
             <div className="absolute top-0 left-0 bg-main w-4 h-4 flex items-center justify-center rounded-full ">
@@ -209,12 +221,15 @@ export default function CartSheet({}: Props) {
               Go to cart
             </Button>
           </Link>
-          <Link href={'/checkout'}>
-           <Button variant={"primary"} className="w-full" disabled={cartIsEmpty}>
-            Checkout
-          </Button>
+          <Link onClick={handleClose} href={"/checkout"}>
+            <Button
+              variant={"primary"}
+              className="w-full"
+              disabled={cartIsEmpty}
+            >
+              Checkout
+            </Button>
           </Link>
-         
         </SheetFooter>
       </SheetContent>
     </Sheet>

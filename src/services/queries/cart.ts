@@ -69,4 +69,22 @@ const useOutOfStock = () => {
   });
 };
 
-export { useAddToCart, useOutOfStock, useViewCart,useDeleteCart };
+const useCheckoutCart = () => {
+  const query = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: any) =>
+      fetcher({
+        url: `${CART.CHECKOUT}/${payload.token}`,
+        type: "post",
+        data:payload?.data
+      }),
+    onSuccess: (response) => {
+      return response;
+    },
+    onError: (error: any) => {
+      return error;
+    },
+  });
+};
+
+export { useAddToCart, useOutOfStock, useViewCart,useDeleteCart,useCheckoutCart };

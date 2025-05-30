@@ -25,6 +25,7 @@ import not_found from '../../../public/images/404.svg'
 
 export const images = {
     logo,
+
     footer_bg,
     hero_1,
     hero_2,

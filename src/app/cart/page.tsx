@@ -47,7 +47,7 @@ export default function CartPage({}) {
   return (
     <main className="container-md py-8 font-lora">
       <div className="flex w-full items-center justify-between mb-6">
-       { !cartIsEmpty &&<div className="bg-white w-full rounded-lg border-gray-200">
+       { !cartIsEmpty &&<div className="bg-white w-full mobile-lg:inline-block rounded-lg border-gray-200">
               <div className="flex items-center justify-between text-xs mobile-lg:text-sm ">
                 <div className="flex tablet:flex-row flex-col items-center gap-2">
                   <div className="w-6 h-6 bg-main rounded-full flex items-center justify-center">
