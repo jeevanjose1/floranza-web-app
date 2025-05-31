@@ -76,9 +76,10 @@ export default function CheckoutPage() {
   const { mutateAsync: checkout, isPending } = useCheckoutCart();
   const [existingAddress, setExistingAddress] = useState<any>(false);
   const { data: account } = useAccountDetails();
- 
+
   const router = useRouter();
- const {mutateAsync:get_status,isPending:rasorPending} = useRazorpayStatus()
+  const { mutateAsync: get_status, isPending: rasorPending } =
+    useRazorpayStatus();
   const state_cookie = getCookie("floranza-c-data")
     ? JSON.parse(getCookie("floranza-c-data") as string)
     : null;
@@ -109,10 +110,11 @@ export default function CheckoutPage() {
       notes: "",
     },
   });
- const { data: cart_items } = useViewCart({
+  const { data: cart_items } = useViewCart({
     token: token,
-    filter: { state: form.watch('state') },
+    filter: { state: form.watch("state") },
   });
+
   const handleRazorpaySubmit = (response: any) => {
     const razorpay_data = response?.pg?.RAZORPAY;
     const options: RazorpayOrderOptions = {
@@ -124,14 +126,14 @@ export default function CheckoutPage() {
       order_id: razorpay_data?.order_id,
       handler: (response) => {
         console.log(response);
-       get_status(response?.razorpay_payment_id,{
-        onSuccess:()=>{
-            router.replace('/payment-success')
-        },
-         onError:()=>{
-            router.replace('/payment-failed')
-        },
-       })
+        get_status(response?.razorpay_payment_id, {
+          onSuccess: () => {
+            router.replace("/payment-success");
+          },
+          onError: () => {
+            router.replace("/payment-failed");
+          },
+        });
       },
       prefill: {
         name: form.getValues("fullName"),
@@ -144,6 +146,17 @@ export default function CheckoutPage() {
     };
     const razorpayInstance = new Razorpay(options);
     razorpayInstance.open();
+  };
+
+  const handlePhonepaySubmit = (response: any) => {
+    const phonepe_data = response?.pg?.PHONEPE;
+    const a = document.createElement("a");
+    a.href = phonepe_data?.redirectInfo?.url;
+    a.target = "_self";
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   const onSubmit = (data: CheckoutFormData) => {
@@ -162,7 +175,7 @@ export default function CheckoutPage() {
     form_data.append("courier", data?.courier);
     form_data.append("notes", data?.notes as string);
     form_data.append("order_via", "WEB");
-    form_data.append("pg", data?.paymentMethod);
+    form_data.append("pg", form.getValues("paymentMethod"));
     form_data.append("promo_code", "0");
 
     checkout(
@@ -172,27 +185,31 @@ export default function CheckoutPage() {
       },
       {
         onSuccess: (response) => {
-            const payment_type = Object.keys(response?.data?.pg)?.[0]
-          if (payment_type=== "RAZORPAY") {
+          const payment_type = Object.keys(response?.data?.pg)?.[0];
+          if (payment_type === "RAZORPAY") {
             handleRazorpaySubmit(response?.data);
+          } else if (payment_type === "PHONEPE") {
+            handlePhonepaySubmit(response?.data);
           }
         },
-        onError: (error:any) => {
-          toast.error(error?.data?.message)
+        onError: (error: any) => {
+          toast.error(error?.data?.message);
         },
       }
     );
     // Handle form submission
   };
 
-//   if (!cart_items?.data?.cart?.length) {
-//     router.replace("/");
-//   }
+  //   if (!cart_items?.data?.cart?.length) {
+  //     router.replace("/");
+  //   }
 
-  if(rasorPending){
-    return <div className="min-h-screen w-full flex items-center justify-center">
-          <Loader/>
-    </div>
+  if (rasorPending) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center">
+        <Loader />
+      </div>
+    );
   }
 
   return (
@@ -603,7 +620,10 @@ export default function CheckoutPage() {
                 <div className="space-y-4">
                   {cart_items?.data?.cart?.map((item: any) => {
                     return (
-                      <div key={item?.id} className="flex justify-between  flex-col mobile-lg:flex-row items-start gap-4">
+                      <div
+                        key={item?.id}
+                        className="flex justify-between  flex-col mobile-lg:flex-row items-start gap-4"
+                      >
                         <div className="flex-1">
                           <h4 className="font-medium text-sm leading-tight mb-1">
                             {item?.name} - {item?.attributeOption} x{" "}
@@ -636,7 +656,7 @@ export default function CheckoutPage() {
                         : cart_items?.data?.shipping_charge}
                     </span>
                   </div>
-                 
+
                   <Separator />
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-bold">Total</span>
@@ -661,7 +681,7 @@ export default function CheckoutPage() {
                   </h4>
 
                   <RadioGroup
-                    defaultValue="PHONEPE"
+                    defaultValue="RAZORPAY"
                     onValueChange={(item) => {
                       form.setValue("paymentMethod", item);
                     }}
