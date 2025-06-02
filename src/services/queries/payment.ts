@@ -19,7 +19,23 @@ const useRazorpayStatus = ()=>{
     })
 }
 
+const usePhonePeStatus = ()=>{
+    return useMutation({
+        mutationFn:(payload:any)=>fetcher({
+            url:`${PAYMENT.PHONPE}/${payload}`,
+            type:'get',
+            data:payload
+        }),
+        onSuccess:(response)=>{
+            return response
+        },
+        onError:(error:any)=>{
+            return error
+        }
+    })
+}
 export {
-    useRazorpayStatus
+    useRazorpayStatus,
+    usePhonePeStatus
 }
 

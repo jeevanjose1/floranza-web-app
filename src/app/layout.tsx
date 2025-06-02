@@ -6,6 +6,7 @@ import Footer from "@/components/layout/footer";
 import BottomMenu from "@/components/layout/bottom-menu";
 import QueryProvider from "@/components/common/query-provider";
 import { Toaster } from "@/components/ui/sonner";
+import Script from "next/script";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -39,6 +40,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+       <Script 
+  src="https://mercury.phonepe.com/web/bundle/checkout.js"
+  strategy="beforeInteractive"
+/>
       <body
         className={`${poppins.variable} ${open_sans.variable} ${great_vibes.variable} ${lora.variable} antialiased`}
       >
@@ -58,7 +63,9 @@ export default function RootLayout({
             }}
           />
         </QueryProvider>
+       
       </body>
+
     </html>
   );
 }

@@ -38,9 +38,13 @@ import { getCookie } from "cookies-next/client";
 import { useCheckoutCart, useViewCart } from "@/services/queries/cart";
 import { useRouter } from "next/navigation";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
-import { useRazorpayStatus } from "@/services/queries/payment";
+import {
+  usePhonePeStatus,
+  useRazorpayStatus,
+} from "@/services/queries/payment";
 import Loader from "@/components/common/loader";
 import { toast } from "sonner";
+import Script from "next/script";
 
 const filterd_state = indianStates.map((item) => {
   return {
@@ -76,10 +80,11 @@ export default function CheckoutPage() {
   const { mutateAsync: checkout, isPending } = useCheckoutCart();
   const [existingAddress, setExistingAddress] = useState<any>(false);
   const { data: account } = useAccountDetails();
-
   const router = useRouter();
   const { mutateAsync: get_status, isPending: rasorPending } =
     useRazorpayStatus();
+  const { mutateAsync: get_status_phone_pe, isPending: phonePending } =
+    usePhonePeStatus();
   const state_cookie = getCookie("floranza-c-data")
     ? JSON.parse(getCookie("floranza-c-data") as string)
     : null;
@@ -125,7 +130,6 @@ export default function CheckoutPage() {
       description: razorpay_data?.description,
       order_id: razorpay_data?.order_id,
       handler: (response) => {
-        console.log(response);
         get_status(response?.razorpay_payment_id, {
           onSuccess: () => {
             router.replace("/payment-success");
@@ -150,13 +154,28 @@ export default function CheckoutPage() {
 
   const handlePhonepaySubmit = (response: any) => {
     const phonepe_data = response?.pg?.PHONEPE;
-    const a = document.createElement("a");
-    a.href = phonepe_data?.redirectInfo?.url;
-    a.target = "_self";
-    a.rel = "noopener noreferrer";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+
+    const phonepe_url = phonepe_data?.redirectInfo?.url;
+    function paymentCallback() {
+      get_status_phone_pe(phonepe_data?.order_id, {
+        onSuccess: () => {
+          router.replace("/payment-success");
+        },
+        onError: () => {
+          toast.error('Payment not completed')
+          // router.replace("/payment-failed");
+        },
+      });
+    }
+    if (window?.PhonePeCheckout && window.PhonePeCheckout.transact) {
+      window.PhonePeCheckout.transact({
+        tokenUrl: phonepe_url,
+        callback: paymentCallback,
+        type: "IFRAME",
+      });
+    } else {
+      toast.error("PhonePeCheckout is not available.");
+    }
   };
 
   const onSubmit = (data: CheckoutFormData) => {
@@ -618,10 +637,10 @@ export default function CheckoutPage() {
               <CardContent className="space-y-6 px-4 tablet:px-6">
                 {/* Product Details */}
                 <div className="space-y-4">
-                  {cart_items?.data?.cart?.map((item: any) => {
+                  {cart_items?.data?.cart?.map((item: any, index: number) => {
                     return (
                       <div
-                        key={item?.id}
+                        key={item?.id + index}
                         className="flex justify-between  flex-col mobile-lg:flex-row items-start gap-4"
                       >
                         <div className="flex-1">
@@ -699,18 +718,7 @@ export default function CheckoutPage() {
                         </div>
                       </Label>
                     </div>
-                    <div className="flex items-center space-x-3 border rounded-lg p-3 hover:bg-gray-50">
-                      <RadioGroupItem value="CCAVENUE" id="ccavenue" />
-                      <Label
-                        htmlFor="ccavenue"
-                        className="cursor-pointer flex flex-wrap flex-1"
-                      >
-                        <div className="font-medium">CCAvenue</div>
-                        <div className="text-sm text-gray-600">
-                          Credit/Debit Card, Net Banking
-                        </div>
-                      </Label>
-                    </div>
+
                     <div className="flex items-center space-x-3 border rounded-lg p-3 hover:bg-gray-50">
                       <RadioGroupItem value="RAZORPAY" id="razopat" />
                       <Label
