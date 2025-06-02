@@ -19,7 +19,7 @@ export default function Footer() {
               <li className="    laptop:px-2">
                 <Link
                   className="font-medium text-[13px] capitalize whitespace-nowrap"
-                  href={""}
+                  href={"/about-us"}
                 >
                   ABOUT US
                 </Link>
@@ -27,7 +27,7 @@ export default function Footer() {
               <li className="   laptop:px-2">
                 <Link
                   className="font-medium text-[13px] capitalize whitespace-nowrap"
-                  href={""}
+                  href={"/contact-us"}
                 >
                   CONTACT US
                 </Link>
@@ -35,15 +35,15 @@ export default function Footer() {
               <li className="   laptop:px-2">
                 <Link
                   className="font-medium text-[13px] capitalize whitespace-nowrap"
-                  href={""}
+                  href={"/privacy-policy"}
                 >
-                  PRIVACY POLICY{" "}
+                  PRIVACY POLICY
                 </Link>
               </li>
               <li className="   laptop:px-2">
                 <Link
                   className="font-medium text-[13px] capitalize whitespace-nowrap"
-                  href={""}
+                  href={"/terms-and-condition"}
                 >
                   TERMS & CONDITION
                 </Link>
@@ -51,7 +51,7 @@ export default function Footer() {
               <li className="   laptop:px-2">
                 <Link
                   className="font-medium text-[13px] capitalize whitespace-nowrap"
-                  href={""}
+                  href={"/return-and-exchange"}
                 >
                   RETURNS & EXCHANGE
                 </Link>
@@ -59,7 +59,7 @@ export default function Footer() {
               <li className="   laptop:px-2">
                 <Link
                   className="font-medium text-[13px] capitalize whitespace-nowrap"
-                  href={""}
+                  href={"shipping-and-delivery"}
                 >
                   SHIPPING & DELIVERY{" "}
                 </Link>

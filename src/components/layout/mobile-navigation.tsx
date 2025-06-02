@@ -47,8 +47,8 @@ export default function MobileNavigation({ categories }: any) {
     { href: "/", label: "Home" },
     // { href: "/pre-book", label: "Pre Book" },
     { href: "/orders-tracking", label: "Orders Tracking" },
-    { href: "/about", label: "About Us" },
-    { href: "/contact", label: "Contact" },
+    { href: "/about-us", label: "About Us" },
+    { href: "/contact-us", label: "Contact" },
   ];
 
   return (
