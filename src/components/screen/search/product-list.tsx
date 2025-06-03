@@ -15,6 +15,7 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { generate_pagination } from "@/lib/utils";
 import NotFound from "@/components/common/not-found";
+import ProductCardWrapper from "@/components/common/product-card-wrapper";
 
 type Props = {
 	slug: string;
@@ -84,14 +85,15 @@ export default function ProductList({ slug, page = 1, queryParams,search }: Prop
 		<>
 			<div className={`grid mb-12 font-poppins ${grid_filter()} gap-x-4 gap-y-6 tablet:gap-6`}>
 				{filteredData.map((product: any) => (
-					<ProductCardTwo
-						key={product.id + Math.random()}
-						title={product.title}
-						price={product.price}
-						image={product.image}
-						variation={product.variations}
-						slug={product.slug}
-					/>
+					<ProductCardWrapper
+								id={product?.id}
+								key={product.id + Math.random()}
+								title={product.title}
+								price={product.price}
+								image={product.image}
+								variation={product.variations}
+								slug={product.slug}
+							  />
 				))}
 			</div>
 
