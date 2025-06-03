@@ -63,7 +63,6 @@ export default function ContactPage({}: Props) {
       await new Promise((resolve) => setTimeout(resolve, 2000));
       
       // Here you would typically send the data to your API
-      console.log("Form submitted:", data);
       
      
       form.reset();

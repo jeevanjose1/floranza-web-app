@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/pagination";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { generate_pagination } from "@/lib/utils";
+import { calculate_product_price, generate_pagination } from "@/lib/utils";
 import NotFound from "@/components/common/not-found";
 import ProductCardWrapper from "@/components/common/product-card-wrapper";
 
@@ -48,10 +48,7 @@ export default function ProductList({ slug, page = 1, queryParams,search }: Prop
 			return {
 				id: item?.id,
 				title: item?.name,
-				price: {
-					min: item?.variations?.[0]?.reg_price,
-					max: item?.variations?.[0]?.sale_price,
-				},
+				price: calculate_product_price(item),
 				image: item?.images?.large,
 				variations: item?.variations,
 				slug: item?.slug,
