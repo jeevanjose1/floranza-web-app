@@ -22,10 +22,17 @@ import logout from '../../../public/images/logout.svg'
 import orders from '../../../public/images/orders.svg'
 import whishlist from '../../../public/images/wishlist.svg'
 import not_found from '../../../public/images/404.svg'
+import phone from '../../../public/images/phone.svg'
+import razor from '../../../public/images/razor.png'
+import indian_post from '../../../public/images/indian-post.svg'
+import dtdc from '../../../public/images/dtdc.png'
 
 export const images = {
     logo,
-
+    phone,
+    razor,
+    dtdc,
+    indian_post,
     footer_bg,
     hero_1,
     hero_2,

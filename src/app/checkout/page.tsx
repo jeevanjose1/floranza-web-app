@@ -45,6 +45,8 @@ import {
 import Loader from "@/components/common/loader";
 import { toast } from "sonner";
 import Script from "next/script";
+import Image from "next/image";
+import { images } from "@/shared/images/images";
 
 const filterd_state = indianStates.map((item) => {
   return {
@@ -111,7 +113,7 @@ export default function CheckoutPage() {
       phone: existingAddress?.phone || "",
       email: account?.data?.email || "",
       courier: "",
-      paymentMethod: "RAZORPAY",
+      paymentMethod: "PHONEPE",
       notes: "",
     },
   });
@@ -162,7 +164,7 @@ export default function CheckoutPage() {
           router.replace("/payment-success");
         },
         onError: () => {
-          toast.error('Payment not completed')
+          toast.error("Payment not completed");
           // router.replace("/payment-failed");
         },
       });
@@ -484,7 +486,7 @@ export default function CheckoutPage() {
                                 <FormControl>
                                   <Input
                                     placeholder="Enter postcode"
-                                    className=""
+                                    type="number"
                                     {...field}
                                   />
                                 </FormControl>
@@ -514,8 +516,7 @@ export default function CheckoutPage() {
                                 <FormControl>
                                   <Input
                                     placeholder="Enter phone number"
-                                    type="tel"
-                                    className=""
+                                    type="number"
                                     {...field}
                                   />
                                 </FormControl>
@@ -569,26 +570,40 @@ export default function CheckoutPage() {
                                 >
                                   <Label
                                     htmlFor="dtdc"
-                                    className="flex items-center space-x-3 border rounded-lg p-4 hover:bg-gray-50"
+                                    className="flex items-center cursor-pointer  space-x-3 border rounded-lg p-4 hover:bg-gray-50"
                                   >
                                     <RadioGroupItem value="DTDC" id="dtdc" />
-                                    <div className="cursor-pointer flex-1">
+                                    <div className="flex-1">
                                       <div className="font-medium">DTDC</div>
                                     </div>
+                                    <Image
+                                      src={images.dtdc}
+                                      width={50}
+                                      height={50}
+                                      className="mobile-lg:ml-auto"
+                                      alt="phonpe"
+                                    />
                                   </Label>
                                   <Label
                                     htmlFor="post"
-                                    className="flex items-center space-x-3 border rounded-lg p-4 hover:bg-gray-50"
+                                    className="flex items-center cursor-pointer  space-x-3 border rounded-lg p-4 hover:bg-gray-50"
                                   >
                                     <RadioGroupItem
                                       value="INDIA_POST"
                                       id="post"
                                     />
-                                    <div className="cursor-pointer flex-1">
+                                    <div className="flex-1">
                                       <div className="font-medium">
                                         India Post
                                       </div>
                                     </div>
+                                    <Image
+                                      src={images.indian_post}
+                                      width={50}
+                                      height={50}
+                                      className="mobile-lg:ml-auto"
+                                      alt="phonpe"
+                                    />
                                   </Label>
                                 </RadioGroup>
                               </FormControl>
@@ -700,35 +715,49 @@ export default function CheckoutPage() {
                   </h4>
 
                   <RadioGroup
-                    defaultValue="RAZORPAY"
+                    defaultValue="PHONEPE"
                     onValueChange={(item) => {
                       form.setValue("paymentMethod", item);
                     }}
                     className="space-y-3"
                   >
-                    <div className="flex items-center space-x-3 border rounded-lg p-3 hover:bg-gray-50">
-                      <RadioGroupItem value="PHONEPE" id="phonepay" />
+                    <div className="flex items-center space-x-3 border rounded-lg  hover:bg-gray-50">
                       <Label
                         htmlFor="phonepay"
-                        className="cursor-pointer flex flex-wrap flex-1"
+                        className="cursor-pointer flex flex-wrap flex-1 p-3"
                       >
+                        <RadioGroupItem value="PHONEPE" id="phonepay" />
                         <div className="font-medium">PhonePe</div>
-                        <div className="text-sm text-gray-600">
+                        <div className="text-xs text-gray-600">
                           Pay with PhonePe UPI
                         </div>
+                        <Image
+                          src={images.phone}
+                          width={20}
+                          height={20}
+                          className="mobile-lg:ml-auto"
+                          alt="phonpe"
+                        />
                       </Label>
                     </div>
 
-                    <div className="flex items-center space-x-3 border rounded-lg p-3 hover:bg-gray-50">
-                      <RadioGroupItem value="RAZORPAY" id="razopat" />
+                    <div className="flex items-center space-x-3 border rounded-lg hover:bg-gray-50">
                       <Label
                         htmlFor="razopat"
-                        className="cursor-pointer flex flex-wrap flex-1"
+                        className="cursor-pointer flex flex-wrap flex-1  p-3"
                       >
+                        <RadioGroupItem value="RAZORPAY" id="razopat" />
                         <div className="font-medium">RazorPay</div>
-                        <div className="text-sm text-gray-600">
-                          Pay with Razorpay UPI
+                        <div className="text-xs text-gray-600">
+                          Pay with Razorpay UPI / International
                         </div>
+                        <Image
+                          src={images.razor}
+                          width={20}
+                          height={20}
+                          className="mobile-lg:ml-auto"
+                          alt="phonpe"
+                        />
                       </Label>
                     </div>
                   </RadioGroup>
