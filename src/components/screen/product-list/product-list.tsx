@@ -58,7 +58,7 @@ export default function ProductList({
       return {
         id: item?.id,
         title: item?.name,
-          price: calculate_product_price(item),
+        price: calculate_product_price(item),
         image: item?.images?.large,
         variations: item?.variations,
         slug: item?.slug,
