@@ -1,6 +1,5 @@
 "use client";
 
-import ProductCardTwo from "@/components/common/product-card-two";
 import { Separator } from "@/components/ui/separator";
 import React, { useState } from "react";
 import DetailsSection from "./details-section";
@@ -12,6 +11,7 @@ import { useRouter } from "next/navigation";
 import Loader from "@/components/common/loader";
 import ProductCardWrapper from "@/components/common/product-card-wrapper";
 import { calculate_product_price } from "@/lib/utils";
+import SizeChart from "./size-chart";
 
 type Props = { slug: string };
 
@@ -25,6 +25,7 @@ export default function ProductDetails({ slug }: Props) {
   const product = product_details?.data?.product;
   const catogery = product_details?.data?.category;
   const related = product_details?.data?.relatedProducts;
+ 
   const router = useRouter();
 
   const filterd_data = related?.map((item: any) => {
@@ -37,10 +38,10 @@ export default function ProductDetails({ slug }: Props) {
       slug: item?.slug,
     };
   });
- 
-  const price =  calculate_product_price(product,variationIndex)
 
-  
+  const price = calculate_product_price(product, variationIndex)
+
+
   if (isLoading) {
     return (
       <div className="w-full h-100 flex items-center justify-center">
@@ -90,9 +91,9 @@ export default function ProductDetails({ slug }: Props) {
             </h3>
             <p className="text-main text-xs text-center tablet:text-sm"></p>
           </div>
-          <div className="mb-4">
-            <h3 className="text-blue-400 font-semibold text-sm">Size Chart</h3>
-          </div>
+          {product?.size_chart && <div className="mb-4">
+            <SizeChart product={product}/>
+          </div>}
 
           <div className="mb-4">
             <div className="text-sm font-medium text-muted-foreground/70 mb-5">

@@ -99,11 +99,12 @@ export default function Header() {
           {/* Social Media Links */}
           <div className="justify-self-start hidden tablet-lg:flex items-center gap-3">
             <SocialIcon
-              href=""
+              href="https://www.facebook.com/Floranzafashion/"
+
               icon={<Facebook size={16} strokeWidth={0} fill="black" />}
             />
             <SocialIcon
-              href=""
+              href="https://www.instagram.com/floranzafashion/"
               icon={<Instagram strokeWidth={2.5} size={16} />}
             />
           </div>
@@ -204,7 +205,7 @@ export default function Header() {
 
 function SocialIcon({ href, icon }: { href: string; icon: React.ReactNode }) {
   return (
-    <Link href={href}>
+    <Link href={href} target="_blank">
       <div className="w-8 h-8 flex items-center justify-center ring-accent-foreground/40 rounded-full ring-2">
         {icon}
       </div>
