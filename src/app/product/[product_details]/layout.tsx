@@ -4,13 +4,13 @@ import React, { ReactNode } from 'react'
 
 type Props = {
 	children: ReactNode;
-	params: any
+	params: Promise<{ product: string }>
 }
 
 export async function generateMetadata({
 	params,
 }: {
-	params: { product_details: string }
+	params: Promise<{ product_details: string }>
 }) {
 	const param = await params
 	const productData = await fetcher({
