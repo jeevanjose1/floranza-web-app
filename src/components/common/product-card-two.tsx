@@ -16,6 +16,8 @@ interface ProductCardProps {
   image: StaticImageData;
   variation: any[];
   slug: string;
+  is_prebook: boolean;
+  is_new: boolean;
   selectedOptionId?: any;
   onOptionSelect?: (option: any) => void;
   onAddToCart?: (selectedOption: string) => void;
@@ -32,6 +34,8 @@ export default function ProductCardTwo({
   onOptionSelect,
   onAddToCart,
   loading = false,
+  is_prebook,
+  is_new
 }: ProductCardProps) {
   const discount =
     price?.max !== 0
@@ -55,6 +59,29 @@ export default function ProductCardTwo({
       onAddToCart(selectedOptionId);
     }
   };
+  const getPrimaryBadge = () => {
+    const badge = [
+      {
+        enabled: discount,
+        text: discount && `-${discount.toFixed()}%`,
+        className: "bg-main  text-white"
+      },
+      {
+        enabled: is_new,
+        text: "New",
+        className: "bg-green-500/90 text-white"
+      },
+      {
+        enabled: is_prebook,
+        text: "Pre-Order",
+        className: "bg-blue-500/90 text-white"
+      }
+    ]
+    return badge.filter((item: any) => item.enabled)
+  };
+
+  const primaryBadge = getPrimaryBadge();
+
 
   return (
     <div className="h-full group flex flex-col">
@@ -84,12 +111,17 @@ export default function ProductCardTwo({
             blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YxZjFmMSIvPjwvc3ZnPg=="
           />
         )}
+        <div className="absolute top-3 left-3 flex items-start flex-col gap-2">
 
-        {discount && (
-          <div className="absolute top-3 flex items-center text-xs text-white font-semibold justify-center rounded-full left-3 bg-main/90 h-10 overflow-hidden w-10">
-            -{discount?.toFixed()}%
-          </div>
-        )}
+       
+        {primaryBadge?.map((item: any) => {
+          return (
+            <div key={item?.text} className={`flex items-center text-[10px] font-semibold justify-center rounded-sm h-6 px-2 z-10 ${item.className}`}>
+              {item.text}
+            </div>
+          )
+        })}
+         </div>
       </Link>
 
       <div className="mt-3 w-full flex flex-col flex-grow">
@@ -100,11 +132,10 @@ export default function ProductCardTwo({
               key={index}
               onClick={(e) => handleOptionClick(e, sizeInfo)}
               disabled={sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name}
-              className={`text-xs px-2 rounded-sm cursor-pointer transition-colors ${
-                selectedOptionId?.id === sizeInfo.id
+              className={`text-xs px-2 rounded-sm cursor-pointer transition-colors ${selectedOptionId?.id === sizeInfo.id
                   ? "bg-main text-white hover:bg-main/90"
                   : ""
-              }`}
+                }`}
               variant={
                 selectedOptionId?.id === sizeInfo.id ? "default" : "outline"
               }

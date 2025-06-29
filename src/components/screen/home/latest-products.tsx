@@ -8,15 +8,15 @@ import { useGetLatestProducts } from "@/services/queries/home";
 import React from "react";
 
 export default function LatestProducts() {
-  const { 
-    data: latest_products, 
-    fetchNextPage, 
-    hasNextPage, 
-    isFetchingNextPage 
+  const {
+    data: latest_products,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
   } = useGetLatestProducts();
 
   const flat_product = latest_products ? latest_products?.pages?.map((item: any) => item?.data?.list)?.flat() : [];
- 
+
   const filterd_data =
     flat_product?.map((item: any) => {
       return {
@@ -26,6 +26,8 @@ export default function LatestProducts() {
         image: item?.images?.large,
         variations: item?.variations,
         slug: item?.slug,
+        is_pre_order: item?.is_pre_order,
+        is_new_product: item?.is_new_product
       };
     }) || [];
 
@@ -49,22 +51,24 @@ export default function LatestProducts() {
             variation={product.variations}
             slug={product?.slug}
             id={product.id}
+            is_prebook={product?.is_pre_order}
+            is_new={product?.is_new_product}
           />
         ))}
       </div>
-      
-       {hasNextPage && <div className="w-full flex justify-center mt-6">
-          <Button
-            onClick={() => fetchNextPage()}
-            disabled={isFetchingNextPage}
-            variant={"outline"}
-            
-            className="rounded-sm hover:bg-main font-lora hover:text-white cursor-pointer"
-          >
-            {isFetchingNextPage ? <Loader/> : "Load More Product"}
-          </Button>
-        </div>}
-      
+
+      {hasNextPage && <div className="w-full flex justify-center mt-6">
+        <Button
+          onClick={() => fetchNextPage()}
+          disabled={isFetchingNextPage}
+          variant={"outline"}
+
+          className="rounded-sm hover:bg-main font-lora hover:text-white cursor-pointer"
+        >
+          {isFetchingNextPage ? <Loader /> : "Load More Product"}
+        </Button>
+      </div>}
+
     </section>
   );
 }

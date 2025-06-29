@@ -9,8 +9,11 @@ export default function QueryProvider({ children }: Props) {
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions:{
       queries:{
-        refetchOnWindowFocus: false, // Disable automatic refetching when window regains focus
-      }
+        refetchOnWindowFocus: false, 
+         staleTime: 0,
+        gcTime: 0, 
+      },
+      
     }
   }));
 

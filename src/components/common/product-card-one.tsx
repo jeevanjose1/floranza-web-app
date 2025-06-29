@@ -21,6 +21,8 @@ interface ProductCardProps {
   variation: any[];
   slug: string;
   id: string;
+  is_prebook: boolean;
+  is_new: boolean;
 }
 
 export default function ProductCardOne({
@@ -30,6 +32,8 @@ export default function ProductCardOne({
   variation,
   slug,
   id,
+  is_prebook,
+  is_new
 }: ProductCardProps) {
   const [option, setOption] = useState<any>(null);
   const { mutateAsync: add, isPending } = useAddToCart();
@@ -55,6 +59,7 @@ export default function ProductCardOne({
       });
     }
   }, [option]);
+
   const handleSetOption = (id: any) => {
     if (option?.id === id) {
       setOption(null);
@@ -89,16 +94,43 @@ export default function ProductCardOne({
       });
     }
   };
+  const getPrimaryBadge = () => {
+    const badge = [
+      {
+        enabled: discount,
+        text: discount && `-${discount.toFixed()}%`,
+        className: "bg-main  text-white"
+      },
+      {
+        enabled: is_new,
+        text: "New",
+        className: "bg-green-500/90 text-white"
+      },
+      {
+        enabled: is_prebook,
+        text: "Pre-Order",
+        className: "bg-blue-500/90 text-white"
+      }
+    ]
+    return badge.filter((item: any) => item.enabled)
+  };
+
+  const primaryBadge = getPrimaryBadge();
+
+  const handleStopEvent = (e:Event)=>{
+     e.stopPropagation()
+     e.preventDefault()
+  }
 
   return (
     <div className="h-full group">
       <Link href={`/product/${slug}`}>
         <div className="w-full aspect-[3/4] relative overflow-hidden bg-gray-100">
-          <div className="absolute right-2 hidden tablet-lg:flex items-center flex-col justify-center top-2 bg-white group-hover:w-10 opacity-0 group-hover:opacity-100 overflow-hidden gap-5 transition-all z-10 w-0 h-22">
+          <div onClick={handleStopEvent as any} className="absolute right-2 hidden tablet-lg:flex items-center flex-col justify-center top-2 bg-white group-hover:w-10 opacity-0 group-hover:opacity-100 overflow-hidden gap-5 transition-all z-10 w-0 h-10">
             <Heart strokeWidth={2} />
-            <Search strokeWidth={2} />
+            {/* <Search strokeWidth={2} /> */}
           </div>
-          <div className="absolute top-3 right-3 flex tablet-lg:hidden items-center justify-center rounded-full z-10 w-7 bg-white h-7">
+          <div  onClick={handleStopEvent as any} className="absolute top-3 right-3 flex tablet-lg:hidden items-center justify-center rounded-full z-10 w-7 bg-white h-7">
             <Heart strokeWidth={1.5} size={15} />
           </div>
 
@@ -115,11 +147,17 @@ export default function ProductCardOne({
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB..."
             />
           )}
-          {discount && (
-            <div className="absolute top-3 flex items-center text-xs text-white font-semibold justify-center rounded-full left-3 bg-main/90 h-10 overflow-hidden w-10">
-              -{discount?.toFixed()}%
-            </div>
-          )}
+          <div className="absolute top-3 left-3 flex items-start flex-col gap-2">
+
+
+            {primaryBadge?.map((item: any) => {
+              return (
+                <div key={item?.text} className={`flex items-center text-[10px] font-semibold justify-center rounded-sm h-6 px-2 z-10 ${item.className}`}>
+                  {item.text}
+                </div>
+              )
+            })}
+          </div>
           <div
             onClick={handleAddToCart}
             className="absolute bottom-0 hidden tablet-lg:flex items-center justify-center opacity-0 group-hover:opacity-100 left-0 bg-main/90 h-0 group-hover:h-10 overflow-hidden transition-all z-10 w-full"
@@ -166,11 +204,10 @@ export default function ProductCardOne({
                 handleSetOption(sizeInfo);
               }}
               disabled={sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name}
-              className={`text-xs px-2 rounded-sm cursor-pointer transition-colors ${
-                option?.id === sizeInfo.id
+              className={`text-xs px-2 rounded-sm cursor-pointer transition-colors ${option?.id === sizeInfo.id
                   ? "bg-main text-white hover:bg-main/90"
                   : ""
-              }`}
+                }`}
               variant={option?.id === sizeInfo.id ? "default" : "outline"}
             >
               {sizeInfo.attribute_option_name}

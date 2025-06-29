@@ -50,7 +50,7 @@ export default function ProductList({
       name: search,
     },
   }) as any;
-
+ 
   const pagination = product_list?.data?.pagination;
 
   const filteredData =
@@ -62,6 +62,8 @@ export default function ProductList({
         image: item?.images?.large,
         variations: item?.variations,
         slug: item?.slug,
+        is_pre_order:item?.is_pre_order,
+        is_new_product:item?.is_new_product
       };
     }) || [];
 
@@ -118,6 +120,8 @@ export default function ProductList({
             image={product.image}
             variation={product.variations}
             slug={product.slug}
+            is_prebook={product?.is_pre_order}
+            is_new={product?.is_new_product}
           />
         ))}
       </div>

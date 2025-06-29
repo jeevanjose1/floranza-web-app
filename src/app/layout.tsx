@@ -55,6 +55,7 @@ export default function RootLayout({
           <BottomMenu />
           <Toaster
             richColors
+            position="top-center"
             toastOptions={{
               classNames: {
                 success: "!bg-white !border-none !shadow-md !text-green-600",

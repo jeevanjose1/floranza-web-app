@@ -16,6 +16,8 @@ interface ProductCardWrapperProps {
   variation: any[];
   slug: string;
   id: string;
+  is_prebook: boolean,
+  is_new: boolean
 }
 
 export default function ProductCardWrapper({
@@ -25,6 +27,8 @@ export default function ProductCardWrapper({
   variation,
   slug,
   id,
+  is_new,
+  is_prebook
 }: ProductCardWrapperProps) {
   const [selectedOption, setSelectedOption] = useState<any>(null);
   const { mutateAsync: add, isPending } = useAddToCart();
@@ -84,6 +88,8 @@ export default function ProductCardWrapper({
       title={title}
       image={image}
       variation={variation}
+      is_prebook={is_prebook}
+      is_new={is_new}
       slug={slug}
       selectedOptionId={selectedOption}
       onOptionSelect={handleOptionSelect}

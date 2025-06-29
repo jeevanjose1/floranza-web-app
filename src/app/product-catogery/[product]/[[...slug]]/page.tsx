@@ -27,7 +27,7 @@ export default async function Product({ params,searchParams }: Props) {
         type: "get",
         url: `${PRODUCT.PRODUCT_LIST}/${slug}/${queryFilter({
           page: page_no,
-          per_page: queryParams?.per_page ||2,
+          per_page: queryParams?.per_page ,
           material:queryParams?.material,
           size:queryParams?.size,
           min_price:queryParams.min_price,
@@ -40,7 +40,7 @@ export default async function Product({ params,searchParams }: Props) {
   return (
     
       <div className="container-md">
-        <HydrationBoundary state={dehydrate(queryClient)}>
+        <HydrationBoundary  state={dehydrate(queryClient)}>
           <ProductList page={page_no} slug={slug} queryParams={queryParams} />
         </HydrationBoundary>
       </div>

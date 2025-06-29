@@ -173,7 +173,7 @@ export default function CartSheet({}: Props) {
             <div className="absolute top-0 left-0 bg-main w-4 h-4 flex items-center justify-center rounded-full ">
               <p className="text-[10px] text-white  ">
                 {cart?.cart?.length > 9 ? "9+" : cart?.cart?.length}
-              </p>{" "}
+              </p>
             </div>
           )}
           <ShoppingBag strokeWidth={2} />

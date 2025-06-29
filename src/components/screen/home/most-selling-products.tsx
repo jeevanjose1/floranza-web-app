@@ -26,6 +26,8 @@ export default function MostSellingProducts() {
         image: item?.images?.large,
         variations: item?.variations,
         slug: item?.slug,
+            is_pre_order: item?.is_pre_order,
+        is_new_product: item?.is_new_product
       };
     }) || [];
   return (
@@ -48,6 +50,8 @@ export default function MostSellingProducts() {
             variation={product.variations}
             slug={product?.slug}
             id={product.id}
+              is_prebook={product?.is_pre_order}
+            is_new={product?.is_new_product}
           />
         ))}
       </div>

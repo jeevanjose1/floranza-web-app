@@ -25,7 +25,7 @@ export default function ProductDetails({ slug }: Props) {
   const product = product_details?.data?.product;
   const catogery = product_details?.data?.category;
   const related = product_details?.data?.relatedProducts;
- 
+
   const router = useRouter();
 
   const filterd_data = related?.map((item: any) => {
@@ -36,6 +36,8 @@ export default function ProductDetails({ slug }: Props) {
       image: item?.images?.large,
       variations: item?.variations,
       slug: item?.slug,
+      is_pre_order: item?.is_pre_order,
+      is_new_product: item?.is_new_product
     };
   });
 
@@ -92,7 +94,7 @@ export default function ProductDetails({ slug }: Props) {
             <p className="text-main text-xs text-center tablet:text-sm"></p>
           </div>
           {product?.size_chart && <div className="mb-4">
-            <SizeChart product={product}/>
+            <SizeChart product={product} />
           </div>}
 
           <div className="mb-4">
@@ -121,6 +123,8 @@ export default function ProductDetails({ slug }: Props) {
               image={product.image}
               variation={product.variations}
               slug={product.slug}
+              is_prebook={product?.is_pre_order}
+              is_new={product?.is_new_product}
             />
           ))}
         </div>
