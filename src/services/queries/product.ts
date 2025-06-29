@@ -1,10 +1,10 @@
 import { fetcher, queryFilter } from "@/lib/utils";
-import { PRODUCT } from "@/shared/urls/products";
-import { useQuery } from "@tanstack/react-query";
+import { PRODUCT, WISHLIST } from "@/shared/urls/products";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const useGetProductList = (payload: any) => {
   return useQuery({
-    queryKey: ["PRODUCTS_LIST",payload],
+    queryKey: ["PRODUCTS_LIST", payload],
     queryFn: () =>
       fetcher({
         type: "get",
@@ -17,7 +17,7 @@ const useGetProductList = (payload: any) => {
 };
 const useGetProductListSearch = (payload: any) => {
   return useQuery({
-    queryKey: ["PRODUCTS_LIST_SEARCH",payload],
+    queryKey: ["PRODUCTS_LIST_SEARCH", payload],
     queryFn: () =>
       fetcher({
         type: "get",
@@ -37,8 +37,57 @@ const useGetProductDetails = (payload: any) => {
         url: `${PRODUCT.PRODUCT_DETAILS}/${payload}`,
         authenticated: false,
       }),
-      retry:false,
+    retry: false,
   });
 };
 
-export { useGetProductList, useGetProductDetails ,useGetProductListSearch};
+const useGetWishlist = (payload: any) => {
+  return useQuery({
+    queryKey: ["WISHLIST", payload],
+    queryFn: () =>
+      fetcher({
+        type: "get",
+        url: `${WISHLIST.LIST}/${queryFilter(
+          payload?.filter
+        )}`,
+      }),
+  });
+};
+
+const useAddWishlist = () => {
+  const query = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: any) =>
+      fetcher({
+        url: `${WISHLIST.ADD}/`,
+        type: "post",
+        data: payload
+      }),
+    onSuccess: (response) => {
+      query.invalidateQueries({ queryKey: ['WISHLIST'] })
+      return response;
+    },
+    onError: (error: any) => {
+      return error;
+    },
+  });
+};
+
+const useDeleteWishlist = () => {
+  const query = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: any) =>
+      fetcher({
+        url: `${WISHLIST.DELETE}/${payload}`,
+        type: "delete",
+      }),
+    onSuccess: (response) => {
+      query.invalidateQueries({ queryKey: ['WISHLIST'] })
+      return response;
+    },
+    onError: (error: any) => {
+      return error;
+    },
+  });
+};
+export { useGetProductList, useGetProductDetails, useGetProductListSearch, useGetWishlist, useAddWishlist, useDeleteWishlist, };

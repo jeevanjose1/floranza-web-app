@@ -28,9 +28,10 @@ function BottomMenu() {
           <MessageCircleMore strokeWidth={2} size={20} />
           <p className="text-xs font-semibold">Chat</p>
         </Link>}
+
         <Link
           className="flex flex-col gap-1 text-light-gray items-center"
-          href={""}
+         href={"/account/wishlist"}
         >
           <Heart strokeWidth={2} size={20} />
           <p className="text-xs font-semibold">Whshlist</p>

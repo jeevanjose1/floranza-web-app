@@ -2,7 +2,7 @@ import { z } from "zod";
 
  const login_schema = z.object({
   email: z.string().min(1,{ message: "Username or email is required" }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
+  password: z.string().min(1, { message: "Password is required" }),
 })
 
 const change_password = z

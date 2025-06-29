@@ -21,23 +21,23 @@ type Props = {
 	slug: string;
 	page?: number;
 	queryParams: any;
-		search?:string
+	search?: string
 };
 
-export default function ProductList({ slug, page = 1, queryParams,search }: Props) {
+export default function ProductList({ slug, page = 1, queryParams, search }: Props) {
 	const pathname = usePathname();
 	const base_url = pathname.split("/page/")[0];
 
-	const { data: product_list ,isLoading} = useGetProductListSearch({
+	const { data: product_list, isLoading } = useGetProductListSearch({
 		slug: slug,
 		filter: {
 			page: page,
 			per_page: queryParams?.per_page || 2,
-			material:queryParams?.material,
-			size:queryParams?.size,
-			min_price:queryParams.min_price,
-			max_price:queryParams.max_price,
-			name:search
+			material: queryParams?.material,
+			size: queryParams?.size,
+			min_price: queryParams.min_price,
+			max_price: queryParams.max_price,
+			name: search
 		},
 	});
 
@@ -52,6 +52,8 @@ export default function ProductList({ slug, page = 1, queryParams,search }: Prop
 				image: item?.images?.large,
 				variations: item?.variations,
 				slug: item?.slug,
+				  is_pre_order:item?.is_pre_order,
+        is_new_product:item?.is_new_product
 			};
 		}) || [];
 
@@ -74,23 +76,25 @@ export default function ProductList({ slug, page = 1, queryParams,search }: Prop
 		}
 	};
 
-		if(!isLoading&&!filteredData.length) {
-			return  <NotFound type="product"/>
-		}
+	if (!isLoading && !filteredData.length) {
+		return <NotFound type="product" />
+	}
 
 	return (
 		<>
 			<div className={`grid mb-12 font-poppins ${grid_filter()} gap-x-4 gap-y-6 tablet:gap-6`}>
 				{filteredData.map((product: any) => (
 					<ProductCardWrapper
-								id={product?.id}
-								key={product.id + Math.random()}
-								title={product.title}
-								price={product.price}
-								image={product.image}
-								variation={product.variations}
-								slug={product.slug}
-							  />
+						id={product?.id}
+						key={product.id + Math.random()}
+						title={product.title}
+						price={product.price}
+						image={product.image}
+						variation={product.variations}
+						slug={product.slug}
+						 is_prebook={product?.is_pre_order}
+            is_new={product?.is_new_product}
+					/>
 				))}
 			</div>
 

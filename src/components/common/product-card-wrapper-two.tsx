@@ -32,6 +32,7 @@ export default function ProductCardWrapper({
   is_new,
   is_prebook
 }: ProductCardWrapperProps) {
+  
   const [selectedOption, setSelectedOption] = useState<any>(null);
   const { mutateAsync: add, isPending } = useAddToCart();
   const handleOptionSelect = (option: string): void => {

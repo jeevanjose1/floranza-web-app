@@ -98,7 +98,7 @@ export function SignupForm({
 											{...field}
 											id="email"
 											type="email"
-											placeholder="m@example.com"
+											placeholder="Enter your email"
 											disabled={isPending}
 										/>
 									</FormControl>

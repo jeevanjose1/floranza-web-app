@@ -3,13 +3,15 @@ import Image, { StaticImageData } from "next/image";
 import React, { useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { Heart, Search, ShoppingCart } from "lucide-react";
+import { Heart, Search, ShoppingCart, X } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useAddToCart, useOutOfStock } from "@/services/queries/cart";
 import { getCookie } from "cookies-next/client";
 import Loader from "./loader";
-import { calculate_discount } from "@/lib/utils";
+import { calculate_discount, is_authenticated } from "@/lib/utils";
+import { useAddWishlist, useDeleteWishlist } from "@/services/queries/product";
+import { usePathname, useRouter } from "next/navigation";
 
 interface ProductCardProps {
   title: string;
@@ -21,8 +23,10 @@ interface ProductCardProps {
   variation: any[];
   slug: string;
   id: string;
+  wishlist_id?:string
   is_prebook: boolean;
   is_new: boolean;
+  is_wishlist?: boolean
 }
 
 export default function ProductCardOne({
@@ -32,12 +36,20 @@ export default function ProductCardOne({
   variation,
   slug,
   id,
+  wishlist_id,
   is_prebook,
-  is_new
+  is_new,
+  is_wishlist = false
 }: ProductCardProps) {
   const [option, setOption] = useState<any>(null);
   const { mutateAsync: add, isPending } = useAddToCart();
+  const { mutateAsync: add_wishlist, isPending: wishlistPending } = useAddWishlist()
+  const { mutateAsync: remove_wishlist, isPending: deleteWishlistPending } = useDeleteWishlist()
+
   const { mutateAsync: check } = useOutOfStock();
+  const is_auth = is_authenticated()
+  const router = useRouter()
+
   const discount =
     price?.max !== 0
       ? calculate_discount(Number(price.max), Number(price?.min) as number)
@@ -117,21 +129,51 @@ export default function ProductCardOne({
 
   const primaryBadge = getPrimaryBadge();
 
-  const handleStopEvent = (e:Event)=>{
-     e.stopPropagation()
-     e.preventDefault()
+  const handleStopEvent = (e: Event) => {
+    e.stopPropagation()
+    e.preventDefault()
+  }
+
+  const handleWishList = () => {
+    if (is_auth) {
+      add_wishlist({
+        product_id: id
+      }, {
+        onSuccess: (response) => {
+          toast.success(response?.message)
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        }
+      })
+    } else {
+      router.push('/signin')
+    }
+
+  }
+
+  const handleDelete = () => {
+    remove_wishlist(wishlist_id, {
+      onSuccess: (response) => {
+        toast.success(response?.message)
+      }, onError: (error) => {
+        toast.error(error.message)
+      }
+    })
   }
 
   return (
     <div className="h-full group">
       <Link href={`/product/${slug}`}>
         <div className="w-full aspect-[3/4] relative overflow-hidden bg-gray-100">
-          <div onClick={handleStopEvent as any} className="absolute right-2 hidden tablet-lg:flex items-center flex-col justify-center top-2 bg-white group-hover:w-10 opacity-0 group-hover:opacity-100 overflow-hidden gap-5 transition-all z-10 w-0 h-10">
-            <Heart strokeWidth={2} />
-            {/* <Search strokeWidth={2} /> */}
+          <div onClick={handleStopEvent as any} className="absolute rounded-sm  right-2 hidden tablet-lg:flex items-center flex-col justify-center top-2 bg-white group-hover:w-10 opacity-0 group-hover:opacity-100 overflow-hidden gap-5 transition-all z-10 w-0 h-10">
+            {
+              wishlistPending || deleteWishlistPending ? <Loader /> :
+                is_wishlist ? <X onClick={handleDelete} /> : <Heart onClick={handleWishList} strokeWidth={2} />
+            }
           </div>
-          <div  onClick={handleStopEvent as any} className="absolute top-3 right-3 flex tablet-lg:hidden items-center justify-center rounded-full z-10 w-7 bg-white h-7">
-            <Heart strokeWidth={1.5} size={15} />
+          <div onClick={handleStopEvent as any} className="absolute  top-3 right-3 flex tablet-lg:hidden items-center justify-center rounded-full z-10 w-7 bg-white h-7">
+            {wishlistPending || deleteWishlistPending ? <Loader /> : is_wishlist ? <X onClick={handleDelete} /> : <Heart onClick={handleWishList} strokeWidth={1.5} size={15} />}
           </div>
 
           {image && (
@@ -152,7 +194,7 @@ export default function ProductCardOne({
 
             {primaryBadge?.map((item: any) => {
               return (
-                <div key={item?.text} className={`flex items-center text-[10px] font-semibold justify-center rounded-sm h-6 px-2 z-10 ${item.className}`}>
+                <div key={item?.text} className={`flex  items-center text-[10px] font-semibold justify-center rounded-sm h-6 px-2 z-10 ${item.className}`}>
                   {item.text}
                 </div>
               )
@@ -205,8 +247,8 @@ export default function ProductCardOne({
               }}
               disabled={sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name}
               className={`text-xs px-2 rounded-sm cursor-pointer transition-colors ${option?.id === sizeInfo.id
-                  ? "bg-main text-white hover:bg-main/90"
-                  : ""
+                ? "bg-main text-white hover:bg-main/90"
+                : ""
                 }`}
               variant={option?.id === sizeInfo.id ? "default" : "outline"}
             >

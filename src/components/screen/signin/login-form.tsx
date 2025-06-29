@@ -80,7 +80,7 @@ export function LoginForm({
                       {...field}
                       id="email"
                       type="text"
-                      placeholder="m@example.com"
+                    							placeholder="Enter your username or email"
                       disabled={isPending}
                     />
                   </FormControl>

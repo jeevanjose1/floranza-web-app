@@ -218,13 +218,13 @@ export default function CheckoutPage() {
         },
       }
     );
-    // Handle form submission
   };
 
   //   if (!cart_items?.data?.cart?.length) {
   //     router.replace("/");
   //   }
-
+   
+    
   if (rasorPending) {
     return (
       <div className="min-h-screen w-full flex items-center justify-center">
@@ -276,7 +276,7 @@ export default function CheckoutPage() {
                 <p>Please fill in your billing information</p>
               </CardHeader>
               <CardContent className="tablet:px-6 px-4">
-                {authenticated && (
+                {(authenticated && address?.data?.fname !=='') && (
                   <>
                     <div className="space-y-4">
                       <h3 className="text-lg font-semibold text-gray-900">

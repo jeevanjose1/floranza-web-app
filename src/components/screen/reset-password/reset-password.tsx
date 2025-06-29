@@ -55,7 +55,7 @@ export function ResetPassword({
 				<div className="flex flex-col items-center gap-2">
 					<h1 className="text-xl font-bold">Enter your email</h1>
 					<div className="text-center text-sm">
-						Return back to
+						Return back to{' '}
 						<Link href="/signin" className="underline underline-offset-4">
 							Sign in
 						</Link>

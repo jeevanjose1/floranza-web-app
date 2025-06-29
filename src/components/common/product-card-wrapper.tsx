@@ -5,6 +5,9 @@ import { StaticImageData } from "next/image";
 import { toast } from "sonner";
 import { useAddToCart, useOutOfStock } from "@/services/queries/cart";
 import { getCookie } from "cookies-next/client";
+import { useAddWishlist } from "@/services/queries/product";
+import { is_authenticated } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface ProductCardWrapperProps {
   title: string;
@@ -32,7 +35,10 @@ export default function ProductCardWrapper({
 }: ProductCardWrapperProps) {
   const [selectedOption, setSelectedOption] = useState<any>(null);
   const { mutateAsync: add, isPending } = useAddToCart();
+  const { mutateAsync: add_wishlist, isPending: wishlistPending } = useAddWishlist()
   const { mutateAsync: check } = useOutOfStock();
+  const is_auth = is_authenticated()
+  const router = useRouter()
   useEffect(() => {
     if (selectedOption) {
       const form_data = new FormData();
@@ -72,7 +78,7 @@ export default function ProductCardWrapper({
       }
       form_data.append("qty", "1");
       add(form_data, {
-        onSuccess: (response) => {
+        onSuccess: () => {
           toast.success("Product added to cart");
         },
         onError: (error: any) => {
@@ -81,6 +87,25 @@ export default function ProductCardWrapper({
       });
     }
   };
+
+  const handleWishList = () => {
+    if (is_auth) {
+      add_wishlist({
+        product_id: id
+      }, {
+        onSuccess: (response) => {
+          toast.success(response?.message)
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        }
+      })
+    } else {
+      router.push('/signin')
+    }
+
+  }
+
 
   return (
     <ProductCardTwo
@@ -95,6 +120,8 @@ export default function ProductCardWrapper({
       onOptionSelect={handleOptionSelect}
       onAddToCart={handleAddToCart}
       loading={isPending}
+      handleWishList={handleWishList}
+      wishListLoading={wishlistPending}
     />
   );
 }

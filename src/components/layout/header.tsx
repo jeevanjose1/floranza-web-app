@@ -164,11 +164,14 @@ export default function Header() {
               />
             )}
             {is_auth && (
+               <Link href={"/account/wishlist"}>
               <ActionButton
                 icon={<Heart strokeWidth={2} />}
                 label="Wishlist"
+                
                 className="hidden tablet-lg:flex"
               />
+              </Link>
             )}
             {is_auth && (
               <AccountDropdown

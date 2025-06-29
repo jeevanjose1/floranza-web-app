@@ -13,6 +13,17 @@ const useListAdderss = (enabled=true)=>{
         enabled:enabled
     })
 }
+
+const useListOrder = ()=>{
+    return useQuery({
+        queryKey:['ORDER'],
+        queryFn:()=>fetcher({
+            url:ACCOUNT.ORDER_LIST,
+            type:'get'
+            
+        }),
+    })
+}
 const useAddAddress = ()=>{
     const query = useQueryClient()
     return useMutation({
@@ -64,5 +75,6 @@ export {
     useAccountDetails,
     useAddAddress,
     useListAdderss,
-    useEditAccount
+    useEditAccount,
+    useListOrder
 }

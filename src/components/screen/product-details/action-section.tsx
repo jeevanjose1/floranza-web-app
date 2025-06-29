@@ -9,6 +9,9 @@ import { toast } from "sonner";
 import { useAddToCart, useOutOfStock } from "@/services/queries/cart";
 import { getCookie } from "cookies-next/client";
 import Loader from "@/components/common/loader";
+import { useAddWishlist } from "@/services/queries/product";
+import { is_authenticated } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 type Props = {
   product: any;
@@ -20,7 +23,9 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
   const [selectedVariation, setSelectedVariation] = useState<any>(null);
   const { mutateAsync: add, isPending } = useAddToCart();
   const { mutateAsync: check, data } = useOutOfStock();
-
+  const { mutateAsync: add_wishlist, isPending: wishlistPending } = useAddWishlist()
+  const is_auth = is_authenticated()
+  const router = useRouter()
   const stocks = data?.data?.qty || 4;
   useEffect(() => {
     if (selectedVariation) {
@@ -103,6 +108,23 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
       },
     });
   };
+  const handleWishList = () => {
+      if (is_auth) {
+        add_wishlist({
+          product_id: product.id
+        }, {
+          onSuccess: (response) => {
+            toast.success(response?.message)
+          },
+          onError: (error) => {
+            toast.error(error.message)
+          }
+        })
+      } else {
+        router.push('/signin')
+      }
+  
+    }
 
   return (
     <div>
@@ -178,8 +200,8 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
         </Button>
       </div>
 
-      <div className="flex items-center gap-2 mb-4 cursor-pointer">
-        <Heart size={16} />
+      <div onClick={handleWishList} className="flex items-center gap-2 mb-4 cursor-pointer">
+        {wishlistPending?<Loader className="w-4 h-4"/>:<Heart size={16} />}
         <p className="text-sm font-semibold">Add to wishlist</p>
       </div>
 
