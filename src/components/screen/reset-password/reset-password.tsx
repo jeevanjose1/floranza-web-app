@@ -74,7 +74,7 @@ export function ResetPassword({
 										{...field}
 										id="email"
 										type="text"
-										placeholder="m@example.com"
+										placeholder="Enter your email"
 										disabled={isPending}
 									/>
 								</FormControl>

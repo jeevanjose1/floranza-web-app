@@ -24,16 +24,16 @@ export function ChangePassword({
 }: React.ComponentProps<"div">) {
 	const router = useRouter()
 	const params = useParams()
-	const {mutateAsync:change,isPending} = useChangePassword()
-	const {mutateAsync:varify,error,isPending:varify_pending} = useVarifyToken()
-	useEffect(()=>{
-		if(params.token){
-		varify(params?.token)
+	const { mutateAsync: change, isPending } = useChangePassword()
+	const { mutateAsync: varify, error, isPending: varify_pending } = useVarifyToken()
+	useEffect(() => {
+		if (params.token) {
+			varify(params?.token)
 
-		}else{
+		} else {
 			router.push('/')
 		}
-	},[])
+	}, [])
 
 	const form = useForm<LoginFormValues>({
 		resolver: zodResolver(change_password),
@@ -45,29 +45,29 @@ export function ChangePassword({
 
 	function onSubmit(data: LoginFormValues) {
 		const form_data = new FormData()
-		form_data.append('c_password',data.confirm_password)
-		form_data.append('password',data.password)
+		form_data.append('c_password', data.confirm_password)
+		form_data.append('password', data.password)
 
-		change({data:form_data,token:params?.token},{
-			onSuccess:(response)=>{
-        toast.success(response?.message)
-        form.reset()
-        router.push('/signin')
+		change({ data: form_data, token: params?.token }, {
+			onSuccess: (response) => {
+				toast.success(response?.message)
+				form.reset()
+				router.push('/signin')
 			},
-			onError:(error:any)=>{
+			onError: (error: any) => {
 				toast.error(error.data?.message)
 			}
 		})
 
 	}
 
-	if(varify_pending){
+	if (varify_pending) {
 		return <div className="flex items-center justify-center flex-col gap-4 max-w-64 w-full h-64 p-6 border border-muted rounded-lg ">
-			<Loader/>
-			</div>
+			<Loader />
+		</div>
 	}
 
-	if( error ){
+	if (error) {
 		return (
 			<div className="flex items-center justify-center flex-col gap-4 h-64 p-6 border border-muted rounded-lg ">
 				<div className="flex items-center justify-center bg-red-100 rounded-full p-3">
@@ -75,8 +75,8 @@ export function ChangePassword({
 				</div>
 				<h2 className="text-xl font-semibold text-gray-800">Error</h2>
 				<p className="text-gray-600 text-center">Session timeout or invalid token</p>
-				<Button 
-					onClick={() => router.push('/signin')} 
+				<Button
+					onClick={() => router.push('/signin')}
 					className="mt-2"
 					size={'sm'}
 					variant={'primary'}
