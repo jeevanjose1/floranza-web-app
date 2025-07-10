@@ -70,13 +70,12 @@ const useOutOfStock = () => {
 };
 
 const useCheckoutCart = () => {
-  const query = useQueryClient();
   return useMutation({
     mutationFn: (payload: any) =>
       fetcher({
         url: `${CART.CHECKOUT}/${payload.token}`,
         type: "post",
-        data:payload?.data
+        data: payload?.data
       }),
     onSuccess: (response) => {
       return response;
@@ -86,5 +85,25 @@ const useCheckoutCart = () => {
     },
   });
 };
+const useApplyCoupon = () => {
+  const query = useQueryClient();
+  
+  return useMutation({
+    mutationKey:['APPLY_COUPON'],
+    mutationFn: (payload: any) =>
+      fetcher({
+        url: `${CART.APPLY_COUPON}/${payload.coupon_code}`,
+        type: "get",
+        data: payload?.data
+      }),
+    onSuccess: (response) => {
+      query.invalidateQueries({ queryKey: ["CART"] });
 
-export { useAddToCart, useOutOfStock, useViewCart,useDeleteCart,useCheckoutCart };
+      return response;
+    },
+    onError: (error: any) => {
+      return error;
+    },
+  });
+};
+export { useAddToCart, useOutOfStock, useViewCart, useDeleteCart, useCheckoutCart, useApplyCoupon };

@@ -25,7 +25,6 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    console.log(error);
 
     if (error.response && error.response.status === 401) {
       handleLogout()

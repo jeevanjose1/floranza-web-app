@@ -44,9 +44,9 @@ import {
 } from "@/services/queries/payment";
 import Loader from "@/components/common/loader";
 import { toast } from "sonner";
-import Script from "next/script";
 import Image from "next/image";
 import { images } from "@/shared/images/images";
+import CouponSection from "@/components/screen/checkout/coupon";
 
 const filterd_state = indianStates.map((item) => {
   return {
@@ -55,7 +55,6 @@ const filterd_state = indianStates.map((item) => {
   };
 });
 
-// Form validation schema
 const checkoutSchema = z.object({
   fullName: z.string().min(2, " Name must be at least 2 characters"),
   country: z.string().min(1, "Please select a country"),
@@ -75,9 +74,9 @@ type CheckoutFormData = z.infer<typeof checkoutSchema>;
 
 export default function CheckoutPage() {
   const { Razorpay } = useRazorpay();
-
   const authenticated = is_authenticated();
   const { data: address } = useListAdderss(authenticated);
+  const [coupon, setCoupon] = useState<boolean | ''>(false)
   const token = getCookie("floranza-g-token");
   const { mutateAsync: checkout, isPending } = useCheckoutCart();
   const [existingAddress, setExistingAddress] = useState<any>(false);
@@ -85,7 +84,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { mutateAsync: get_status, isPending: rasorPending } =
     useRazorpayStatus();
-  const { mutateAsync: get_status_phone_pe, isPending: phonePending } =
+  const { mutateAsync: get_status_phone_pe } =
     usePhonePeStatus();
   const state_cookie = getCookie("floranza-c-data")
     ? JSON.parse(getCookie("floranza-c-data") as string)
@@ -98,6 +97,7 @@ export default function CheckoutPage() {
       setExistingAddress(false);
     }
   };
+
 
   const form = useForm<CheckoutFormData>({
     resolver: zodResolver(checkoutSchema),
@@ -113,13 +113,15 @@ export default function CheckoutPage() {
       phone: existingAddress?.phone || "",
       email: account?.data?.email || "",
       courier: "",
-      paymentMethod: "PHONEPE",
+      paymentMethod:  "PHONEPE",
       notes: "",
     },
   });
+
   const { data: cart_items } = useViewCart({
     token: token,
-    filter: { state: form.watch("state") },
+    filter: { state: form.watch("state"), ...(coupon && { coupon_code: coupon }) },
+
   });
 
   const handleRazorpaySubmit = (response: any) => {
@@ -196,7 +198,7 @@ export default function CheckoutPage() {
     form_data.append("courier", data?.courier);
     form_data.append("notes", data?.notes as string);
     form_data.append("order_via", "WEB");
-    form_data.append("pg", form.getValues("paymentMethod"));
+    form_data.append("pg", cart_items?.data?.total === 0 ? 'WALLET' : form.getValues("paymentMethod"));
     form_data.append("promo_code", "0");
 
     checkout(
@@ -206,11 +208,15 @@ export default function CheckoutPage() {
       },
       {
         onSuccess: (response) => {
-          const payment_type = Object.keys(response?.data?.pg)?.[0];
+          const payment_type =response?.data?.pg? Object.keys(response?.data?.pg)?.[0]:false;
           if (payment_type === "RAZORPAY") {
             handleRazorpaySubmit(response?.data);
           } else if (payment_type === "PHONEPE") {
             handlePhonepaySubmit(response?.data);
+          }else{
+            toast
+            router.replace("/payment-success");
+
           }
         },
         onError: (error: any) => {
@@ -223,8 +229,8 @@ export default function CheckoutPage() {
   //   if (!cart_items?.data?.cart?.length) {
   //     router.replace("/");
   //   }
-   
-    
+
+
   if (rasorPending) {
     return (
       <div className="min-h-screen w-full flex items-center justify-center">
@@ -276,7 +282,7 @@ export default function CheckoutPage() {
                 <p>Please fill in your billing information</p>
               </CardHeader>
               <CardContent className="tablet:px-6 px-4">
-                {(authenticated && address?.data?.fname !=='') && (
+                {(authenticated && address?.data?.fname !== '') && (
                   <>
                     <div className="space-y-4">
                       <h3 className="text-lg font-semibold text-gray-900">
@@ -690,7 +696,8 @@ export default function CheckoutPage() {
                         : cart_items?.data?.shipping_charge}
                     </span>
                   </div>
-
+                  <Separator />
+                  <CouponSection setCoupon={setCoupon} cart_items={cart_items} />
                   <Separator />
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-bold">Total</span>
@@ -705,10 +712,11 @@ export default function CheckoutPage() {
                   </div>
                 </div>
 
-                <Separator />
 
                 {/* Payment Methods */}
-                <div>
+                {cart_items?.data?.total > 0 && <div>
+                  <Separator />
+
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
                     <CreditCard className="w-4 h-4" />
                     Payment Method
@@ -761,7 +769,7 @@ export default function CheckoutPage() {
                       </Label>
                     </div>
                   </RadioGroup>
-                </div>
+                </div>}
 
                 <Separator />
 

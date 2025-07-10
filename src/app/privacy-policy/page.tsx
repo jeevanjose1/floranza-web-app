@@ -44,7 +44,7 @@ export default function page({}: Props) {
 
           <h2 className="text-2xl font-bold mb-6">How we use cookies</h2>
           <p className="mb-4">
-            A cookie is a small file that asks permission to be placed on your computer&apos;s hard drive. Once you agree, the file is added and the cookie helps analyze web traffic or lets you know when you visit a particular site. Cookies allow web applications to respond to you as an individual. The web application can tailor its operations to your needs, likes and dislikes by gathering and remembering information about your preferences.
+            A cookie is a small file that asks permission to be placed on your computer&apos;s hard drive. Once you agree, the file is added and the cookie helps analyze web traffic or let you know when you visit a particular site. Cookies allow web applications to respond to you as an individual. The web application can tailor its operations to your needs, likes and dislikes by gathering and remembering information about your preferences.
           </p>
           <p className="mb-4">
             We use traffic log cookies to identify which pages are being used. This helps us analyze data about web page traffic and improve our website in order to tailor it to customer needs. We only use this information for statistical analysis purposes and then the data is removed from the system.
@@ -55,11 +55,11 @@ export default function page({}: Props) {
 
           <h2 className="text-2xl font-bold mb-6">Links to other websites</h2>
           <p className="mb-6">
-            Our website may contain links to other websites of interest. However, once you have used these links to leave our site, you should note that we do not have any control over that other website. Therefore, we cannot be responsible for the protection and privacy of any information which you provide whilst visiting such sites, and such sites are not governed by this privacy statement. You should exercise caution and look at the privacy statement applicable to the website in question.
+            Our website may contain links to other websites of interest. However, once you have used these links to leave our site, you should note that we do not have any control over other website. Therefore, we cannot be responsible for the protection and privacy of any information which you provide whilst visiting such sites, and such sites are not governed by this privacy statement. You should exercise caution and look at the privacy statement applicable to the website in question.
           </p>
 
           <h2 className="text-2xl font-bold mb-6">Controlling your personal information</h2>
-          <p className="mb-4">You may choose to restrict the collection or use of your personal information in the following ways:</p>
+          <p className="mb-4">You may choose to restrict the collection or use your personal information in the following ways:</p>
           <ul className="mb-4 pl-6 list-disc">
             <li>whenever you are asked to fill in a form on the website, look for the box that you can click to indicate that you do not want the information to be used by anybody for direct marketing purposes</li>
             <li>if you have previously agreed to us using your personal information for direct marketing purposes, you may change your mind at any time by writing to or emailing us at support@floranzafashion.com</li>
@@ -72,8 +72,8 @@ export default function page({}: Props) {
           </p>
 
           <div className="mb-6 p-4 bg-gray-50 rounded-lg">
-            <p className="font-semibold">Floranza Fashion Boutique</p>
-            <p>14/934 Church Road, Thiruvambady, Kerala 673603.</p>
+            <p className="font-semibold">Floranza fashion Online</p>
+            <p>St. Mary&apos;s Shopping Complex, 1st Floor Anakkampoyil Post 673603, Kozhikode, Kerala</p>
             <p>Phone No: 9539006690</p>
             <p>Email: support@floranzafashion.com</p>
           </div>

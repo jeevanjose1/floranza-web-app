@@ -243,9 +243,10 @@ export default function ContactPage({}: Props) {
                     <div>
                       <h4 className="font-semibold  mb-1">Address</h4>
                       <p className="text-muted-foreground leading-relaxed">
-                        Floranza Fashion Boutique<br />
-                        14/934 Church Road<br />
-                        Thiruvambady, Calicut – 673603
+                        Floranza fashion Online<br />
+                        St. Mary&apos;s Shopping Complex, 1st Floor<br />
+                        Anakkampoyil Post 673603<br/>
+                        Kozhikode, Kerala
                       </p>
                     </div>
                   </div>
