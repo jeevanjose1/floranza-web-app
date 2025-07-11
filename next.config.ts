@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     BASE_URL: 'https://new.floranzafashion.com/api'
   },
   images: {
-    remotePatterns: [new URL('https://www.floranzafashion.com/**'), new URL('https://bucket-floranza.s3.ap-south-1.amazonaws.com/**')],
+    remotePatterns: [new URL('https://www.floranzafashion.com/**'), new URL('https://cdn.floranzafashion.com/**')],
   }
 };
 
