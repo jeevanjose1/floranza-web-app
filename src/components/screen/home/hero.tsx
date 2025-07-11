@@ -11,6 +11,7 @@ import { useGetSlide } from "@/services/queries/home";
 import Autoplay from "embla-carousel-autoplay";
 import Fade from "embla-carousel-fade";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
 import { useEffect } from "react";
 
@@ -70,9 +71,12 @@ export default function Hero() {
                       <h1 className=" text-3xl tablet:text-6xl font-bold mb-3">
                         {item?.headTitle}
                       </h1>
+                      <Link href={item?.buttonURl} target="_blank">
+                   
                       <Button size={"sm"} variant={"primary"}>
                         {item?.buttonTitle}
                       </Button>
+                         </Link>
                     </div>
 
                     <div className="absolute w-full h-full bg-gradient-to-r from-black/70 to-gray-0 z-1" />

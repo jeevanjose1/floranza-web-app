@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useRef, useCallback, Ref } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { Button } from "../ui/button";
 import MobileNavigation from "./mobile-navigation";
 import { useGetNavigation } from "@/services/queries/common";
@@ -88,7 +88,7 @@ export default function Header() {
   const categories = navigations?.data?.categories || [];
   const is_auth = is_authenticated();
   return (
-    <header className="tablet-lg:h-36 flex justify-center relative font-poppins bg-white">
+    <header className="tablet-lg:h-36 flex top-0 sticky justify-center z-50 font-poppins bg-white">
       <div className="container py-2 flex flex-col gap-4 justify-center">
         <div className="w-full grid grid-cols-3">
           {/* Mobile Navigation */}
