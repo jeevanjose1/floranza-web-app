@@ -102,7 +102,29 @@ export default function ProductDetails({ slug }: Props) {
               {parse(product?.description || "")}
             </div>
           </div>
+          <div className="mb-4">
+            <div className="text-sm font-medium text-muted-foreground/70 mb-5">
+             
+              <p className="my-1" dir="ltr" style={{ textAlign: 'left' }}><strong className="font-bold" data-lexical-text="true" style={{ fontFamily: 'inherit', fontWeight: 600, fontSize: 14 }}
+              >Please note:</strong></p>
+              <p className="my-1" dir="ltr" style={{ textAlign: 'left' }}><strong className="font-bold" data-lexical-text="true" style={{ fontFamily: 'inherit', fontWeight: 600, fontSize: 14 }}
+              >. Actual product color may vary slightly due to photographic lighting sources or your mobile/monitor display settings.</strong></p>
+              <p className="my-1" dir="ltr" style={{ textAlign: 'left' }}><strong className="font-bold" data-lexical-text="true" style={{ fontFamily: 'inherit', fontWeight: 600, fontSize: 14 }}
+              >. Refer to the size chart before placing the order. (there will be no return for size issues)</strong></p>
+              <p className="my-1" dir="ltr" style={{ textAlign: 'left' }}><strong className="font-bold" data-lexical-text="true" style={{ fontFamily: 'inherit', fontWeight: 600, fontSize: 14 }}
+              >. After receiving the products if there are any complaints, inform us within 24 hours.</strong></p>
+              <p className="my-1" dir="ltr" style={{ textAlign: 'left' }}><strong className="font-bold" data-lexical-text="true" style={{ fontFamily: 'inherit', fontWeight: 600, fontSize: 14 }}
+              >. We accept cancellations made within 2 hours of placing the order. Please reach out to our customer care service.</strong></p>
+              <p className="my-1" dir="ltr" style={{ textAlign: 'left' }}><strong className="font-bold" data-lexical-text="true" style={{ fontFamily: 'inherit', fontWeight: 600, fontSize: 14 }}
+              >. &nbsp;Opening video of the package received is mandatory for an exchange or refund.</strong></p>
+              <p className="my-1" dir="ltr" style={{ textAlign: 'left' }}><strong className="font-bold" data-lexical-text="true" style={{ fontFamily: 'inherit', fontWeight: 600, fontSize: 14 }}
+              >&nbsp; Proof of purchase – invoice is compulsory.</strong></p>
+              <p className="my-1" dir="ltr" style={{ textAlign: 'left' }}><strong className="font-bold" data-lexical-text="true" style={{ fontFamily: 'inherit', fontWeight: 600, fontSize: 14 }}
+              >. Wash care information: Wash separately in cold water</strong></p>
+              <p className="my-1"><br /></p>
 
+            </div>
+          </div>
           <Separator className="my-5" />
           <ActionSection setVariationIndex={setVariationIndex} product={product} />
         </div>

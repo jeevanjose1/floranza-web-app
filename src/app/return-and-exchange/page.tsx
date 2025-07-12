@@ -3,16 +3,16 @@ import React from 'react'
 
 type Props = {}
 
-export default function page({}: Props) {
+export default function page({ }: Props) {
   return (
     <main className="w-full ">
       <CommonHeader title="Return & Exchange" />
-      
+
       <section className="container mx-auto tablet:px-4 px-2 font-lora py-12">
         <div className="max-w-4xl mx-auto prose prose-lg">
-          
+
           <h1 className="text-3xl font-bold mb-8 ">Floranza Fashion Boutique Exchange/ Return Policy</h1>
-          
+
           <h2 className="text-2xl font-bold mb-6">Overview</h2>
           <p className="mb-4">
             If you have received a damaged or defective product you can return the item. In such case, you need to inform us about the return within 12 hours of product receipt along with parcel opening video. Exchange / Return product(s) must be unused, unworn, unwashed, undamaged, and un-customized.
@@ -37,12 +37,18 @@ export default function page({}: Props) {
 
           <h2 className="text-2xl font-bold mb-6">Shipping Returns</h2>
           <p className="mb-4">To return your product, you should mail your product to:</p>
-          
+
           <div className="mb-6 p-4 bg-gray-50 rounded-lg border">
+
             <p className="font-semibold">Return Address:</p>
-            <p>Floranza Fashion Boutique</p>
-            <p>14/934 Church Road, Thiruvambady</p>
-            <p>Calicut – 673603</p>
+            <p> Floranza fashion Online</p>
+            <p>St. Mary's Shopping Complex, 1st Floor
+            </p>
+            <p>Anakkampoyil Post 673603
+            </p>
+            <p>Kozhikode, Kerala
+
+            </p>
           </div>
 
           <p className="mb-4">

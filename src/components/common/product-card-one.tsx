@@ -12,6 +12,7 @@ import Loader from "./loader";
 import { calculate_discount, is_authenticated } from "@/lib/utils";
 import { useAddWishlist, useDeleteWishlist } from "@/services/queries/product";
 import { usePathname, useRouter } from "next/navigation";
+import { images } from "@/shared/images/images";
 
 interface ProductCardProps {
   title: string;
@@ -23,7 +24,7 @@ interface ProductCardProps {
   variation: any[];
   slug: string;
   id: string;
-  wishlist_id?:string
+  wishlist_id?: string
   is_prebook: boolean;
   is_new: boolean;
   is_wishlist?: boolean
@@ -246,12 +247,15 @@ export default function ProductCardOne({
                 handleSetOption(sizeInfo);
               }}
               disabled={sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name}
-              className={`text-xs px-2 rounded-sm cursor-pointer transition-colors ${option?.id === sizeInfo.id
+              className={`text-xs relative px-2 rounded-sm cursor-pointer transition-colors ${option?.id === sizeInfo.id
                 ? "bg-main text-white hover:bg-main/90"
                 : ""
                 }`}
               variant={option?.id === sizeInfo.id ? "default" : "outline"}
             >
+              {(sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name) &&
+                <Image src={images.cross} width={18} height={18} alt="cross" className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-10" />
+              }
               {sizeInfo.attribute_option_name}
             </Badge>
           ))}

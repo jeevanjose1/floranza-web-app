@@ -13,7 +13,7 @@ export default function page({}: Props) {
           
           <h2 className="text-2xl font-bold mb-6">Who we are</h2>
           <p className="mb-6">
-            This privacy policy sets out how www.floranzafashions.com website/app which is owned and operated by Floranza Fashion Boutique, uses and protects any information that you give Floranza Fashion Boutique when you use this website. Floranza fashion boutique is committed to ensuring that your privacy is protected. Should we ask you to provide certain information by which you can be identified when using this website, then you can be assured that it will only be used in accordance with this privacy statement. Floranza Fashion Boutique may change this policy from time to time by updating this page. You should check this page from time to time to ensure that you are happy with any changes.
+            This privacy policy sets out how www.floranzafashion.com website/app which is owned and operated by Floranza Fashion Boutique, uses and protects any information that you give Floranza Fashion Boutique when you use this website. Floranza fashion boutique is committed to ensuring that your privacy is protected. Should we ask you to provide certain information by which you can be identified when using this website, then you can be assured that it will only be used in accordance with this privacy statement. Floranza Fashion Boutique may change this policy from time to time by updating this page. You should check this page from time to time to ensure that you are happy with any changes.
           </p>
 
           <h2 className="text-2xl font-bold mb-6">What we collect:</h2>

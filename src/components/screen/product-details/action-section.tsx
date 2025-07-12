@@ -12,6 +12,8 @@ import Loader from "@/components/common/loader";
 import { useAddWishlist } from "@/services/queries/product";
 import { is_authenticated } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { images } from "@/shared/images/images";
 
 type Props = {
   product: any;
@@ -44,7 +46,7 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
     }
   }, [selectedVariation]);
 
-  const handleSelectVariation = (variation: any,index:number) => {
+  const handleSelectVariation = (variation: any, index: number) => {
     if (selectedVariation?.id === variation.id) {
       setSelectedVariation(null);
       return;
@@ -109,22 +111,22 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
     });
   };
   const handleWishList = () => {
-      if (is_auth) {
-        add_wishlist({
-          product_id: product.id
-        }, {
-          onSuccess: (response) => {
-            toast.success(response?.message)
-          },
-          onError: (error) => {
-            toast.error(error.message)
-          }
-        })
-      } else {
-        router.push('/signin')
-      }
-  
+    if (is_auth) {
+      add_wishlist({
+        product_id: product.id
+      }, {
+        onSuccess: (response) => {
+          toast.success(response?.message)
+        },
+        onError: (error) => {
+          toast.error(error.message)
+        }
+      })
+    } else {
+      router.push('/signin')
     }
+
+  }
 
   return (
     <div>
@@ -138,18 +140,20 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                handleSelectVariation(variation,index);
+                handleSelectVariation(variation, index);
               }}
               disabled={!variation.qty}
-              className={`text-xs px-2 rounded-sm cursor-pointer transition-colors ${
-                selectedVariation?.id === variation.id
+              className={`text-xs px-2 relative rounded-sm cursor-pointer transition-colors ${selectedVariation?.id === variation.id
                   ? "bg-main text-white hover:bg-main/90"
                   : ""
-              }`}
+                }`}
               variant={
                 selectedVariation?.id === variation.id ? "default" : "outline"
               }
             >
+              {!variation.qty &&
+                <Image src={images.cross} width={18} height={18} alt="cross" className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-10" />
+              }
               {variation.attribute_option_name}
               {variation?.option_title && (
                 <span> - {variation?.option_title}</span>
@@ -201,7 +205,7 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
       </div>
 
       <div onClick={handleWishList} className="flex items-center gap-2 mb-4 cursor-pointer">
-        {wishlistPending?<Loader className="w-4 h-4"/>:<Heart size={16} />}
+        {wishlistPending ? <Loader className="w-4 h-4" /> : <Heart size={16} />}
         <p className="text-sm font-semibold">Add to wishlist</p>
       </div>
 

@@ -26,8 +26,10 @@ import phone from '../../../public/images/phone.svg'
 import razor from '../../../public/images/razor.png'
 import indian_post from '../../../public/images/indian-post.svg'
 import dtdc from '../../../public/images/dtdc.png'
+import cross from '../../../public/images/cross.svg'
 
 export const images = {
+    cross,
     logo,
     phone,
     razor,

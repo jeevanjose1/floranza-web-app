@@ -6,6 +6,7 @@ import { Heart, Search } from "lucide-react";
 import Link from "next/link";
 import Loader from "./loader";
 import { calculate_discount } from "@/lib/utils";
+import { images } from "@/shared/images/images";
 
 interface ProductCardProps {
   title: string;
@@ -141,7 +142,7 @@ export default function ProductCardTwo({
               key={index}
               onClick={(e) => handleOptionClick(e, sizeInfo)}
               disabled={sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name}
-              className={`text-xs px-2 rounded-sm cursor-pointer transition-colors ${selectedOptionId?.id === sizeInfo.id
+              className={`text-xs px-2 rounded-sm cursor-pointer relative transition-colors ${selectedOptionId?.id === sizeInfo.id
                 ? "bg-main text-white hover:bg-main/90"
                 : ""
                 }`}
@@ -149,6 +150,9 @@ export default function ProductCardTwo({
                 selectedOptionId?.id === sizeInfo.id ? "default" : "outline"
               }
             >
+              {(sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name) &&
+                <Image src={images.cross} width={18} height={18} alt="cross" className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-10" />
+              }
               {sizeInfo.attribute_option_name}
             </Badge>
           ))}
