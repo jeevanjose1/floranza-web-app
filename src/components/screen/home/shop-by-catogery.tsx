@@ -29,7 +29,7 @@ const CategoryCard = ({ image, title, slug }: CardProps) => {
 };
 
 export default function ShopByCatogery() {
-  const { data: catogeries, isLoading } = useGetCatogeries();
+  const { data: catogeries } = useGetCatogeries();
 
   return (
     <section className="container my-16">

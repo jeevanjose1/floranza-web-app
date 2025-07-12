@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { useTrackOrder } from '@/services/queries/common'
-import { Search, Package, MapPin, Calendar, Truck, Phone, Mail } from 'lucide-react'
+import { Search, Package, MapPin, Truck, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
@@ -24,7 +24,7 @@ const getOrderStatus = (status: number) => {
   return statusMap[status] || { label: 'Unknown' }
 }
 
-export default function page({}: Props) {
+export default function Page({}: Props) {
     const { mutateAsync: track, isPending, error, data } = useTrackOrder() as any
     const [orderNumber, setOrderNumber] = useState<string>('')
     
