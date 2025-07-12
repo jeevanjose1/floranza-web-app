@@ -70,10 +70,25 @@ const useGetCatogeries = () => {
     },
   });
 };
+const useTrackOrder = () => {
 
+  return useMutation({
+    mutationFn: (data:string) =>
+      fetcher({
+        type: "get",
+        url: `${COMMON.TRACK}/${data}`,
+        authenticated: false,
+      }),
+    onSuccess: (data) => {
+     return data
+    },
+    onError:(error)=>error
+  });
+};
 export {
   useGetNavigation,
   useGetAttributes,
   useGetMaterials,
   useGetCatogeries,
+  useTrackOrder
 };

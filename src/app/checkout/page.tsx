@@ -199,7 +199,10 @@ export default function CheckoutPage() {
     form_data.append("notes", data?.notes as string);
     form_data.append("order_via", "WEB");
     form_data.append("pg", cart_items?.data?.total === 0 ? 'WALLET' : form.getValues("paymentMethod"));
-    form_data.append("promo_code", "0");
+    if(coupon){
+    form_data.append("coupon_code", String(coupon));
+
+    }
 
     checkout(
       {
@@ -214,9 +217,7 @@ export default function CheckoutPage() {
           } else if (payment_type === "PHONEPE") {
             handlePhonepaySubmit(response?.data);
           }else{
-            toast
             router.replace("/payment-success");
-
           }
         },
         onError: (error: any) => {
