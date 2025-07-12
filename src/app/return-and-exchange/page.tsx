@@ -42,7 +42,7 @@ export default function page({ }: Props) {
 
             <p className="font-semibold">Return Address:</p>
             <p> Floranza fashion Online</p>
-            <p>St. Mary's Shopping Complex, 1st Floor
+            <p>St. Mary&apos;s Shopping Complex, 1st Floor
             </p>
             <p>Anakkampoyil Post 673603
             </p>

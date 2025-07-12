@@ -30,7 +30,8 @@ const ItemCard = ({ data, setOpen }: { data: any; setOpen: any }) => {
   const token = getCookie("floranza-g-token");
   const { mutateAsync: remove, isPending } = useDeleteCart();
   const { mutateAsync: add, error } = useAddToCart();
-
+ 
+  
   const [count, setCount] = useState(0);
   const prevCountRef = useRef(0);
   const router = useRouter();

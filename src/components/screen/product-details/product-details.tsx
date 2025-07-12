@@ -1,7 +1,7 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import DetailsSection from "./details-section";
 import ActionSection from "./action-section";
 import ImageSection from "./image-section";
@@ -104,7 +104,6 @@ export default function ProductDetails({ slug }: Props) {
           </div>
           <div className="mb-4">
             <div className="text-sm font-medium text-muted-foreground/70 mb-5">
-             
               <p className="my-1" dir="ltr" style={{ textAlign: 'left' }}><strong className="font-bold" data-lexical-text="true" style={{ fontFamily: 'inherit', fontWeight: 600, fontSize: 14 }}
               >Please note:</strong></p>
               <p className="my-1" dir="ltr" style={{ textAlign: 'left' }}><strong className="font-bold" data-lexical-text="true" style={{ fontFamily: 'inherit', fontWeight: 600, fontSize: 14 }}

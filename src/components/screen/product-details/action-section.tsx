@@ -28,7 +28,8 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
   const { mutateAsync: add_wishlist, isPending: wishlistPending } = useAddWishlist()
   const is_auth = is_authenticated()
   const router = useRouter()
-  const stocks = data?.data?.qty || 4;
+  
+  const stocks = Boolean(product.qty) ? product.qty :data?.data?.qty
   useEffect(() => {
     if (selectedVariation) {
       const form_data = new FormData();
@@ -74,9 +75,8 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
       form_data.append("prd_var_value_id", selectedVariation?.id);
     }
     form_data.append("qty", count.toString());
-
     add(form_data, {
-      onSuccess: (response) => {
+      onSuccess: () => {
         toast.success("Product added to cart");
       },
     });
@@ -130,7 +130,7 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
 
   return (
     <div>
-      <div className="flex items-start gap-3 mb-4">
+     {product?.is_variation && <div className="flex items-start gap-3 mb-4">
         <p className="font-medium">Size:</p>
 
         <div className="flex flex-wrap gap-1 ">
@@ -161,7 +161,7 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
             </Badge>
           ))}
         </div>
-      </div>
+      </div>}
 
       {selectedVariation &&
         data &&
@@ -181,7 +181,7 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
 
       <div className="flex items-center gap-2 flex-wrap tablet:max-w-100 mb-4">
         <Counter
-          disabled={!selectedVariation}
+          disabled={ (product?.is_variation && !selectedVariation)}
           max={stocks}
           setCount={setCount}
           count={count}
