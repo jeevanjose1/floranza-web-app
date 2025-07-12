@@ -103,6 +103,7 @@ const CartItem = ({ data }: { data: any }) => {
               disableAdd={
                 error?.data?.message == "the product is currently out of stock."
               }
+              max={data?.mainQty}
               count={count}
               setCount={handleCounterChange}
             />

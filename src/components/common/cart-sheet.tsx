@@ -9,7 +9,7 @@ import {
   SheetTrigger,
 } from "../ui/sheet";
 import { Button } from "../ui/button";
-import { Cross, ShoppingBag, X } from "lucide-react";
+import { ShoppingBag, X } from "lucide-react";
 import {
   useAddToCart,
   useDeleteCart,
@@ -31,7 +31,8 @@ const ItemCard = ({ data, setOpen }: { data: any; setOpen: any }) => {
   const { mutateAsync: remove, isPending } = useDeleteCart();
   const { mutateAsync: add, error } = useAddToCart();
  
-  
+   console.log(data);
+   
   const [count, setCount] = useState(0);
   const prevCountRef = useRef(0);
   const router = useRouter();
@@ -115,6 +116,8 @@ const ItemCard = ({ data, setOpen }: { data: any; setOpen: any }) => {
                 error?.data?.message == "the product is currently out of stock."
               }
               count={count}
+              max={data?.mainQty}
+
               setCount={handleCounterChange} // Use our custom handler
             />
             {data?.is_out_of_stock ||
