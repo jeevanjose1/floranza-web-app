@@ -1,6 +1,5 @@
 "use client";
 
-import ProductCardTwo from "@/components/common/product-card-two";
 import { useGetProductList } from "@/services/queries/product";
 import {
   Pagination,
@@ -11,7 +10,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { calculate_product_price, generate_pagination } from "@/lib/utils";
 import NotFound from "@/components/common/not-found";
@@ -20,20 +19,26 @@ import ProductCardWrapper from "@/components/common/product-card-wrapper";
 
 type Props = {
   slug: string;
-  page?: number;
   queryParams: any;
   search?: string;
 };
 
 export default function ProductList({
   slug,
-  page = 1,
   queryParams,
   search,
 }: Props) {
   const pathname = usePathname();
   const base_url = pathname.split("/page/")[0];
   const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  const createQueryString = (name: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(name, value);
+    return params.toString();
+  };
+
   const {
     data: product_list,
     isLoading,
@@ -41,7 +46,7 @@ export default function ProductList({
   } = useGetProductList({
     slug: slug,
     filter: {
-      page: page,
+      page: queryParams?.page,
       per_page: queryParams?.per_page || 2,
       material: queryParams?.material,
       size: queryParams?.size,
@@ -133,7 +138,7 @@ export default function ProductList({
               <PaginationPrevious
                 disabled={pagination?.current_page <= 1}
                 passHref
-                href={`${base_url}/page/${pagination?.current_page - 1}`}
+                href={`${base_url}?${createQueryString('page', (pagination?.current_page - 1).toString())}`}
               />
             </PaginationItem>
 
@@ -149,7 +154,7 @@ export default function ProductList({
               return (
                 <PaginationItem key={`page-${item}`}>
                   <PaginationLink
-                    href={`${base_url}/page/${item}`}
+                    href={`${base_url}?${createQueryString('page', item.toString())}`}
                     passHref
                     isActive={pagination.current_page === item}
                   >
@@ -163,7 +168,7 @@ export default function ProductList({
               <PaginationNext
                 disabled={pagination?.current_page === pagination?.last_page}
                 passHref
-                href={`${base_url}/page/${pagination?.current_page + 1}`}
+                href={`${base_url}?${createQueryString('page', (pagination?.current_page + 1).toString())}`}
               />
             </PaginationItem>
           </PaginationContent>

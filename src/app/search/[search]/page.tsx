@@ -15,9 +15,8 @@ type Props = { params: any,searchParams:any };
 export default async function Product({ params,searchParams }: Props) {
   const param = await params;
   const queryParams = await searchParams;
-  
+   
   const slug = param.product;
-  const page_no = param?.slug?.[1];
   const search = param?.search?.replaceAll('-',' ');
   
   const queryClient = new QueryClient();
@@ -27,7 +26,7 @@ export default async function Product({ params,searchParams }: Props) {
       fetcher({
         type: "get",
         url: `${PRODUCT.PRODUCT_LIST}/${slug}/${queryFilter({
-          page: page_no,
+          page: queryParams?.page,
           per_page: queryParams?.per_page ||2,
           material:queryParams?.material,
           size:queryParams?.size,
@@ -44,7 +43,7 @@ export default async function Product({ params,searchParams }: Props) {
     
       <div className="container-md">
         <HydrationBoundary state={dehydrate(queryClient)}>
-          <ProductList search={search} page={page_no} slug={slug} queryParams={queryParams} />
+          <ProductList search={search} slug={slug} queryParams={queryParams} />
         </HydrationBoundary>
       </div>
     

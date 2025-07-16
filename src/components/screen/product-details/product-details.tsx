@@ -1,7 +1,7 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import React, {  useState } from "react";
+import React, { useEffect, useState } from "react";
 import DetailsSection from "./details-section";
 import ActionSection from "./action-section";
 import ImageSection from "./image-section";
@@ -12,6 +12,7 @@ import Loader from "@/components/common/loader";
 import ProductCardWrapper from "@/components/common/product-card-wrapper";
 import { calculate_product_price } from "@/lib/utils";
 import SizeChart from "./size-chart";
+import NotFound from "@/components/common/not-found";
 
 type Props = { slug: string };
 
@@ -21,6 +22,7 @@ export default function ProductDetails({ slug }: Props) {
     isLoading,
     error,
   } = useGetProductDetails(slug) as any;
+  const [errors,setError] = useState<boolean>(false)
   const [variationIndex, setVariationIndex] = useState<any>(null);
   const product = product_details?.data?.product;
   const catogery = product_details?.data?.category;
@@ -42,7 +44,7 @@ export default function ProductDetails({ slug }: Props) {
   });
 
   const price = calculate_product_price(product, variationIndex)
-
+  
 
   if (isLoading) {
     return (
@@ -52,11 +54,10 @@ export default function ProductDetails({ slug }: Props) {
     );
   }
   if (
-    !isLoading &&
-    (error?.data?.message === "Invalid Slug" || error?.status === 400)
+    !isLoading && error
   ) {
-    router.push("/404");
-    return null;
+    
+    return <NotFound type="product"/>;
   }
 
   return (
@@ -77,14 +78,14 @@ export default function ProductDetails({ slug }: Props) {
           </div>
           <div className="mb-3">
             <h3 className="text-main font-semibold text-xl">
-              ₹{Math.round(Number(price.min)).toLocaleString("en-IN")}
-              {price.max ? (
+              ₹{Math.round(Number(price?.min)).toLocaleString("en-IN")}
+              {price?.max ? (
                 <>
                   {" "}
                   -{" "}
                   <span className="line-through text-muted-foreground/50">
                     {" "}
-                    ₹{Math.round(Number(price.max)).toLocaleString("en-IN")}
+                    ₹{Math.round(Number(price?.max)).toLocaleString("en-IN")}
                   </span>
                 </>
               ) : (
@@ -138,12 +139,12 @@ export default function ProductDetails({ slug }: Props) {
           {filterd_data?.slice(0, 4).map((product: any) => (
             <ProductCardWrapper
               id={product?.id}
-              key={product.id + Math.random()}
-              title={product.title}
-              price={product.price}
-              image={product.image}
-              variation={product.variations}
-              slug={product.slug}
+              key={product?.id + Math.random()}
+              title={product?.title}
+              price={product?.price}
+              image={product?.image}
+              variation={product?.variations}
+              slug={product?.slug}
               is_prebook={product?.is_pre_order}
               is_new={product?.is_new_product}
             />

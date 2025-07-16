@@ -125,6 +125,7 @@ export default function CheckoutPage() {
   });
 
   const handleRazorpaySubmit = (response: any) => {
+    
     const razorpay_data = response?.pg?.RAZORPAY;
     const options: RazorpayOrderOptions = {
       key: razorpay_data?.key,
@@ -135,8 +136,8 @@ export default function CheckoutPage() {
       order_id: razorpay_data?.order_id,
       handler: (response) => {
         get_status(response?.razorpay_payment_id, {
-          onSuccess: () => {
-            router.replace("/payment-success");
+          onSuccess: (res) => {            
+            router.replace(`/payment-success?order_id=${res?.data?.order_id}`);
           },
           onError: () => {
             router.replace("/payment-failed");
@@ -162,8 +163,8 @@ export default function CheckoutPage() {
     const phonepe_url = phonepe_data?.redirectInfo?.url;
     function paymentCallback() {
       get_status_phone_pe(phonepe_data?.order_id, {
-        onSuccess: () => {
-          router.replace("/payment-success");
+        onSuccess: (res) => {
+            router.replace(`/payment-success?order_id=${res?.data?.order_id}`);
         },
         onError: () => {
           toast.error("Payment not completed");
@@ -211,13 +212,14 @@ export default function CheckoutPage() {
       },
       {
         onSuccess: (response) => {
+          
           const payment_type =response?.data?.pg? Object.keys(response?.data?.pg)?.[0]:false;
           if (payment_type === "RAZORPAY") {
             handleRazorpaySubmit(response?.data);
           } else if (payment_type === "PHONEPE") {
             handlePhonepaySubmit(response?.data);
           }else{
-            router.replace("/payment-success");
+            router.replace(`/payment-success?order_id=${response?.data?.order_id}`);
           }
         },
         onError: (error: any) => {
@@ -448,7 +450,6 @@ export default function CheckoutPage() {
                                   <FormControl>
                                     <Input
                                       placeholder="Enter city"
-                                      className=""
                                       {...field}
                                     />
                                   </FormControl>
@@ -466,12 +467,15 @@ export default function CheckoutPage() {
                                   </FormLabel>
                                   <FormControl>
                                     <CustomSelect
+                                                                    ref={field.ref}
+
                                       value={filterd_state.filter(
                                         (item) => item.value == field.value
                                       )}
                                       onChange={(e: any) => {
                                         field.onChange(e.value);
                                       }}
+
                                       isSearchable
                                       options={filterd_state}
                                     />
@@ -573,6 +577,7 @@ export default function CheckoutPage() {
                                 <RadioGroup
                                   onValueChange={field.onChange}
                                   defaultValue={field.value}
+                                 ref={field.ref}
                                   className="grid mobile-lg:grid-cols-2 gap-4 mt-2"
                                 >
                                   <Label
@@ -774,20 +779,7 @@ export default function CheckoutPage() {
 
                 <Separator />
 
-                {/* Security Notice */}
-                <div className="bg-green-100/80 p-4 rounded-lg">
-                  <div className="flex items-start gap-3">
-                    <Shield className="min-w-4 min-h-4 text-green-600 " />
-                    <div className="text-sm text-green-600">
-                      <p className="font-medium  mb-1">Secure Checkout</p>
-                      <p className="text-xs">
-                        Your personal data will be used to process your order
-                        and support your experience. View our privacy policy for
-                        more details.
-                      </p>
-                    </div>
-                  </div>
-                </div>
+               
 
                 {/* Place Order Button */}
                 <Button

@@ -28,8 +28,8 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
   const { mutateAsync: add_wishlist, isPending: wishlistPending } = useAddWishlist()
   const is_auth = is_authenticated()
   const router = useRouter()
-  
-  const stocks = Boolean(product.qty) ? product.qty :data?.data?.qty
+
+  const stocks = Boolean(product?.qty) ? product?.qty : data?.data?.qty
   useEffect(() => {
     if (selectedVariation) {
       const form_data = new FormData();
@@ -38,7 +38,7 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
       form_data.append("prd_var_value_id", selectedVariation?.id);
       check(form_data, {
         onSuccess: (response) => {
-          if (response?.data?.qty === 0) {
+          if (!response?.data?.is_unlimited_qty && response?.data?.qty === 0) {
             toast.error("Out of stock");
             setSelectedVariation(null);
           }
@@ -127,10 +127,11 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
     }
 
   }
+  const is_unlimited_qty = data?.data?.is_unlimited_qty
 
   return (
     <div>
-     {product?.is_variation && <div className="flex items-start gap-3 mb-4">
+      {product?.is_variation && <div className="flex items-start gap-3 mb-4">
         <p className="font-medium">Size:</p>
 
         <div className="flex flex-wrap gap-1 ">
@@ -142,16 +143,16 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
                 e.stopPropagation();
                 handleSelectVariation(variation, index);
               }}
-              disabled={!variation.qty}
+              disabled={!variation.qty && Boolean(!variation?.is_unlimited_qty)}
               className={`text-xs px-2 relative rounded-sm cursor-pointer transition-colors ${selectedVariation?.id === variation.id
-                  ? "bg-main text-white hover:bg-main/90"
-                  : ""
+                ? "bg-main text-white hover:bg-main/90"
+                : ""
                 }`}
               variant={
                 selectedVariation?.id === variation.id ? "default" : "outline"
               }
             >
-              {!variation.qty &&
+              {!variation.qty && Boolean(!variation?.is_unlimited_qty) &&
                 <Image src={images.cross} width={18} height={18} alt="cross" className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-10" />
               }
               {variation.attribute_option_name}
@@ -163,9 +164,9 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
         </div>
       </div>}
 
-      {selectedVariation &&
+      {selectedVariation && !data?.data?.is_unlimited_qty &&
         data &&
-        (data?.data?.qty > 4 ? (
+        ((data?.data?.qty > 4) ? (
           <div className="flex items-center gap-2 mb-4">
             <Check className="text-main" size={18} />
             <p className="text-sm font-semibold">In Stock</p>
@@ -181,8 +182,8 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
 
       <div className="flex items-center gap-2 flex-wrap tablet:max-w-100 mb-4">
         <Counter
-          disabled={ (product?.is_variation && !selectedVariation)}
-          max={stocks}
+          disabled={ !is_unlimited_qty&&(product?.is_variation && !selectedVariation) }
+          max={is_unlimited_qty ? 10000:stocks}
           setCount={setCount}
           count={count}
         />

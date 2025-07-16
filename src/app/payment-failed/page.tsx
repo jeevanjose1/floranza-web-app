@@ -24,7 +24,7 @@ export default function page({}: Props) {
     <main className="min-h-screen font-lora ">
       <div className="container-md px-4 py-8">
         {/* Progress Indicator */}
-        <div className="mb-8 w-full hidden mobile-lg:inline-block rounded-lg shadow-none border-gray-200">
+        {/* <div className="mb-8 w-full hidden mobile-lg:inline-block rounded-lg shadow-none border-gray-200">
           <div className="flex items-center justify-between text-xs mobile-lg:text-sm">
             <div className="flex tablet:flex-row flex-col items-center gap-2">
               <div className="w-6 h-6 bg-main rounded-full flex items-center justify-center">
@@ -49,7 +49,7 @@ export default function page({}: Props) {
               <span className="text-main font-semibold">Faild</span>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Success Content */}
         <div className="max-w-xl mt-24 mx-auto">

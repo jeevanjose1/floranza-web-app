@@ -23,7 +23,7 @@ const CartItem = ({ data }: { data: any }) => {
   const handleNavigate = () => {
     router.push(`/product/${data?.slug}`);
   };
-
+ 
   useEffect(() => {
     setCount(data?.cart_qty);
     prevCountRef.current = data?.cart_qty;
@@ -99,11 +99,11 @@ const CartItem = ({ data }: { data: any }) => {
           </div>
           <div className="w-32">
             <Counter
-              disabled={data?.is_out_of_stock}
+              disabled={!data?.is_unlimited_qty && data?.is_out_of_stock }
               disableAdd={
                 error?.data?.message == "the product is currently out of stock."
               }
-              max={data?.mainQty}
+              max={data?.is_unlimited_qty ? 1000 :data?.mainQty}
               count={count}
               setCount={handleCounterChange}
             />

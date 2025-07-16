@@ -11,18 +11,7 @@ import React, { useState } from 'react'
 
 type Props = {}
 
-// Order status mapping
-const getOrderStatus = (status: number) => {
-  const statusMap = {
-    1: { label: 'Order Placed',  },
-    2: { label: 'Processing', },
-    3: { label: 'Shipped',},
-    4: { label: 'Out for Delivery',},
-    5: { label: 'Delivered', },
-    6: { label: 'Cancelled', }
-  } as any
-  return statusMap[status] || { label: 'Unknown' }
-}
+
 
 export default function Page({}: Props) {
     const { mutateAsync: track, isPending, error, data } = useTrackOrder() as any
@@ -110,12 +99,7 @@ export default function Page({}: Props) {
                                     <span className="font-mono text-sm">{data.data.order_no}</span>
                                 </div>
                                 
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm font-medium text-gray-600">Status:</span>
-                                    <span className={`px-3 py-1 rounded-full text-blue-600 bg-blue-50 text-xs font-medium `}>
-                                        {getOrderStatus(data.data.order_status).label}
-                                    </span>
-                                </div>
+                               
                                 
                                 <div className="flex items-center flex-wrap justify-between">
                                     <span className="text-sm font-medium text-gray-600">Order Date:</span>

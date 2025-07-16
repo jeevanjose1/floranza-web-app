@@ -16,12 +16,13 @@ export default async function Product({ params }: Props) {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["PRODUCT_DETAILS"],
+    queryKey: ["PRODUCT_DETAILS",slug],
     queryFn: () =>
       fetcher({
         type: "get",
         url: `${PRODUCT.PRODUCT_DETAILS}/${slug}`,
         authenticated: false,
+        
       }),
   });
 

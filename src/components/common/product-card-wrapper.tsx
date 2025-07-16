@@ -47,7 +47,7 @@ export default function ProductCardWrapper({
       form_data.append("prd_var_value_id", selectedOption?.id);
       check(form_data, {
         onSuccess: (response) => {
-          if (response?.data?.qty === 0) {
+          if (!response?.data?.is_unlimited_qty && response?.data?.qty === 0) {
             toast.error("Out of stock");
             setSelectedOption(null);
           }

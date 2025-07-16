@@ -2,7 +2,7 @@ import Image, { StaticImageData } from "next/image";
 import React from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { Heart, Search } from "lucide-react";
+import { Heart } from "lucide-react";
 import Link from "next/link";
 import Loader from "./loader";
 import { calculate_discount } from "@/lib/utils";
@@ -121,12 +121,12 @@ export default function ProductCardTwo({
             blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI2YxZjFmMSIvPjwvc3ZnPg=="
           />
         )}
-        <div className="absolute top-3 left-3 flex items-start flex-col gap-2">
+        <div className="absolute top-3 left-3 z-0 flex items-start flex-col gap-2">
 
 
           {primaryBadge?.map((item: any) => {
             return (
-              <div key={item?.text} className={`flex items-center text-[10px] font-semibold justify-center rounded-sm h-6 px-2 z-10 ${item.className}`}>
+              <div key={item?.text} className={`flex items-center text-[10px] relative font-semibold justify-center rounded-sm h-6 px-2 z-7 ${item.className}`}>
                 {item.text}
               </div>
             )
@@ -141,7 +141,7 @@ export default function ProductCardTwo({
             <Badge
               key={index}
               onClick={(e) => handleOptionClick(e, sizeInfo)}
-              disabled={sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name}
+              disabled={(sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name) && !Boolean(sizeInfo.is_unlimited_qty)}
               className={`text-xs px-2 rounded-sm cursor-pointer relative transition-colors ${selectedOptionId?.id === sizeInfo.id
                 ? "bg-main text-white hover:bg-main/90"
                 : ""
@@ -150,7 +150,7 @@ export default function ProductCardTwo({
                 selectedOptionId?.id === sizeInfo.id ? "default" : "outline"
               }
             >
-              {(sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name) &&
+              {(sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name) && !Boolean(sizeInfo.is_unlimited_qty) &&
                 <Image src={images.cross} width={18} height={18} alt="cross" className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-10" />
               }
               {sizeInfo.attribute_option_name}

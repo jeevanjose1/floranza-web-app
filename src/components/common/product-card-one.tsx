@@ -64,7 +64,7 @@ export default function ProductCardOne({
       form_data.append("prd_var_value_id", option?.id);
       check(form_data, {
         onSuccess: (response) => {
-          if (response?.data?.qty === 0) {
+          if (!response?.data?.is_unlimited_qty && response?.data?.qty === 0) {
             toast.error("Out of stock");
             setOption(null);
           }
@@ -246,14 +246,14 @@ export default function ProductCardOne({
                 e.stopPropagation();
                 handleSetOption(sizeInfo);
               }}
-              disabled={sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name}
+              disabled={(sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name) && !Boolean(sizeInfo.is_unlimited_qty)}
               className={`text-xs relative px-2 rounded-sm cursor-pointer transition-colors ${option?.id === sizeInfo.id
                 ? "bg-main text-white hover:bg-main/90"
                 : ""
                 }`}
               variant={option?.id === sizeInfo.id ? "default" : "outline"}
             >
-              {(sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name) &&
+              {(sizeInfo?.qty === 0 || !sizeInfo.attribute_option_name) && !Boolean(sizeInfo.is_unlimited_qty) &&
                 <Image src={images.cross} width={18} height={18} alt="cross" className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 z-10" />
               }
               {sizeInfo.attribute_option_name}

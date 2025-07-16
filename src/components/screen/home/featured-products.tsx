@@ -7,7 +7,7 @@ import React from "react";
 
 export default function FeaturedProducts() {
   const { data: featured_product } = useGetFeaturedProducts();
-
+  
   const filterd_data =
     featured_product?.data?.list?.map((item: any) => {
       return {
@@ -23,6 +23,7 @@ export default function FeaturedProducts() {
     }) || [];
 
   return (
+    featured_product?.data?.list?.length >0?
     <section className="container my-16 ppppppprrrr">
       <div className="mb-8">
 
@@ -45,6 +46,6 @@ export default function FeaturedProducts() {
           />
         ))}
       </div>
-    </section>
+    </section>:null
   );
 }

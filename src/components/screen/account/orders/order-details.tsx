@@ -66,8 +66,8 @@ export default function OrderDetails({ }: Props) {
         }
     }
 
-    const subtotal = order.order_items.reduce((sum: number, item: any) => sum + (parseFloat(item.price) * item.qty), 0)
-    const totalGst = order.order_items.reduce((sum: number, item: any) => sum + (parseFloat(item.gst) * item.qty), 0)
+    const subtotal = order?.order_items?.reduce((sum: number, item: any) => sum + (parseFloat(item.price) * item.qty), 0)
+    const totalGst = order?.order_items?.reduce((sum: number, item: any) => sum + (parseFloat(item.gst) * item.qty), 0)
     if (isLoading) {
         return (
             <div className='w-full h-full flex items-center justify-between'>
@@ -219,19 +219,9 @@ export default function OrderDetails({ }: Props) {
                                                     <p className="font-medium ">₹{parseFloat(item.price).toLocaleString()}</p>
                                                 </div>
                                             </div>
-                                            <div className="mt-2 text-sm">
-                                                <span className="text-muted-foreground/90">GST:</span>
-                                                <span className=" ml-1">₹{parseFloat(item.gst).toLocaleString()}</span>
-                                            </div>
+                                          
                                         </div>
-                                        <div className="text-right">
-                                            <p className="font-semibold text-lg ">
-                                                ₹{(parseFloat(item.price) * item.qty).toLocaleString()}
-                                            </p>
-                                            <p className="text-sm text-muted-foreground/90">
-                                                Total: ₹{((parseFloat(item.price) + parseFloat(item.gst)) * item.qty).toLocaleString()}
-                                            </p>
-                                        </div>
+                                      
                                     </div>
                                 ))}
                             </div>
@@ -263,7 +253,7 @@ export default function OrderDetails({ }: Props) {
                                 </div>
                                 <div className="border-t pt-3 flex justify-between font-semibold text-lg">
                                     <span>Total:</span>
-                                    <span>₹{(subtotal + totalGst + order.shipping_charge).toLocaleString()}</span>
+                                    <span>₹{(subtotal ).toLocaleString()}</span>
                                 </div>
                             </div>
                         </div>

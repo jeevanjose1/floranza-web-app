@@ -30,13 +30,16 @@ const useGetProductListSearch = (payload: any) => {
 };
 const useGetProductDetails = (payload: any) => {
   return useQuery({
-    queryKey: ["PRODUCT_DETAILS"],
+    queryKey: ["PRODUCT_DETAILS",payload],
     queryFn: () =>
       fetcher({
         type: "get",
         url: `${PRODUCT.PRODUCT_DETAILS}/${payload}`,
         authenticated: false,
       }),
+       
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    
     retry: false,
   });
 };

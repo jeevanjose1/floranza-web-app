@@ -69,12 +69,12 @@ export default function Footer() {
         </div>
         <div className="flex justify-center flex-col items-center gap-6">
         <div className="flex justify-center  items-center gap-6">
-            <Link href={""}>
+            <Link target="_blank" href={"https://www.facebook.com/share/16zKh5cia3/"}>
               <div className="w-8 h-8 flex items-center justify-center ring-accent-foreground/40 rounded-full ring-2">
                 <Facebook size={16} strokeWidth={0} fill="black" />
               </div>
             </Link>
-            <Link href={""}>
+            <Link target="_blank" href={"https://www.instagram.com/floranzafashion/"} >
               <div className="w-8 h-8 flex items-center justify-center ring-accent-foreground/40 rounded-full ring-2">
                 <Instagram strokeWidth={2.5} size={16} />
               </div>

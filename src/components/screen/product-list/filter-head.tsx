@@ -69,7 +69,7 @@ interface Prop {
 	price?: boolean,
 }
 
-export default function FilterHead({size=true, category=true, material=true, price=true}: Prop): ReactElement {
+export default function FilterHead({ size = true, category = true, material = true, price = true }: Prop): ReactElement {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const params = useParams();
@@ -87,7 +87,7 @@ export default function FilterHead({size=true, category=true, material=true, pri
 
 	// API data fetching functions
 	const fetchOptions = async <T, R>(
-		endpoint: string, 
+		endpoint: string,
 		mapFn: (response: ApiResponse<T>) => SelectOption[]
 	): Promise<SelectOption[]> => {
 		try {
@@ -106,21 +106,21 @@ export default function FilterHead({size=true, category=true, material=true, pri
 
 	const loadOptions = {
 		size: (_: string = "") => fetchOptions<AttributeData[], SelectOption[]>(
-			FILTER.ATTRIBUTES, 
+			FILTER.ATTRIBUTES,
 			(response) => response?.data?.data?.[0]?.attribute_options?.map(item => ({
 				value: item?.order_code,
 				label: item?.name,
 			})) || []
 		),
 		material: (_: string = "") => fetchOptions<MaterialData[], SelectOption[]>(
-			FILTER.MATERIALS, 
+			FILTER.MATERIALS,
 			(response) => response?.data?.data?.map(item => ({
 				value: item?.slug,
 				label: item?.name,
 			})) || []
 		),
 		category: (_: string = "") => fetchOptions<CategoryData[], SelectOption[]>(
-			FILTER.CATOGERIES, 
+			FILTER.CATOGERIES,
 			(response) => response?.data?.data?.map(item => ({
 				value: item?.slug,
 				label: item?.name,
@@ -153,7 +153,7 @@ export default function FilterHead({size=true, category=true, material=true, pri
 				label: ""
 			},
 			priceRange: [
-				parseInt(searchParams.get("min_price") || "0"), 
+				parseInt(searchParams.get("min_price") || "0"),
 				parseInt(searchParams.get("max_price") || "4000")
 			],
 			itemsPerPage: parseInt(searchParams.get("per_page") || "12"),
@@ -194,12 +194,13 @@ export default function FilterHead({size=true, category=true, material=true, pri
 
 	// Event handlers
 	const handleFilterChange = (filterName: keyof FilterState, selectedOption: SelectOption | null): void => {
+		const currentParams = new URLSearchParams(searchParams.toString());
 		setFilters(prev => ({ ...prev, [filterName]: selectedOption }));
+		currentParams.set('page', '1');
 
 		// Handle category change by updating the route, not the query params
 		if (filterName === 'category') {
 			// Get the current URL search params
-			const currentParams = new URLSearchParams(searchParams.toString());
 			const path = pathname.split('/')?.filter(Boolean)?.[0]
 			if (selectedOption?.value) {
 				// Navigate to the new category path while preserving current query params
@@ -210,7 +211,7 @@ export default function FilterHead({size=true, category=true, material=true, pri
 			}
 		} else {
 			// For other filters, update the query params as before
-			updateUrl({ [filterName]: selectedOption?.value || null });
+			updateUrl({ [filterName]: selectedOption?.value || null, page: 1 });
 		}
 	};
 
@@ -219,9 +220,9 @@ export default function FilterHead({size=true, category=true, material=true, pri
 	};
 
 	const applyPriceFilter = (): void => {
-		updateUrl({ 
-			min_price: filters.priceRange[0], 
-			max_price: filters.priceRange[1] 
+		updateUrl({
+			min_price: filters.priceRange[0],
+			max_price: filters.priceRange[1]
 		});
 	};
 
@@ -246,7 +247,7 @@ export default function FilterHead({size=true, category=true, material=true, pri
 	// Fixed handleFilterPosition function with explicit classes
 	const handleFilterPosition = () => {
 		const enabledFilterCount = [size, category, material, price].filter(Boolean).length;
-		
+
 		// Handle each possible case explicitly
 		switch (enabledFilterCount) {
 			case 1:
@@ -273,7 +274,7 @@ export default function FilterHead({size=true, category=true, material=true, pri
 					loadOptions={loadOptions.size}
 					placeholder="Filter By Size"
 					value={filters.size}
-					onChange={(option:any) => handleFilterChange('size', option)}
+					onChange={(option: any) => handleFilterChange('size', option)}
 					isClearable
 				/>}
 
@@ -365,9 +366,8 @@ export default function FilterHead({size=true, category=true, material=true, pri
 						<Button
 							key={grid.id}
 							variant="transparant"
-							className={`${
-								filters.gridView === grid.id ? "opacity-100" : "opacity-70"
-							} px-0 hover:opacity-100 transition-all`}
+							className={`${filters.gridView === grid.id ? "opacity-100" : "opacity-70"
+								} px-0 hover:opacity-100 transition-all`}
 							size="sm"
 							onClick={() => handleGridViewChange(grid.id)}
 						>

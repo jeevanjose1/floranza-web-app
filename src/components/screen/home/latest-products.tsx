@@ -31,7 +31,7 @@ export default function LatestProducts() {
       };
     }) || [];
 
-  return (
+  return (flat_product?.length>0?
     <section className="container my-16">
       <div className="mb-8">
         <h2 className="text-main text-center tablet:text-lg font-medium font-grate-vibes">
@@ -69,6 +69,6 @@ export default function LatestProducts() {
         </Button>
       </div>}
 
-    </section>
+    </section>:null
   );
 }

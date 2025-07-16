@@ -4,5 +4,6 @@ export enum CART{
     VIEW_CART='view_cart',
     DELETE_CART='delete_cart',
     CHECKOUT='checkout',
-    APPLY_COUPON='/coupon_apply'
+    APPLY_COUPON='/coupon_apply',
+    
 }

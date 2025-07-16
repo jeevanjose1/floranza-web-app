@@ -17,7 +17,7 @@ export default async function Product({ params,searchParams }: Props) {
   const queryParams = await searchParams;
   
   const slug = param.product;
-  const page_no = param?.slug?.[1];
+  const page_no = queryParams?.page;
 
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
@@ -41,7 +41,7 @@ export default async function Product({ params,searchParams }: Props) {
     
       <div className="container-md">
         <HydrationBoundary  state={dehydrate(queryClient)}>
-          <ProductList page={page_no} slug={slug} queryParams={queryParams} />
+          <ProductList slug={slug} queryParams={queryParams} />
         </HydrationBoundary>
       </div>
     

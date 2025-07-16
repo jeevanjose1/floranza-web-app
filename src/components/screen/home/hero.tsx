@@ -82,7 +82,7 @@ export default function Hero() {
                     <div className="absolute w-full h-full bg-gradient-to-r from-black/70 to-gray-0 z-1" />
                     <Image
                       src={item?.images?.large}
-                      loading="lazy"
+                      loading="eager"
                       width={1000}
                       height={1000}
                       className="w-full absolute top-0 left-0  h-full object-cover"

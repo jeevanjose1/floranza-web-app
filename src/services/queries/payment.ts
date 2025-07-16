@@ -1,6 +1,6 @@
 import { fetcher } from "@/lib/utils"
 import { PAYMENT } from "@/shared/urls/payment"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 
 const useRazorpayStatus = ()=>{
     const query = useQueryClient()
@@ -34,8 +34,20 @@ const usePhonePeStatus = ()=>{
         }
     })
 }
+
+const useGetPaymentDetails = (payload:string) => {
+  return useQuery({
+    queryKey: ["PYAMENT_DETAILS",payload],
+    queryFn: () =>
+      fetcher({
+        type: "get",
+        url:`${PAYMENT.PAYMENT_DETAILS}/${payload}`,
+        authenticated: false,
+      }),
+  });
+};
 export {
     useRazorpayStatus,
-    usePhonePeStatus
+    usePhonePeStatus,useGetPaymentDetails
 }
 

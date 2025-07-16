@@ -30,9 +30,8 @@ const ItemCard = ({ data, setOpen }: { data: any; setOpen: any }) => {
   const token = getCookie("floranza-g-token");
   const { mutateAsync: remove, isPending } = useDeleteCart();
   const { mutateAsync: add, error } = useAddToCart();
- 
-   console.log(data);
-   
+
+
   const [count, setCount] = useState(0);
   const prevCountRef = useRef(0);
   const router = useRouter();
@@ -85,9 +84,8 @@ const ItemCard = ({ data, setOpen }: { data: any; setOpen: any }) => {
 
   return (
     <div
-      className={`flex items-start gap-4 p-3 border rounded-lg ${
-        data?.is_out_of_stock ? "opacity-80" : ""
-      } `}
+      className={`flex items-start gap-4 p-3 border rounded-lg ${data?.is_out_of_stock ? "opacity-80" : ""
+        } `}
     >
       <div onClick={handleNavigate} className="flex-shrink-0 cursor-pointer">
         <Image
@@ -105,9 +103,9 @@ const ItemCard = ({ data, setOpen }: { data: any; setOpen: any }) => {
         >
           {data?.name}
         </h3>
-        <Badge className="rounded-md" variant={"secondary"}>
+        {data?.attributeOption && <Badge className="rounded-md" variant={"secondary"}>
           {data?.attributeOption}
-        </Badge>
+        </Badge>}
         <div className="flex items-start flex-wrap gap-3 mt-2">
           <div className="max-w-28">
             <Counter
@@ -116,15 +114,15 @@ const ItemCard = ({ data, setOpen }: { data: any; setOpen: any }) => {
                 error?.data?.message == "the product is currently out of stock."
               }
               count={count}
-              max={data?.mainQty}
+              max={data?.is_unlimited_qty ? 1000 : data?.mainQty}
 
               setCount={handleCounterChange} // Use our custom handler
             />
             {data?.is_out_of_stock ||
               (error?.data?.message ===
                 "the product is currently out of stock." && (
-                <p className="mt-1 text-xs text-main italic">Out of stock</p>
-              ))}
+                  <p className="mt-1 text-xs text-main italic">Out of stock</p>
+                ))}
           </div>
 
           <div className="flex items-center gap-1 py-1 text-gray-700">
@@ -153,7 +151,7 @@ const ItemCard = ({ data, setOpen }: { data: any; setOpen: any }) => {
   );
 };
 
-export default function CartSheet({}: Props) {
+export default function CartSheet({ }: Props) {
   const token = getCookie("floranza-g-token");
   const [open, setOpen] = useState(false);
 
