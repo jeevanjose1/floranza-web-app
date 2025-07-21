@@ -112,8 +112,8 @@ export default function CheckoutPage() {
       postcode: existingAddress?.postcode || "",
       phone: existingAddress?.phone || "",
       email: account?.data?.email || "",
-      courier: "",
-      paymentMethod:  "PHONEPE",
+      courier: "DTDC",
+      paymentMethod: "PHONEPE",
       notes: "",
     },
   });
@@ -125,7 +125,7 @@ export default function CheckoutPage() {
   });
 
   const handleRazorpaySubmit = (response: any) => {
-    
+
     const razorpay_data = response?.pg?.RAZORPAY;
     const options: RazorpayOrderOptions = {
       key: razorpay_data?.key,
@@ -136,7 +136,7 @@ export default function CheckoutPage() {
       order_id: razorpay_data?.order_id,
       handler: (response) => {
         get_status(response?.razorpay_payment_id, {
-          onSuccess: (res) => {            
+          onSuccess: (res) => {
             router.replace(`/payment-success?order_id=${res?.data?.order_id}`);
           },
           onError: () => {
@@ -164,11 +164,10 @@ export default function CheckoutPage() {
     function paymentCallback() {
       get_status_phone_pe(phonepe_data?.order_id, {
         onSuccess: (res) => {
-            router.replace(`/payment-success?order_id=${res?.data?.order_id}`);
+          router.replace(`/payment-success?order_id=${res?.data?.order_id}`);
         },
         onError: () => {
           toast.error("Payment not completed");
-          // router.replace("/payment-failed");
         },
       });
     }
@@ -200,8 +199,8 @@ export default function CheckoutPage() {
     form_data.append("notes", data?.notes as string);
     form_data.append("order_via", "WEB");
     form_data.append("pg", cart_items?.data?.total === 0 ? 'WALLET' : form.getValues("paymentMethod"));
-    if(coupon){
-    form_data.append("coupon_code", String(coupon));
+    if (coupon) {
+      form_data.append("coupon_code", String(coupon));
 
     }
 
@@ -212,13 +211,13 @@ export default function CheckoutPage() {
       },
       {
         onSuccess: (response) => {
-          
-          const payment_type =response?.data?.pg? Object.keys(response?.data?.pg)?.[0]:false;
+
+          const payment_type = response?.data?.pg ? Object.keys(response?.data?.pg)?.[0] : false;
           if (payment_type === "RAZORPAY") {
             handleRazorpaySubmit(response?.data);
           } else if (payment_type === "PHONEPE") {
             handlePhonepaySubmit(response?.data);
-          }else{
+          } else {
             router.replace(`/payment-success?order_id=${response?.data?.order_id}`);
           }
         },
@@ -467,7 +466,7 @@ export default function CheckoutPage() {
                                   </FormLabel>
                                   <FormControl>
                                     <CustomSelect
-                                                                    ref={field.ref}
+                                      ref={field.ref}
 
                                       value={filterd_state.filter(
                                         (item) => item.value == field.value
@@ -577,7 +576,7 @@ export default function CheckoutPage() {
                                 <RadioGroup
                                   onValueChange={field.onChange}
                                   defaultValue={field.value}
-                                 ref={field.ref}
+                                  ref={field.ref}
                                   className="grid mobile-lg:grid-cols-2 gap-4 mt-2"
                                 >
                                   <Label
@@ -596,7 +595,7 @@ export default function CheckoutPage() {
                                       alt="phonpe"
                                     />
                                   </Label>
-                                  <Label
+                                  {/* <Label
                                     htmlFor="post"
                                     className="flex items-center cursor-pointer  space-x-3 border rounded-lg p-4 hover:bg-gray-50"
                                   >
@@ -616,7 +615,7 @@ export default function CheckoutPage() {
                                       className="mobile-lg:ml-auto"
                                       alt="phonpe"
                                     />
-                                  </Label>
+                                  </Label> */}
                                 </RadioGroup>
                               </FormControl>
                               <FormMessage />
@@ -779,7 +778,7 @@ export default function CheckoutPage() {
 
                 <Separator />
 
-               
+
 
                 {/* Place Order Button */}
                 <Button

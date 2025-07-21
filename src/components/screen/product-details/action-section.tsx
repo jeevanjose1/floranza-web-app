@@ -79,6 +79,11 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
       onSuccess: () => {
         toast.success("Product added to cart");
       },
+      onError:(error:any)=>{
+        
+                toast.error(error.data.message);
+
+      }
     });
   };
 
