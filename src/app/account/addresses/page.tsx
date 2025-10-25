@@ -21,7 +21,7 @@ export default function AddressesPage() {
   // Get the address data safely
   const address = addressData?.data;
   const hasAddress = address && address.fname;
-  
+
   return (
     <div className="max-w-full">
       <p className="text-muted-foreground text-sm mb-6">
@@ -29,7 +29,7 @@ export default function AddressesPage() {
       </p>
       
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Billing Address</h2>
+        <h2 className="text-xl font-semibold"> Address</h2>
         <Link
           className="flex items-center gap-2 text-sm hover:text-muted-foreground transition-colors"
           href="/account/addresses/update"
@@ -57,9 +57,9 @@ export default function AddressesPage() {
               {address.address_2 && <p className="text-base italic">{address.address_2}</p>}
               <p className="text-base italic">{address.state}, {address.postcode}</p>
               <p className="text-base italic">{address.country}</p>
-              {address.company && (
-                <p className="text-base italic text-gray-500 mt-2">{address.company}</p>
-              )}
+                          <p className="text-base italic">{address.email}</p>
+                          <p className="text-base italic">{address.phone}</p>
+
             </div>
           </div>
         </div>

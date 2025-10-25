@@ -25,13 +25,12 @@ import {
   Phone,
   Package,
   Truck,
-  Shield,
   Ship,
 } from "lucide-react";
 import CustomSelect from "@/components/ui/custom-select";
 import { country, indianStates } from "@/shared/others/others";
 import { useAccountDetails, useListAdderss } from "@/services/queries/account";
-import { is_authenticated } from "@/lib/utils";
+import {  g_event_purchase, is_authenticated } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { getCookie } from "cookies-next/client";
@@ -47,6 +46,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import { images } from "@/shared/images/images";
 import CouponSection from "@/components/screen/checkout/coupon";
+import { useGetCountry } from "@/services/queries/common";
 
 const filterd_state = indianStates.map((item) => {
   return {
@@ -76,6 +76,7 @@ export default function CheckoutPage() {
   const { Razorpay } = useRazorpay();
   const authenticated = is_authenticated();
   const { data: address } = useListAdderss(authenticated);
+  const {data:curr_country,error} = useGetCountry()
   const [coupon, setCoupon] = useState<boolean | ''>(false)
   const token = getCookie("floranza-g-token");
   const { mutateAsync: checkout, isPending } = useCheckoutCart();
@@ -89,7 +90,7 @@ export default function CheckoutPage() {
   const state_cookie = getCookie("floranza-c-data")
     ? JSON.parse(getCookie("floranza-c-data") as string)
     : null;
-
+  
   const handleSelectExistingAddress = (e: any) => {
     if (e) {
       setExistingAddress(address?.data);
@@ -123,7 +124,20 @@ export default function CheckoutPage() {
     filter: { state: form.watch("state"), ...(coupon && { coupon_code: coupon }) },
 
   });
+  const handlePurchase = () => {
+    g_event_purchase({
+      price: cart_items?.data?.sub_total,
+      items: cart_items?.data?.cart?.map((item: any) => {
+        return {
+          item_id: item?.cart_id,
+          item_name: item?.name,
+          price: item?.price,
+          quantity: item?.cart_qty,
+        }
+      })
 
+    })
+  }
   const handleRazorpaySubmit = (response: any) => {
 
     const razorpay_data = response?.pg?.RAZORPAY;
@@ -138,6 +152,7 @@ export default function CheckoutPage() {
         get_status(response?.razorpay_payment_id, {
           onSuccess: (res) => {
             router.replace(`/payment-success?order_id=${res?.data?.order_id}`);
+            handlePurchase()
           },
           onError: () => {
             router.replace("/payment-failed");
@@ -165,6 +180,8 @@ export default function CheckoutPage() {
       get_status_phone_pe(phonepe_data?.order_id, {
         onSuccess: (res) => {
           router.replace(`/payment-success?order_id=${res?.data?.order_id}`);
+          handlePurchase()
+
         },
         onError: () => {
           toast.error("Payment not completed");
@@ -181,7 +198,21 @@ export default function CheckoutPage() {
       toast.error("PhonePeCheckout is not available.");
     }
   };
+const handleCcavenueSubmit = (response: any) => {
+  const cc_avenue = response?.pg?.CCAVENUE;
+  const cc_avenue_url = cc_avenue?.redirectInfo;
+  
+  if (cc_avenue_url) {
+  const link = document.createElement('a');
+  link.href = cc_avenue_url;
+  document.body.appendChild(link);
 
+  link.click(); 
+
+  document.body.removeChild(link);
+
+  }
+};
   const onSubmit = (data: CheckoutFormData) => {
     const form_data = new FormData();
     form_data.append("fname", data?.fullName);
@@ -213,11 +244,16 @@ export default function CheckoutPage() {
         onSuccess: (response) => {
 
           const payment_type = response?.data?.pg ? Object.keys(response?.data?.pg)?.[0] : false;
+                            
           if (payment_type === "RAZORPAY") {
             handleRazorpaySubmit(response?.data);
           } else if (payment_type === "PHONEPE") {
             handlePhonepaySubmit(response?.data);
-          } else {
+          }
+          else if (payment_type === "CCAVENUE") {
+            handleCcavenueSubmit(response?.data);
+          }
+           else {
             router.replace(`/payment-success?order_id=${response?.data?.order_id}`);
           }
         },
@@ -228,6 +264,7 @@ export default function CheckoutPage() {
     );
   };
 
+  
   //   if (!cart_items?.data?.cart?.length) {
   //     router.replace("/");
   //   }
@@ -595,7 +632,7 @@ export default function CheckoutPage() {
                                       alt="phonpe"
                                     />
                                   </Label>
-                                  {/* <Label
+                                  <Label
                                     htmlFor="post"
                                     className="flex items-center cursor-pointer  space-x-3 border rounded-lg p-4 hover:bg-gray-50"
                                   >
@@ -615,7 +652,7 @@ export default function CheckoutPage() {
                                       className="mobile-lg:ml-auto"
                                       alt="phonpe"
                                     />
-                                  </Label> */}
+                                  </Label>
                                 </RadioGroup>
                               </FormControl>
                               <FormMessage />
@@ -719,8 +756,8 @@ export default function CheckoutPage() {
 
 
                 {/* Payment Methods */}
-                {cart_items?.data?.total > 0 && <div>
-                  <Separator />
+                {cart_items?.data?.total > 0 && <div >
+                  <Separator className="mb-3" />
 
                   <h4 className="font-semibold mb-3 flex items-center gap-2">
                     <CreditCard className="w-4 h-4" />
@@ -734,7 +771,7 @@ export default function CheckoutPage() {
                     }}
                     className="space-y-3"
                   >
-                    <div className="flex items-center space-x-3 border rounded-lg  hover:bg-gray-50">
+                    {<div className="flex items-center space-x-3 border rounded-lg  hover:bg-gray-50">
                       <Label
                         htmlFor="phonepay"
                         className="cursor-pointer flex flex-wrap flex-1 p-3"
@@ -752,8 +789,7 @@ export default function CheckoutPage() {
                           alt="phonpe"
                         />
                       </Label>
-                    </div>
-
+                    </div>}
                     <div className="flex items-center space-x-3 border rounded-lg hover:bg-gray-50">
                       <Label
                         htmlFor="razopat"
@@ -762,7 +798,7 @@ export default function CheckoutPage() {
                         <RadioGroupItem value="RAZORPAY" id="razopat" />
                         <div className="font-medium">RazorPay</div>
                         <div className="text-xs text-gray-600">
-                          Pay with Razorpay UPI / International
+                          Pay with Razorpay UPI 
                         </div>
                         <Image
                           src={images.razor}
@@ -773,6 +809,25 @@ export default function CheckoutPage() {
                         />
                       </Label>
                     </div>
+                    {curr_country?.data?.country_code !=='IN'  &&<div className="flex items-center space-x-3 border rounded-lg hover:bg-gray-50">
+                      <Label
+                        htmlFor="CC"
+                        className="cursor-pointer flex flex-wrap flex-1  p-3"
+                      >
+                        <RadioGroupItem value="CCAVENUE" id="CC" />
+                        <div className="font-medium">CCAvenue</div>
+                        <div className="text-xs text-gray-600">
+                         Pay with CCAvenue / International
+                        </div>
+                        <Image
+                          src={images.cc_avenue}
+                          width={20}
+                          height={20}
+                          className="mobile-lg:ml-auto"
+                          alt="phonpe"
+                        />
+                      </Label>
+                    </div>}
                   </RadioGroup>
                 </div>}
 

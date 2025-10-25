@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import CustomSelect from "@/components/ui/custom-select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Separator } from "@/components/ui/separator";
-import { is_authenticated } from "@/lib/utils";
+import { g_event_checkout, is_authenticated } from "@/lib/utils";
 import { country, indianStates } from "@/shared/others/others";
 import { address_schema_cart } from "@/shared/validations/account";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,7 +29,21 @@ export const OrderSummary = ({ cart, setState }: { cart: any, setState: any }) =
     value: item.code,
     label: item.name,
   }));
+  
+  const handleCheckoutView = () => {
+    g_event_checkout({
+      price: cart?.sub_total,
+      items: cart?.cart?.map((item: any) => {
+        return {
+          item_id: item?.cart_id,
+          item_name: item?.name,
+          price: item?.price,
+          quantity: item?.cart_qty,
+        }
+      })
 
+    })
+  }
   const form = useForm<Partial<AddressFormValues>>({
     resolver: zodResolver(address_schema_cart as any),
     values: {
@@ -165,7 +179,7 @@ export const OrderSummary = ({ cart, setState }: { cart: any, setState: any }) =
 
       {/* Checkout Button */}
       <Link href={'/checkout'}>
-       <Button variant="primary" className="w-full mb-4">
+       <Button variant="primary" onClick={handleCheckoutView} className="w-full mb-4">
         Proceed to Checkout
       </Button>
       </Link>

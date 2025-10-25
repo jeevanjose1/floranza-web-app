@@ -11,8 +11,8 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React from "react";
-import { calculate_product_price, generate_pagination } from "@/lib/utils";
+import React, { useEffect } from "react";
+import { calculate_product_price, g_event_view_item_list, generate_pagination } from "@/lib/utils";
 import NotFound from "@/components/common/not-found";
 import Loader from "@/components/common/loader";
 import ProductCardWrapper from "@/components/common/product-card-wrapper";
@@ -32,7 +32,7 @@ export default function ProductList({
   const base_url = pathname.split("/page/")[0];
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
   const createQueryString = (name: string, value: string) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set(name, value);
@@ -55,7 +55,22 @@ export default function ProductList({
       name: search,
     },
   }) as any;
- 
+  
+  useEffect(() => {    
+    g_event_view_item_list({
+      item_list_id: product_list?.data.category?.name,
+      item_list_name: product_list?.data.category?.name,
+      items: product_list?.data.products?.map((item:any)=>{
+        return {
+          item_id: item.id,
+          item_name: item.name,
+          price: item.sale_price,
+          quantity: item.qty,
+        }
+      }) 
+    })
+  }, [])
+  
   const pagination = product_list?.data?.pagination;
 
   const filteredData =
@@ -67,8 +82,8 @@ export default function ProductList({
         image: item?.images?.large,
         variations: item?.variations,
         slug: item?.slug,
-        is_pre_order:item?.is_pre_order,
-        is_new_product:item?.is_new_product
+        is_pre_order: item?.is_pre_order,
+        is_new_product: item?.is_new_product
       };
     }) || [];
 

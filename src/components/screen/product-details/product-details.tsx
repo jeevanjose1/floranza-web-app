@@ -1,16 +1,15 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import React, { useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import DetailsSection from "./details-section";
 import ActionSection from "./action-section";
 import ImageSection from "./image-section";
 import { useGetProductDetails } from "@/services/queries/product";
 import parse from "html-react-parser";
-import { useRouter } from "next/navigation";
 import Loader from "@/components/common/loader";
 import ProductCardWrapper from "@/components/common/product-card-wrapper";
-import { calculate_product_price } from "@/lib/utils";
+import { calculate_product_price, g_event_view_item } from "@/lib/utils";
 import SizeChart from "./size-chart";
 import NotFound from "@/components/common/not-found";
 
@@ -22,14 +21,26 @@ export default function ProductDetails({ slug }: Props) {
     isLoading,
     error,
   } = useGetProductDetails(slug) as any;
-  const [errors,setError] = useState<boolean>(false)
   const [variationIndex, setVariationIndex] = useState<any>(null);
   const product = product_details?.data?.product;
   const catogery = product_details?.data?.category;
   const related = product_details?.data?.relatedProducts;
+ 
+  useEffect(()=>{
+ g_event_view_item({
+  value: product.sale_price,
 
-  const router = useRouter();
-
+    items: [
+      {
+        item_id: product.id,
+        item_name: product.name,
+        price: product.price,
+        quantity: product.qty,
+      },
+    ],
+ })
+  },[])
+  
   const filterd_data = related?.map((item: any) => {
     return {
       id: item?.id,
@@ -44,8 +55,10 @@ export default function ProductDetails({ slug }: Props) {
   });
 
   const price = calculate_product_price(product, variationIndex)
-  
-
+  const images = product?.images?.length > 0 && product?.images?.map((item:any)=>{
+    return item?.large
+  }) || []
+ 
   if (isLoading) {
     return (
       <div className="w-full h-100 flex items-center justify-center">
@@ -64,7 +77,7 @@ export default function ProductDetails({ slug }: Props) {
     <>
       <div className="container-md flex flex-col tablet-lg:flex-row gap-6  ">
         <div className="flex-1 ">
-          <ImageSection images_data={[product?.images?.large]} />
+          <ImageSection images_data={images} />
         </div>
         <div className="flex-1">
           <div className="flex items-center flex-wrap gap-2.5 text-sm mb-2">

@@ -65,7 +65,7 @@ export default function page({}: Props) {
           {/* Success Message */}
           <div className="text-center mb-8">
             <h1 className="text-2xl tablet:text-3xl font-bold  mb-2">
-              Payment Faild!
+              Payment Failed!
             </h1>
             <p>
               We’re sorry, but your payment could not be processed. Please check

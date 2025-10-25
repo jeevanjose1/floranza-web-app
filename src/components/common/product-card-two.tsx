@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { Heart } from "lucide-react";
 import Link from "next/link";
 import Loader from "./loader";
-import { calculate_discount } from "@/lib/utils";
+import { calculate_discount, g_event_select_item } from "@/lib/utils";
 import { images } from "@/shared/images/images";
 
 interface ProductCardProps {
@@ -55,8 +55,19 @@ export default function ProductCardTwo({
       onOptionSelect(option);
     }
   };
+  const handleSelectItem = () => {
 
-  // Function to handle add to cart (passes to parent component)
+    g_event_select_item({
+      item_list_id: title,
+      item_list_name: title,
+      items: [{
+        item_name: title,
+        price: price.max !== 0 ? price.max : price.min,
+      }]
+
+
+    })
+  }
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
 
@@ -96,6 +107,7 @@ export default function ProductCardTwo({
       {/* Image Container */}
       <Link
         href={`/product/${slug}`}
+        onClick={handleSelectItem}
         className="w-full aspect-[3/4] relative overflow-hidden bg-gray-100"
       >
         <div onClick={handleStopEvent as any} className="absolute rounded-sm  right-2 hidden tablet-lg:flex items-center flex-col justify-center top-2 bg-white group-hover:w-10 opacity-0 group-hover:opacity-100 overflow-hidden gap-5 transition-all z-10 w-0 h-10">

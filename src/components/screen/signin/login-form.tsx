@@ -1,5 +1,5 @@
 'use client'
-import { cn } from "@/lib/utils"
+import { cn, g_event_login } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
@@ -41,6 +41,10 @@ export function LoginForm({
     signin(form_data,{
       onSuccess:(response)=>{
         toast.success(response.message)
+        g_event_login({
+          id:response?.data?.user?.id,
+          email:response?.data?.user?.email,
+        })
         if(response.data?.auth){
           setCookie('floranza-t-value',response?.data?.auth?.token)
           router.replace('/')

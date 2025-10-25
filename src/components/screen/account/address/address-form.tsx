@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import CustomSelect from "@/components/ui/custom-select";
 import { country, indianStates } from "@/shared/others/others";
-import { useAddAddress, useListAdderss } from "@/services/queries/account";
+import { useAccountDetails, useAddAddress, useListAdderss } from "@/services/queries/account";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { address_schema } from "@/shared/validations/account";
@@ -35,6 +35,7 @@ const filterd_state = indianStates.map((item) => {
 
 export default function AddressForm() {
   const { data: address } = useListAdderss();
+  const { data: user_data } = useAccountDetails()
 
   const router = useRouter();
   const { mutateAsync: add, isPending } = useAddAddress();
@@ -43,23 +44,20 @@ export default function AddressForm() {
     resolver: zodResolver(address_schema as any),
     values: {
       firstName: address?.data?.fname || "",
-      lastName: address?.data?.lname || "",
-      companyName: address?.data?.company_name || "",
       country: address?.data?.country || "IN",
       addressLine1: address?.data?.address_1 || "",
       addressLine2: address?.data?.address_2 || "",
-      city: address?.data?.state || "",
+      city: address?.data?.city || "",
       state: address?.data?.state || "",
-      postcode: address?.data?.fname || "",
-      phone: address?.data?.postcode || "",
-      email: address?.data?.email || "",
+      postcode: address?.data?.postcode || "",
+      phone: address?.data?.phone || "",
+      email: address?.data?.email || user_data?.data?.email || "",
     },
   });
 
   function onSubmit(values: AddressFormValues) {
     const form_data = new FormData();
     form_data.append("fname", values.firstName);
-    form_data.append("lname", values.lastName);
     form_data.append("country", values.country);
     form_data.append("address_1", values.addressLine1);
     form_data.append("address_2", values.addressLine2 as string);
@@ -67,6 +65,8 @@ export default function AddressForm() {
     form_data.append("phone", values.phone);
     form_data.append("state", values.state);
     form_data.append("city", values.city);
+    form_data.append("email", values.email);
+
 
     add(form_data, {
       onSuccess: () => {
@@ -74,7 +74,7 @@ export default function AddressForm() {
         router.replace("/account/addresses");
       },
       onError: (error: any) => {
-        toast.error('Something went wrong')
+        toast.error(error?.data?.message)
       },
     });
 
@@ -83,8 +83,8 @@ export default function AddressForm() {
   return (
     <div className="w-full max-w-full ">
       <div className="mb-6">
-        <h2 className="text-xl font-bold">Billing Address</h2>
-        <p className="text-sm">Enter your shipping address details below.</p>
+        <h2 className="text-xl font-bold">Address</h2>
+        <p className="text-sm">Enter your address details below.</p>
       </div>
 
       <Form {...form}>
@@ -96,24 +96,31 @@ export default function AddressForm() {
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel>Full Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="First name" {...field} />
+                    <Input placeholder="Full name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Last Name */}
+            {/* Country/Region */}
             <FormField
               control={form.control}
-              name="lastName"
+              name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Last name" {...field} />
+                  <FormLabel>Country/Region</FormLabel>
+                  <FormControl >
+                    <CustomSelect
+                      ref={field.ref}
+                      value={country.filter((item) => item.value == field.value)}
+                      onChange={(e: any) => {
+                        field.onChange(e.value);
+                      }}
+                      options={country}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -121,41 +128,9 @@ export default function AddressForm() {
             />
           </div>
 
-          {/* Company Name (Optional) */}
-          <FormField
-            control={form.control}
-            name="companyName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Company Name (Optional)</FormLabel>
-                <FormControl>
-                  <Input placeholder="Company name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
-          {/* Country/Region */}
-          <FormField
-            control={form.control}
-            name="country"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Country/Region</FormLabel>
-                <FormControl>
-                  <CustomSelect
-                    value={country.filter((item) => item.value == field.value)}
-                    onChange={(e: any) => {
-                      field.onChange(e.value);
-                    }}
-                    options={country}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+
+
 
           {/* Street Address */}
           <FormField
@@ -217,7 +192,8 @@ export default function AddressForm() {
                   <FormLabel>State/County</FormLabel>
                   <FormControl>
                     <CustomSelect
-                     value={filterd_state.filter(item=>item.value==field.value)}
+                      ref={field.ref}
+                      value={filterd_state.filter(item => item.value == field.value)}
                       onChange={(e: any) => {
                         field.onChange(e.value);
                       }}

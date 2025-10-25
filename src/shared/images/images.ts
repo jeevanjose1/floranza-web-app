@@ -27,6 +27,7 @@ import razor from '../../../public/images/razor.png'
 import indian_post from '../../../public/images/indian-post.svg'
 import dtdc from '../../../public/images/dtdc.png'
 import cross from '../../../public/images/cross.svg'
+import cc_avenue from '../../../public/images/ccavenue.png'
 
 export const images = {
     cross,
@@ -57,6 +58,7 @@ export const images = {
     logout,
     orders,
     whishlist,
-    not_found
+    not_found,
+    cc_avenue
 
 }

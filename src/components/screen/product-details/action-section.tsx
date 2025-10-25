@@ -10,7 +10,7 @@ import { useAddToCart, useOutOfStock } from "@/services/queries/cart";
 import { getCookie } from "cookies-next/client";
 import Loader from "@/components/common/loader";
 import { useAddWishlist } from "@/services/queries/product";
-import { is_authenticated } from "@/lib/utils";
+import { g_event_add_to_cart, g_event_add_to_wishlist, g_event_checkout, is_authenticated } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { images } from "@/shared/images/images";
@@ -56,7 +56,20 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
     setVariationIndex(index);
     setSelectedVariation(variation);
   };
+  const handleCheckoutView = () => {
+    g_event_checkout({
+      value: count * (selectedVariation.sale_price),
+      items: [
+        {
+          item_id: product?.id,
+          item_name: product?.title,
+          price: selectedVariation.sale_price,
+          quantity: count,
+        },
+      ],
 
+    })
+  }
   const handleAddToCart = () => {
     if (!selectedVariation && product?.variations?.length > 0) {
       toast.warning("Please select a size first");
@@ -74,14 +87,27 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
     if (product?.variations?.length) {
       form_data.append("prd_var_value_id", selectedVariation?.id);
     }
+
     form_data.append("qty", count.toString());
     add(form_data, {
       onSuccess: () => {
         toast.success("Product added to cart");
+        g_event_add_to_cart({
+          value: count * (selectedVariation.sale_price),
+          items: [
+            {
+              item_id: product?.id,
+              item_name: product?.title,
+              price: selectedVariation?.sale_price,
+              quantity: count,
+            },
+          ],
+
+        })
       },
-      onError:(error:any)=>{
-        
-                toast.error(error.data.message);
+      onError: (error: any) => {
+
+        toast.error(error.data.message);
 
       }
     });
@@ -109,8 +135,9 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
     form_data.append("qty", count.toString());
 
     add(form_data, {
-      onSuccess: (response) => {
+      onSuccess: () => {
         // Redirect to checkout
+        handleCheckoutView()
         window.location.href = "/checkout";
       },
     });
@@ -122,6 +149,18 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
       }, {
         onSuccess: (response) => {
           toast.success(response?.message)
+          g_event_add_to_wishlist({
+            value: count * (selectedVariation.sale_price),
+            items: [
+              {
+                item_id: product?.id,
+                item_name: product?.title,
+                price: selectedVariation?.sale_price,
+                quantity: count,
+              },
+            ],
+
+          })
         },
         onError: (error) => {
           toast.error(error.message)
@@ -187,8 +226,8 @@ export default function ActionSection({ product, setVariationIndex }: Props) {
 
       <div className="flex items-center gap-2 flex-wrap tablet:max-w-100 mb-4">
         <Counter
-          disabled={ !is_unlimited_qty&&(product?.is_variation && !selectedVariation) }
-          max={is_unlimited_qty ? 10000:stocks}
+          disabled={!is_unlimited_qty && (product?.is_variation && !selectedVariation)}
+          max={is_unlimited_qty ? 10000 : stocks}
           setCount={setCount}
           count={count}
         />

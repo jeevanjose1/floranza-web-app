@@ -3,15 +3,15 @@ import Image, { StaticImageData } from "next/image";
 import React, { useEffect, useState } from "react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { Heart, Search, ShoppingCart, X } from "lucide-react";
+import { Heart, ShoppingCart, X } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useAddToCart, useOutOfStock } from "@/services/queries/cart";
 import { getCookie } from "cookies-next/client";
 import Loader from "./loader";
-import { calculate_discount, is_authenticated } from "@/lib/utils";
+import { calculate_discount, g_event_add_to_cart, g_event_add_to_wishlist, is_authenticated } from "@/lib/utils";
 import { useAddWishlist, useDeleteWishlist } from "@/services/queries/product";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { images } from "@/shared/images/images";
 
 interface ProductCardProps {
@@ -50,16 +50,16 @@ export default function ProductCardOne({
   const { mutateAsync: check } = useOutOfStock();
   const is_auth = is_authenticated()
   const router = useRouter()
+  
 
   const discount =
     price?.max !== 0
       ? calculate_discount(Number(price.max), Number(price?.min) as number)
       : null;
-
+ 
   useEffect(() => {
     if (option) {
       const form_data = new FormData();
-
       form_data.append("product_id", id);
       form_data.append("prd_var_value_id", option?.id);
       check(form_data, {
@@ -100,6 +100,20 @@ export default function ProductCardOne({
       add(form_data, {
         onSuccess: () => {
           toast.success("Product added to cart");
+          
+          
+          g_event_add_to_cart({
+            price: price.max !==0 ? price.max : price.min,
+            items: [
+              {
+                item_id: option.id,
+                item_name: title,
+                price: price.max !==0 ? price.max : price.min,
+                quantity: 1,
+              },
+            ],
+
+          })
         },
         onError: (error: any) => {
           toast.error(error?.data?.message);
@@ -141,6 +155,18 @@ export default function ProductCardOne({
         product_id: id
       }, {
         onSuccess: (response) => {
+          g_event_add_to_wishlist({
+            price: price.max !==0 ? price.max : price.min,
+            items: [
+              {
+                item_id: option?.id,
+                item_name: title,
+                price: price.max !==0 ? price.max : price.min,
+                quantity: 1,
+              },
+            ],
+
+          })
           toast.success(response?.message)
         },
         onError: (error) => {

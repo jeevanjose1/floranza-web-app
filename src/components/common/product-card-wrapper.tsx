@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { useAddToCart, useOutOfStock } from "@/services/queries/cart";
 import { getCookie } from "cookies-next/client";
 import { useAddWishlist } from "@/services/queries/product";
-import { is_authenticated } from "@/lib/utils";
+import { g_event_add_to_cart, g_event_add_to_wishlist, is_authenticated } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
 interface ProductCardWrapperProps {
@@ -80,6 +80,18 @@ export default function ProductCardWrapper({
       add(form_data, {
         onSuccess: () => {
           toast.success("Product added to cart");
+          g_event_add_to_cart({
+            price: price.max !== 0 ? price.max : price.min,
+            items: [
+              {
+                item_id: id,
+                item_name: title,
+                price: price.max !== 0 ? price.max : price.min,
+                quantity: 1,
+              },
+            ],
+
+          })
         },
         onError: (error: any) => {
           toast.error(error?.data?.message);
@@ -95,6 +107,18 @@ export default function ProductCardWrapper({
       }, {
         onSuccess: (response) => {
           toast.success(response?.message)
+          g_event_add_to_wishlist({
+            price: price.max !== 0 ? price.max : price.min,
+            items: [
+              {
+                item_id: id,
+                item_name: title,
+                price: price.max !== 0 ? price.max : price.min,
+                quantity: 1,
+              },
+            ],
+
+          })
         },
         onError: (error) => {
           toast.error(error.message)

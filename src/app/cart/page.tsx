@@ -30,8 +30,9 @@ const EmptyCart = () => {
   );
 };
 
-export default function CartPage({}) {
-  const [state, setState] = useState(null);
+export default function CartPage({ }) {
+  const state_data = getCookie("floranza-c-data") ? JSON.parse(getCookie("floranza-c-data") as any) : null;
+  const [state, setState] = useState<any>(state_data ? state_data?.state : 'KL');
   const token = getCookie("floranza-g-token");
 
   const { data: cart_items, isLoading } = useViewCart({
@@ -47,44 +48,44 @@ export default function CartPage({}) {
   return (
     <main className="container-md py-8 font-lora">
       <div className="flex w-full items-center justify-between mb-6">
-       { !cartIsEmpty &&<div className="bg-white w-full mobile-lg:inline-block rounded-lg border-gray-200">
-              <div className="flex items-center justify-between text-xs mobile-lg:text-sm ">
-                <div className="flex tablet:flex-row flex-col items-center gap-2">
-                  <div className="w-6 h-6 bg-main rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs font-bold">1</span>
-                  </div>
-                  <span className="font-semibold text-main">Cart</span>
-                </div>
-                <div className="flex-1 h-1 bg-gray-200 mx-4 rounded-full">
-                  <div className="h-full bg-main rounded-full w-0"></div>
-                </div>
-                <div className="flex tablet:flex-row flex-col  items-center gap-2">
-                  <div className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center">
-                    <span className="text-gray-500 text-xs font-bold">2</span>
-                  </div>
-                  <span className="text-gray-500">Checkout</span>
-                </div>
-                <div className="flex-1 h-1 bg-gray-200 mx-4 rounded-full"></div>
-                <div className="flex tablet:flex-row flex-col  items-center gap-2">
-                  <div className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center">
-                    <span className="text-gray-500 text-xs font-bold">3</span>
-                  </div>
-                  <span className="text-gray-500">Complete</span>
-                </div>
+        {!cartIsEmpty && <div className="bg-white w-full mobile-lg:inline-block rounded-lg border-gray-200">
+          <div className="flex items-center justify-between text-xs mobile-lg:text-sm ">
+            <div className="flex tablet:flex-row flex-col items-center gap-2">
+              <div className="w-6 h-6 bg-main rounded-full flex items-center justify-center">
+                <span className="text-white text-xs font-bold">1</span>
               </div>
-            </div>}
-       
+              <span className="font-semibold text-main">Cart</span>
+            </div>
+            <div className="flex-1 h-1 bg-gray-200 mx-4 rounded-full">
+              <div className="h-full bg-main rounded-full w-0"></div>
+            </div>
+            <div className="flex tablet:flex-row flex-col  items-center gap-2">
+              <div className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center">
+                <span className="text-gray-500 text-xs font-bold">2</span>
+              </div>
+              <span className="text-gray-500">Checkout</span>
+            </div>
+            <div className="flex-1 h-1 bg-gray-200 mx-4 rounded-full"></div>
+            <div className="flex tablet:flex-row flex-col  items-center gap-2">
+              <div className="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center">
+                <span className="text-gray-500 text-xs font-bold">3</span>
+              </div>
+              <span className="text-gray-500">Complete</span>
+            </div>
+          </div>
+        </div>}
+
       </div>
-          
-            
-            {!cartIsEmpty && (
-              <p className="text-gray-600 my-3">
-                {cart?.cart?.length}{" "}
-                {cart?.cart?.length === 1 ? "item" : "items"} in your cart
-              </p>
-            )}
-         
-      
+
+
+      {!cartIsEmpty && (
+        <p className="text-gray-600 my-3">
+          {cart?.cart?.length}{" "}
+          {cart?.cart?.length === 1 ? "item" : "items"} in your cart
+        </p>
+      )}
+
+
       {isLoading ? (
         <div className="flex justify-center items-center py-16">
           <Loader />

@@ -7,6 +7,7 @@ import BottomMenu from "@/components/layout/bottom-menu";
 import QueryProvider from "@/components/common/query-provider";
 import { Toaster } from "@/components/ui/sonner";
 import Script from "next/script";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -28,6 +29,7 @@ const lora = Lora({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
+
 export const metadata: Metadata = {
   title: "Floranza Fashion Boutique | The Complete Ladies Fashion Store",
   description: "Floranza Fashion Boutique the Complete Ladies Fashion Store for Hand Picked Best Quality and Trending Dresses at a Very Reasonable Price",
@@ -40,14 +42,35 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      
+      <head>
+        {/* Google Tag Manager */}
+        <Script id="google-tag-manager" strategy="afterInteractive">
+          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TGJ3MGPT');`}
+        </Script>
+        {/* End Google Tag Manager */}
+      </head>
       <body
         className={`${poppins.variable} ${open_sans.variable} ${great_vibes.variable} ${lora.variable} antialiased`}
       >
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe 
+            src="https://www.googletagmanager.com/ns.html?id=GTM-TGJ3MGPT"
+            height="0" 
+            width="0" 
+            style={{ display: 'none', visibility: 'hidden' }}
+          />
+        </noscript>
+        {/* End Google Tag Manager (noscript) */}
+
         <Script
-        src="https://mercury.phonepe.com/web/bundle/checkout.js"
-        strategy="beforeInteractive"
-      />
+          src="https://mercury.phonepe.com/web/bundle/checkout.js"
+          strategy="beforeInteractive"
+        />
         <QueryProvider>
           <Header />
           {children}
@@ -65,9 +88,8 @@ export default function RootLayout({
             }}
           />
         </QueryProvider>
-
       </body>
-
+      <GoogleAnalytics  gaId={process.env.G_ID as string} />
     </html>
   );
 }

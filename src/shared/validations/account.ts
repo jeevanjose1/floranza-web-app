@@ -3,11 +3,8 @@ import { z } from "zod";
 const address_schema = z.object({
   firstName: z
     .string()
-    .min(2, { message: "First name must be at least 2 characters." }),
-  lastName: z
-    .string()
-    .min(2, { message: "Last name must be at least 2 characters." }),
-  companyName: z.string().optional(),
+    .min(2, { message: "Full name must be at least 2 characters." }),
+
   country: z.string().default("India"),
   addressLine1: z.string().min(5, {
     message: "Address line 1 is required and must be at least 5 characters.",

@@ -9,6 +9,7 @@ import { X } from "lucide-react";
 import { getCookie } from "cookies-next/client";
 import { useAddToCart, useDeleteCart } from "@/services/queries/cart";
 import { useRouter } from "next/navigation";
+import { g_event_remove_cart } from "@/lib/utils";
 
 type Props = { cart: any };
 
@@ -20,10 +21,24 @@ const CartItem = ({ data }: { data: any }) => {
   const prevCountRef = useRef(0);
   const router = useRouter();
 
+  const handleRemoveCart = () => {
+
+    g_event_remove_cart({
+      price: data?.total_sale_value,
+      items: [{
+        item_id: data?.cart_id,
+        item_name: data?.name,
+        price: data?.price,
+        quantity: data?.cart_qty,
+      }]
+
+
+    })
+  }
   const handleNavigate = () => {
     router.push(`/product/${data?.slug}`);
   };
- 
+
   useEffect(() => {
     setCount(data?.cart_qty);
     prevCountRef.current = data?.cart_qty;
@@ -31,7 +46,6 @@ const CartItem = ({ data }: { data: any }) => {
 
   const handleChangeCount = (newCount: number) => {
     const qtyChange = newCount > prevCountRef.current ? 1 : -1;
-
     const form_data = new FormData();
     form_data.append("guest_token", token as string);
     form_data.append("prd_var_value_id", data?.prd_var_value_id);
@@ -56,6 +70,10 @@ const CartItem = ({ data }: { data: any }) => {
     remove({
       cart_id: data?.cart_id,
       token: token,
+    }, {
+      onSuccess: () => {
+        handleRemoveCart()
+      }
     });
   };
 
@@ -99,19 +117,19 @@ const CartItem = ({ data }: { data: any }) => {
           </div>
           <div className="w-32">
             <Counter
-              disabled={!data?.is_unlimited_qty && data?.is_out_of_stock }
+              disabled={!data?.is_unlimited_qty && data?.is_out_of_stock}
               disableAdd={
                 error?.data?.message == "the product is currently out of stock."
               }
-              max={data?.is_unlimited_qty ? 1000 :data?.mainQty}
+              max={data?.is_unlimited_qty ? 1000 : data?.mainQty}
               count={count}
               setCount={handleCounterChange}
             />
             {(data?.is_out_of_stock ||
               error?.data?.message ===
-                "the product is currently out of stock.") && (
-              <p className="mt-1 text-xs text-main italic">Out of stock</p>
-            )}
+              "the product is currently out of stock.") && (
+                <p className="mt-1 text-xs text-main italic">Out of stock</p>
+              )}
           </div>
           <div className="">
             <div className="text-base whitespace-nowrap mt-6 text-gray-700 font-medium ">

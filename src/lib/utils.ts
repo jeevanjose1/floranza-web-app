@@ -4,6 +4,7 @@ import axios from "axios";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { getCookie } from "cookies-next/client";
+import { sendGAEvent } from '@next/third-parties/google';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -125,14 +126,14 @@ export const is_authenticated = () => {
   return token ? true : false;
 };
 
-export const calculate_product_price = (item: any,index?:number) => {
+export const calculate_product_price = (item: any, index?: number) => {
   const isVariation = item?.is_variation;
- 
+
   if (isVariation) {
-    const variation = item?.variations?.[index ? index:0];
+    const variation = item?.variations?.[index ? index : 0];
     const salePrice = Number(variation?.sale_price) || 0;
     const regPrice = Number(variation?.reg_price) || 0;
-    
+
     if (regPrice == 0) {
       return {
         min: salePrice,
@@ -146,7 +147,7 @@ export const calculate_product_price = (item: any,index?:number) => {
         max: 0,
       };
     }
-  
+
     return {
       min: salePrice,
       max: regPrice,
@@ -181,4 +182,163 @@ export function calculate_discount(regularPrice: number, salePrice: number) {
   }
   const discount = ((regularPrice - salePrice) / regularPrice) * 100;
   return Math.round(discount * 100) / 100; // Round to 2 decimal places
+}
+
+
+//gtag 
+
+export const g_event_add_to_cart = (product: any) => {
+  sendGAEvent('event', 'add_to_cart', {
+    currency: 'INR',
+    value: product.price,
+    items: [
+      {
+        item_id: product.id,
+        item_name: product.name,
+        price: product.price,
+        quantity: product.qty,
+      },
+    ],
+  });
+}
+
+export const g_event_view_cart = (product: any) => {
+  sendGAEvent('event', 'view_cart', {
+    currency: 'INR',
+    value: product.price,
+    items: [
+      {
+        item_id: product.id,
+        item_name: product.name,
+        price: product.price,
+        quantity: product.qty,
+      },
+    ],
+  });
+}
+
+export const g_event_remove_cart = (product: any) => {
+  sendGAEvent('event', 'remove_from_cart', {
+    currency: 'INR',
+    value: product.price,
+    items: [
+      {
+        item_id: product.id,
+        item_name: product.name,
+        price: product.price,
+        quantity: product.qty,
+      },
+    ],
+  });
+}
+
+export const g_event_checkout = (product: any) => {
+  sendGAEvent('event', 'begin_checkout', {
+    currency: 'INR',
+    value: product.price,
+    items: [
+      {
+        item_id: product.id,
+        item_name: product.name,
+        price: product.price,
+        quantity: product.qty,
+      },
+    ],
+  });
+}
+
+export const g_event_purchase = (product: any) => {
+  sendGAEvent('event', 'purchase', {
+    currency: 'INR',
+    value: product.price,
+    items: [
+      {
+        item_id: product.id,
+        item_name: product.name,
+        price: product.price,
+        quantity: product.qty,
+      },
+    ],
+  });
+}
+
+export const g_event_view_item_list = (product: any) => {
+  sendGAEvent('event', 'view_item_list', {
+    currency: 'INR',
+    item_list_id: product.item_list_id,
+    item_list_name: product.item_list_name,
+
+    items: [
+      {
+        item_id: product.id,
+        item_name: product.name,
+        price: product.price,
+        quantity: product.qty,
+      },
+    ],
+  });
+}
+
+export const g_event_select_item = (product: any) => {
+  sendGAEvent('event', 'select_item', {
+    currency: 'INR',
+    item_list_id: product.item_list_id,
+    item_list_name: product.item_list_name,
+    items: [
+      {
+        item_name: product.name,
+        price: product.price,
+      },
+    ],
+  });
+}
+
+
+export const g_event_view_item = (product: any) => {
+  sendGAEvent('event', 'view_item', {
+    currency: 'INR',
+    value: product.value,
+
+    items: [
+      {
+        item_id: product.id,
+        item_name: product.name,
+        price: product.price,
+        quantity: product.qty,
+      },
+    ],
+  });
+}
+
+export const g_event_add_to_wishlist = (product: any) => {
+  sendGAEvent('event', 'add_to_wishlist', {
+    currency: 'INR',
+    value: product.value,
+
+    items: [
+      {
+        item_id: product.id,
+        item_name: product.name,
+        price: product.price,
+        quantity: product.qty,
+      },
+    ],
+  });
+}
+
+
+export const g_event_login = (user: any) => {
+  sendGAEvent('event', 'login', {
+    user_id: user.id,
+    email: user?.email,
+
+  });
+}
+
+export const g_event_sign_up = (user: any) => {
+  sendGAEvent('event', 'sign_up', {
+    user_id: user.id,
+    email: user?.email,
+
+  });
 }

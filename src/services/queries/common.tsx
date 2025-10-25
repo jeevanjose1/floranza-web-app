@@ -2,6 +2,7 @@ import { fetcher } from "@/lib/utils";
 import { COMMON } from "@/shared/urls/common";
 import { FILTER } from "@/shared/urls/products";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
 const useGetNavigation = () => {
   return useQuery({
@@ -14,7 +15,13 @@ const useGetNavigation = () => {
       }),
   });
 };
-
+const useGetCountry = () => {
+  return useQuery({
+    queryKey: ["COUNTRY"],
+    queryFn: () => axios.get(COMMON.COUNTRY)
+      
+  });
+};
 const useGetAttributes = () => {
   const queryClient = useQueryClient();
 
@@ -90,5 +97,6 @@ export {
   useGetAttributes,
   useGetMaterials,
   useGetCatogeries,
-  useTrackOrder
+  useTrackOrder,
+  useGetCountry
 };

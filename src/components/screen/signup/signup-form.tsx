@@ -1,5 +1,5 @@
 'use client'
-import { cn } from "@/lib/utils"
+import { cn, g_event_sign_up } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -41,6 +41,10 @@ export function SignupForm({
 	 signup(form_data,{
 		onSuccess:(response)=>{
 		 toast.success(response.message)
+		 g_event_sign_up({
+			id:response?.data?.user?.id,
+			email:response?.data?.user?.email,
+		 })
 		 form.reset()
          router.push('/signin')
 		},
@@ -78,7 +82,7 @@ export function SignupForm({
 											{...field}
 											id="username"
 											type="text"
-											placeholder="example12"
+											placeholder="Enter your username"
 											disabled={isPending}
 										/>
 									</FormControl>

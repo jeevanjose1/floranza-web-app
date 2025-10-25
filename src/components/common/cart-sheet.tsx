@@ -24,12 +24,26 @@ import { ScrollArea } from "../ui/scroll-area";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
 import { useRouter } from "next/navigation";
+import { g_event_checkout, g_event_remove_cart, g_event_view_cart } from "@/lib/utils";
 
 type Props = {};
 const ItemCard = ({ data, setOpen }: { data: any; setOpen: any }) => {
   const token = getCookie("floranza-g-token");
   const { mutateAsync: remove, isPending } = useDeleteCart();
   const { mutateAsync: add, error } = useAddToCart();
+  const handleRemoveCart = () => {
+    g_event_remove_cart({
+      price: data?.total_sale_value,
+      items: [{
+        item_id: data?.cart_id,
+        item_name: data?.name,
+        price: data?.price,
+        quantity: data?.cart_qty,
+      }]
+
+
+    })
+  }
 
 
   const [count, setCount] = useState(0);
@@ -44,6 +58,7 @@ const ItemCard = ({ data, setOpen }: { data: any; setOpen: any }) => {
   useEffect(() => {
     setCount(data?.cart_qty);
     prevCountRef.current = data?.cart_qty;
+
   }, [data?.cart_qty]);
 
   // This function handles the quantity change and determines increment/decrement
@@ -79,6 +94,10 @@ const ItemCard = ({ data, setOpen }: { data: any; setOpen: any }) => {
     remove({
       cart_id: data?.cart_id,
       token: token,
+    }, {
+      onSuccess: () => {
+        handleRemoveCart()
+      }
     });
   };
 
@@ -161,8 +180,38 @@ export default function CartSheet({ }: Props) {
   });
   const cart = cart_items?.data;
   const cartIsEmpty = !cart?.cart?.length;
+
   const handleClose = () => setOpen(false);
 
+  const handleView = () => {
+    g_event_view_cart({
+      price: cart?.sub_total,
+      items: cart?.cart?.map((item: any) => {
+        return {
+          item_id: item?.cart_id,
+          item_name: item?.name,
+          price: item?.price,
+          quantity: item?.cart_qty,
+        }
+      })
+
+    })
+  }
+
+  const handleCheckoutView = () => {
+    g_event_checkout({
+      price: cart?.sub_total,
+      items: cart?.cart?.map((item: any) => {
+        return {
+          item_id: item?.cart_id,
+          item_name: item?.name,
+          price: item?.price,
+          quantity: item?.cart_qty,
+        }
+      })
+
+    })
+  }
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
@@ -170,6 +219,7 @@ export default function CartSheet({ }: Props) {
           className={`rounded-full relative [&_svg:not([class*='size-'])]:size-5 `}
           variant="ghost"
           size="icon"
+          onClick={handleView}
         >
           {!cartIsEmpty && (
             <div className="absolute top-0 left-0 bg-main w-4 h-4 flex items-center justify-center rounded-full ">
@@ -217,6 +267,7 @@ export default function CartSheet({ }: Props) {
           <Link onClick={handleClose} href={"/cart"}>
             <Button
               variant={"secondary"}
+              onClick={handleView}
               className="w-full mb-2"
               disabled={cartIsEmpty}
             >
@@ -227,6 +278,7 @@ export default function CartSheet({ }: Props) {
             <Button
               variant={"primary"}
               className="w-full"
+              onClick={handleCheckoutView}
               disabled={cartIsEmpty}
             >
               Checkout
