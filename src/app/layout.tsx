@@ -43,6 +43,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <meta
+          name="google-site-verification"
+          content="NY54Zwk4uHKpt5_YXJAgUDUYBs2ve6bVAjFcXPQ2BWE"
+        />
         {/* Google Tag Manager */}
         <Script id="google-tag-manager" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -52,6 +56,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-TGJ3MGPT');`}
         </Script>
         {/* End Google Tag Manager */}
+        
       </head>
       <body
         className={`${poppins.variable} ${open_sans.variable} ${great_vibes.variable} ${lora.variable} antialiased`}

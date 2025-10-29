@@ -26,31 +26,31 @@ interface CouponSectionProps {
   cart_items: {
     data: CartData;
   };
-  setCoupon:any
+  setCoupon: any
 }
 
 interface AppliedCoupon {
   coupon_code: string;
-  amount: number;
+  coupon_value: number;
+  discount_type: string
 }
 
-const CouponSection: React.FC<CouponSectionProps> = ({setCoupon }) => {
-  const { mutateAsync: apply, isPending } = useApplyCoupon()
+const CouponSection: React.FC<CouponSectionProps> = ({ setCoupon }) => {
+  const { mutateAsync: apply, isPending, data } = useApplyCoupon()
   const [couponCode, setCouponCode] = useState<string>("");
   const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
-  
   const handleApplyCoupon = async (): Promise<void> => {
-   
+
     apply({ coupon_code: couponCode }, {
       onSuccess: (response) => {
-        
+
         setCoupon(couponCode)
         setAppliedCoupon(response?.data)
         toast.success('Coupon applied')
       },
-      onError:(error:any)=>{
+      onError: (error: any) => {
         toast.error(error?.data?.message)
-        
+
       }
     })
 
@@ -106,7 +106,7 @@ const CouponSection: React.FC<CouponSectionProps> = ({setCoupon }) => {
               </Button>
             </div>
 
-            
+
           </div>
         ) : (
           /* Applied Coupon Display */
@@ -134,10 +134,10 @@ const CouponSection: React.FC<CouponSectionProps> = ({setCoupon }) => {
                   {appliedCoupon.coupon_code}
                 </Badge>
                 <span className="text-sm text-green-700">
-                  ₹{appliedCoupon.amount} off
+                  {appliedCoupon?.discount_type === 'flat' && '₹'}{appliedCoupon.coupon_value}{appliedCoupon?.discount_type === "percent" && '%'} off
                 </span>
               </div>
-             
+
             </div>
           </div>
         )}

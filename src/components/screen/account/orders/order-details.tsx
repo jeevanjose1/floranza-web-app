@@ -45,7 +45,7 @@ export default function OrderDetails({ }: Props) {
             case 3:
             case 33: return 'Shipping'
             case 4: return 'Shipping Completed'
-            case 5: return 'Hold'
+            case 5: return 'Under Production'
             case 6: return 'Refund'
             case 7: return 'Canceled'
             default: return 'Unknown'
