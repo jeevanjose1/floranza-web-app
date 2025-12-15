@@ -36,7 +36,7 @@ interface AppliedCoupon {
 }
 
 const CouponSection: React.FC<CouponSectionProps> = ({ setCoupon }) => {
-  const { mutateAsync: apply, isPending, data } = useApplyCoupon()
+  const { mutateAsync: apply, isPending } = useApplyCoupon()
   const [couponCode, setCouponCode] = useState<string>("");
   const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
   const handleApplyCoupon = async (): Promise<void> => {

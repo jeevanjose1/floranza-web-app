@@ -1,7 +1,7 @@
 "use client";
 
 import { Separator } from "@/components/ui/separator";
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DetailsSection from "./details-section";
 import ActionSection from "./action-section";
 import ImageSection from "./image-section";
@@ -25,22 +25,22 @@ export default function ProductDetails({ slug }: Props) {
   const product = product_details?.data?.product;
   const catogery = product_details?.data?.category;
   const related = product_details?.data?.relatedProducts;
- 
-  useEffect(()=>{
- g_event_view_item({
-  value: product.sale_price,
 
-    items: [
-      {
-        item_id: product.id,
-        item_name: product.name,
-        price: product.price,
-        quantity: product.qty,
-      },
-    ],
- })
-  },[])
-  
+  useEffect(() => {
+    g_event_view_item({
+      value: product.sale_price,
+
+      items: [
+        {
+          item_id: product.id,
+          item_name: product.name,
+          price: product.price,
+          quantity: product.qty,
+        },
+      ],
+    })
+  }, [])
+
   const filterd_data = related?.map((item: any) => {
     return {
       id: item?.id,
@@ -55,10 +55,10 @@ export default function ProductDetails({ slug }: Props) {
   });
 
   const price = calculate_product_price(product, variationIndex)
-  const images = product?.images?.length > 0 && product?.images?.map((item:any)=>{
+  const images = product?.images?.length > 0 && product?.images?.map((item: any) => {
     return item?.large
   }) || []
- 
+
   if (isLoading) {
     return (
       <div className="w-full h-100 flex items-center justify-center">
@@ -69,8 +69,8 @@ export default function ProductDetails({ slug }: Props) {
   if (
     !isLoading && error
   ) {
-    
-    return <NotFound type="product"/>;
+
+    return <NotFound type="product" />;
   }
 
   return (

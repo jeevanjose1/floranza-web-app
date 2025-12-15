@@ -34,7 +34,7 @@ import {  g_event_purchase, is_authenticated } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { getCookie } from "cookies-next/client";
-import { useCheckoutCart, useViewCart } from "@/services/queries/cart";
+import {  useCheckoutCart, useViewCart } from "@/services/queries/cart";
 import { useRouter } from "next/navigation";
 import { useRazorpay, RazorpayOrderOptions } from "react-razorpay";
 import {
@@ -90,7 +90,6 @@ export default function CheckoutPage() {
   const state_cookie = getCookie("floranza-c-data")
     ? JSON.parse(getCookie("floranza-c-data") as string)
     : null;
-  
   const handleSelectExistingAddress = (e: any) => {
     if (e) {
       setExistingAddress(address?.data);

@@ -97,7 +97,7 @@ const useApplyCoupon = () => {
         data: payload?.data
       }),
     onSuccess: (response) => {
-      query.invalidateQueries({ queryKey: ["CART"] });
+      // query.invalidateQueries({ queryKey: ["CART"] });
 
       return response;
     },
