@@ -17,6 +17,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { useContact } from "../../services/queries/common";
+import { toast } from 'sonner';
 
 // Zod validation schema
 const contactSchema = z.object({
@@ -42,9 +44,8 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 type Props = {};
 
-export default function ContactPage({}: Props) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
+export default function ContactPage({ }: Props) {
+  const { mutateAsync: send, isPending } = useContact()
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
@@ -56,20 +57,16 @@ export default function ContactPage({}: Props) {
   });
 
   const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true);
-    
+
+
+
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      
-      // Here you would typically send the data to your API
-      
-     
+      await send(data)
+      toast.success("Your message has been successfully sent");
       form.reset();
     } catch (error) {
-     
-    } finally {
-      setIsSubmitting(false);
+      toast.error("Something went wrong");
+
     }
   };
 
@@ -119,7 +116,7 @@ export default function ContactPage({}: Props) {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage  />
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -141,7 +138,7 @@ export default function ContactPage({}: Props) {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage  />
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -162,7 +159,7 @@ export default function ContactPage({}: Props) {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage  />
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -183,7 +180,7 @@ export default function ContactPage({}: Props) {
                             {...field}
                           />
                         </FormControl>
-                        <FormMessage  />
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -192,11 +189,11 @@ export default function ContactPage({}: Props) {
                   <div className="pt-4">
                     <Button
                       type="submit"
-                      disabled={isSubmitting}
+                      disabled={isPending}
                       variant={'primary'}
                       className="flex items-center w-full h-12 justify-center gap-2"
                     >
-                      {isSubmitting ? (
+                      {isPending ? (
                         <>
                           <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                           Sending...
@@ -233,7 +230,7 @@ export default function ContactPage({}: Props) {
                 <h3 className="text-xl font-semibold text-gray-800 mb-6">
                   Contact Information
                 </h3>
-                
+
                 <div className="space-y-6">
                   {/* Address */}
                   <div className="flex items-start gap-4">
@@ -245,7 +242,7 @@ export default function ContactPage({}: Props) {
                       <p className="text-muted-foreground leading-relaxed">
                         Floranza fashion Online<br />
                         St. Mary&apos;s Shopping Complex, 1st Floor<br />
-                        Anakkampoyil Post 673603<br/>
+                        Anakkampoyil Post 673603<br />
                         Kozhikode, Kerala
                       </p>
                     </div>
@@ -286,7 +283,7 @@ export default function ContactPage({}: Props) {
                 </div>
               </div>
 
-            
+
             </div>
           </div>
         </div>

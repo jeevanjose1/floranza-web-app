@@ -1,5 +1,6 @@
 export enum COMMON {
   NAV = "/navMenu",
   TRACK='/order_tracking',
-  COUNTRY='https://ipwho.is/'
+  COUNTRY='https://ipwho.is/',
+  CONTACT='/contactPost'
 }

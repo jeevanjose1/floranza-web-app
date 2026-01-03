@@ -22,6 +22,7 @@ const useGetCountry = () => {
       
   });
 };
+
 const useGetAttributes = () => {
   const queryClient = useQueryClient();
 
@@ -92,11 +93,34 @@ const useTrackOrder = () => {
     onError:(error)=>error
   });
 };
+
+
+const useContact = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (payload:any) =>
+      fetcher({
+        type: "post",
+        url: COMMON.CONTACT,
+        authenticated: false,
+        data:payload
+      }),
+    onSuccess: (data) => {
+      return data
+    },
+    onError:(error)=>{
+      return error
+    }
+  });
+};
+
 export {
   useGetNavigation,
   useGetAttributes,
   useGetMaterials,
   useGetCatogeries,
   useTrackOrder,
-  useGetCountry
+  useGetCountry,
+  useContact
 };
