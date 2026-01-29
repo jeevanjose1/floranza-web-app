@@ -1,4 +1,4 @@
-import AddressForm from '@/components/screen/account/address/address-form'
+import AddressForm from '@/components/screen/account/address/adress-form'
 import React from 'react'
 
 type Props = {}

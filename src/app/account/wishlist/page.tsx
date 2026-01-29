@@ -1,4 +1,4 @@
-import Wishlist from '@/components/screen/account/whishlist/wishlist'
+import Wishlist from '@/components/screen/account/wishlist/wishlist'
 import React from 'react'
 
 type Props = {}
