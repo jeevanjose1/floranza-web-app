@@ -34,7 +34,7 @@ function BottomMenu() {
          href={"/account/wishlist"}
         >
           <Heart strokeWidth={2} size={20} />
-          <p className="text-xs font-semibold">Whshlist</p>
+          <p className="text-xs font-semibold">Wishlist</p>
         </Link>
         <Link
           className="flex flex-col gap-1 text-light-gray items-center"

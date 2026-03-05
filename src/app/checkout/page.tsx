@@ -808,7 +808,7 @@ const handleCcavenueSubmit = (response: any) => {
                         />
                       </Label>
                     </div>
-                    {curr_country?.data?.country_code !=='IN'  &&<div className="flex items-center space-x-3 border rounded-lg hover:bg-gray-50">
+                    {/* {curr_country?.data?.country_code !=='IN'  &&<div className="flex items-center space-x-3 border rounded-lg hover:bg-gray-50">
                       <Label
                         htmlFor="CC"
                         className="cursor-pointer flex flex-wrap flex-1  p-3"
@@ -826,7 +826,7 @@ const handleCcavenueSubmit = (response: any) => {
                           alt="phonpe"
                         />
                       </Label>
-                    </div>}
+                    </div>} */}
                   </RadioGroup>
                 </div>}
 

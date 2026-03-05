@@ -35,7 +35,7 @@ interface AppliedCoupon {
   discount_type: string
 }
 
-const CouponSection: React.FC<CouponSectionProps> = ({ setCoupon }) => {
+const CouponSection: React.FC<CouponSectionProps> = ({ setCoupon, cart_items }) => {
   const { mutateAsync: apply, isPending } = useApplyCoupon()
   const [couponCode, setCouponCode] = useState<string>("");
   const [appliedCoupon, setAppliedCoupon] = useState<AppliedCoupon | null>(null);
@@ -43,10 +43,16 @@ const CouponSection: React.FC<CouponSectionProps> = ({ setCoupon }) => {
 
     apply({ coupon_code: couponCode }, {
       onSuccess: (response) => {
+        const sub_total = Number(cart_items.data.sub_total)
+        const is_coupon_valid = sub_total >= response?.data?.order_min_amount
+        if (is_coupon_valid) {
+          setCoupon(couponCode)
+          setAppliedCoupon(response?.data)
+          toast.success('Coupon applied')
+        } else {
+          toast.error(`Minimum order amount should be ${response?.data?.order_min_amount} to use this coupon.`);
+        }
 
-        setCoupon(couponCode)
-        setAppliedCoupon(response?.data)
-        toast.success('Coupon applied')
       },
       onError: (error: any) => {
         toast.error(error?.data?.message)

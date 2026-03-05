@@ -110,7 +110,7 @@ export function AccountDropdown({ user }: Prop) {
           </Link>
           <Link href={"/account/wishlist"}>
             <DropdownMenuItem>
-              <Heart /> Whishlist
+              <Heart /> Wishlist
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
