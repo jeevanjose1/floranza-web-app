@@ -47,6 +47,7 @@ export default function MobileNavigation({ categories }: any) {
     { href: "/", label: "Home" },
     // { href: "/pre-book", label: "Pre Book" },
     { href: "/tracking", label: "Orders Tracking" },
+    { href: "/why-floranza", label: "Why Floranza" },
     { href: "/about-us", label: "About Us" },
     { href: "/contact-us", label: "Contact" },
   ];
