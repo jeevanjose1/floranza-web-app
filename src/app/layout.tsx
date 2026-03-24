@@ -6,6 +6,7 @@ import Footer from "@/components/layout/footer";
 import BottomMenu from "@/components/layout/bottom-menu";
 import QueryProvider from "@/components/common/query-provider";
 import { Toaster } from "@/components/ui/sonner";
+import WhatsAppButton from "@/components/common/whatsapp-button";
 import Script from "next/script";
 import { GoogleAnalytics } from '@next/third-parties/google'
 
@@ -81,6 +82,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           {children}
           <Footer />
           <BottomMenu />
+          <WhatsAppButton />
           <Toaster
             richColors
             position="top-center"
