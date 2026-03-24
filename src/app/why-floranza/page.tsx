@@ -20,8 +20,9 @@ export default function WhyFloranzaPage() {
         <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
           At Floranza, we believe fashion should adapt to your body — not the
           other way around. Founded by Linda Vineeth, Floranza was born from a
-          simple observation: most standard clothing sizes in India don't
-          account for the beautiful, natural changes a woman's body undergoes.
+          simple observation: most standard clothing sizes in India don&apos;t
+          account for the beautiful, natural changes a woman&apos;s body
+          undergoes.
         </p>
       </section>
 
@@ -43,8 +44,8 @@ export default function WhyFloranzaPage() {
                   We carefully studied our customers and realized something
                   important — more than{" "}
                   <strong className="text-foreground">
-                    70% of South Indian women struggle with a specific "fit
-                    gap."
+                    70% of South Indian women struggle with a specific &quot;fit
+                    gap.&quot;
                   </strong>
                 </p>
                 <p>
@@ -52,8 +53,8 @@ export default function WhyFloranzaPage() {
                   in their body — especially around the tummy, waist, and hips.
                   Standard kurtis often fit at the shoulders but feel tight or
                   unflattering around the midriff, belly, and hips, because most
-                  Indian kurtis follow a linear size chart that doesn't reflect
-                  real women.
+                  Indian kurtis follow a linear size chart that doesn&apos;t
+                  reflect real women.
                 </p>
               </div>
             </div>
@@ -83,8 +84,8 @@ export default function WhyFloranzaPage() {
               </ul>
               <div className="bg-white border border-border rounded-xl p-6 mt-6">
                 <p className="font-lora text-lg text-foreground italic leading-relaxed">
-                  "This is something most brands ignore. But at Floranza, we
-                  decided to solve it."
+                  &quot;This is something most brands ignore. But at Floranza,
+                  we decided to solve it.&quot;
                 </p>
                 <p className="text-sm text-muted-foreground mt-3">
                   Instead of adjusting the customer to the dress — we redesigned
@@ -108,8 +109,9 @@ export default function WhyFloranzaPage() {
             3 Pillars of a Perfect Fit
           </h2>
           <p className="text-base text-muted-foreground leading-relaxed">
-            We didn't just change the fabric — we re-engineered the silhouette
-            (the overall shape or outline of a garment when worn on the body).
+            We didn&apos;t just change the fabric — we re-engineered the
+            silhouette (the overall shape or outline of a garment when worn on
+            the body).
           </p>
         </div>
 
@@ -120,7 +122,7 @@ export default function WhyFloranzaPage() {
               1
             </div>
             <h3 className="font-lora text-2xl text-foreground mb-3">
-              The "Plus 2" Hip Advantage
+              The &quot;Plus 2&quot; Hip Advantage
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
               Most brands follow a rigid, narrow scale. At Floranza, every kurti
@@ -132,8 +134,8 @@ export default function WhyFloranzaPage() {
                 The Result
               </p>
               <p className="text-sm text-foreground leading-relaxed">
-                No more "tugging" or fabric "catching" on the lower tummy — a
-                smooth, flowing line with maximum comfort.
+                No more &quot;tugging&quot; or fabric &quot;catching&quot; on
+                the lower tummy — a smooth, flowing line with maximum comfort.
               </p>
             </div>
           </div>
@@ -144,7 +146,7 @@ export default function WhyFloranzaPage() {
               2
             </div>
             <h3 className="font-lora text-2xl text-foreground mb-3">
-              Strategic "Camouflage" Design
+              Strategic &quot;Camouflage&quot; Design
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
               We specialize in front inverted pleats and gathers. While they
@@ -156,8 +158,8 @@ export default function WhyFloranzaPage() {
                 The Result
               </p>
               <p className="text-sm text-foreground leading-relaxed">
-                Extra room exactly where it's needed — gracefully covering the
-                midriff and belly. Confidence to move freely.
+                Extra room exactly where it&apos;s needed — gracefully covering
+                the midriff and belly. Confidence to move freely.
               </p>
             </div>
           </div>
@@ -168,7 +170,7 @@ export default function WhyFloranzaPage() {
               3
             </div>
             <h3 className="font-lora text-2xl text-foreground mb-3">
-              The "Growth" Margin
+              The &quot;Growth&quot; Margin
             </h3>
             <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
               Your body is dynamic, and your clothes should be too. Every
@@ -202,8 +204,8 @@ export default function WhyFloranzaPage() {
                 Why 450,000+ Women Trust Us
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed mb-8">
-                We aren't just a label — we are a community of 450,000+ women
-                who value comfort as much as style.
+                We aren&apos;t just a label — we are a community of 450,000+
+                women who value comfort as much as style.
               </p>
               <div className="space-y-4">
                 {[
@@ -240,7 +242,7 @@ export default function WhyFloranzaPage() {
                   More Than a Kurti
                 </p>
                 <h2 className="font-lora text-3xl md:text-4xl text-foreground mb-6 leading-snug">
-                  It's Confidence
+                  It&apos;s Confidence
                 </h2>
                 <p className="text-base text-muted-foreground mb-6">
                   We are not just selling kurtis. We are giving you:
@@ -283,8 +285,9 @@ export default function WhyFloranzaPage() {
                 Our Promise
               </p>
               <p className="font-lora text-2xl md:text-3xl italic text-primary-foreground leading-snug mb-6">
-                "We don't design for mannequins. We design for the real South
-                Indian woman — her life, her transitions, and her grace."
+                &quot;We don&apos;t design for mannequins. We design for the
+                real South Indian woman — her life, her transitions, and her
+                grace.&quot;
               </p>
             </div>
             <div className="border-t border-primary-foreground/20 pt-6">
@@ -303,9 +306,9 @@ export default function WhyFloranzaPage() {
               Try Your First Floranza Kurti Today
             </h3>
             <p className="text-base text-muted-foreground leading-relaxed">
-              Experience what 'Comfort Fit' truly means — a kurti designed
-              around you, with the right margins, the right silhouette, and the
-              right finish.
+              Experience what &apos;Comfort Fit&apos; truly means — a kurti
+              designed around you, with the right margins, the right silhouette,
+              and the right finish.
             </p>
             <Link
               href="/product-catogery/kurtis"

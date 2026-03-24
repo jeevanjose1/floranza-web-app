@@ -27,9 +27,9 @@ export default function page() {
           About Floranza
         </h1>
         <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          One of Kerala's fastest-growing ladies fashion boutiques — offering
-          premium kurtis, stylish ethnic wear, and affordable women's clothing
-          online and offline.
+          One of Kerala&apos;s fastest-growing ladies fashion boutiques —
+          offering premium kurtis, stylish ethnic wear, and affordable
+          women&apos;s clothing online and offline.
         </p>
       </section>
 
@@ -70,9 +70,9 @@ export default function page() {
             </h2>
             <div className="bg-secondary rounded-xl p-6 md:p-8 border border-border mb-6">
               <p className="font-lora text-lg text-foreground italic leading-relaxed">
-                "To create a fashion destination where women can find stylish,
-                comfortable, and perfectly fitting outfits at affordable
-                prices."
+                &quot;To create a fashion destination where women can find
+                stylish, comfortable, and perfectly fitting outfits at
+                affordable prices.&quot;
               </p>
             </div>
             <p className="text-base text-muted-foreground leading-relaxed">
@@ -141,8 +141,8 @@ export default function page() {
               </div>
               <div className="bg-white rounded-xl border border-border p-6 md:p-8">
                 <p className="font-lora text-2xl text-foreground italic leading-snug mb-4">
-                  "Beautiful fits. Comfortable designs. Confidence in every
-                  outfit."
+                  &quot;Beautiful fits. Comfortable designs. Confidence in every
+                  outfit.&quot;
                 </p>
                 <p className="text-sm text-muted-foreground">
                   This strong emotional connection is why Floranza is becoming
@@ -176,7 +176,7 @@ export default function page() {
             </p>
             <p className="text-base text-muted-foreground leading-relaxed">
               A former nurse who transitioned to fashion, leading creative
-              direction and product design to fulfil real women's clothing
+              direction and product design to fulfil real women&apos;s clothing
               needs.
             </p>
           </div>
@@ -195,7 +195,7 @@ export default function page() {
         </div>
         <p className="text-center text-base text-muted-foreground mt-8 max-w-xl mx-auto">
           Together, they built Floranza with a mission to create a fashion brand
-          in Kerala that truly understands real women's needs.
+          in Kerala that truly understands real women&apos;s needs.
         </p>
       </section>
 
@@ -452,8 +452,8 @@ export default function page() {
                 </ul>
                 <div className="border-t border-primary-foreground/20 pt-6">
                   <p className="font-lora text-lg italic text-primary-foreground leading-snug">
-                    "Every woman deserves to feel confident, comfortable, and
-                    effortlessly beautiful."
+                    &quot;Every woman deserves to feel confident, comfortable,
+                    and effortlessly beautiful.&quot;
                   </p>
                 </div>
               </div>
@@ -493,8 +493,8 @@ export default function page() {
         </div>
 
         <p className="font-lora text-xl md:text-2xl text-foreground italic max-w-xl mx-auto">
-          "Join thousands of happy customers who trust Floranza for their
-          everyday fashion."
+          &quot;Join thousands of happy customers who trust Floranza for their
+          everyday fashion.&quot;
         </p>
       </section>
     </main>
