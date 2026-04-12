@@ -81,13 +81,13 @@ export const OrderSummary = ({ cart, setState }: { cart: any, setState: any }) =
           <span className="font-medium">₹{subtotal.toFixed(2)}</span>
         </div>
 
-        <div className="flex justify-between text-sm">
+       {shipping != 0 && <div className="flex justify-between text-sm">
           <span className="text-gray-600">Shipping</span>
           <span className="font-medium">
             {shipping === 0 ? "Free" : `₹${shipping.toLocaleString()}`}
           </span>
         </div>
-
+}
         {/* <div className="flex justify-between text-sm">
           <span className="text-gray-600">Tax (18% GST)</span>
           <span className="font-medium">₹{tax.toLocaleString()}</span>

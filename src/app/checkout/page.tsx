@@ -118,6 +118,8 @@ export default function CheckoutPage() {
     },
   });
 
+  console.log(typeof form.watch('state'))
+
   const { data: cart_items } = useViewCart({
     token: token,
     filter: { state: form.watch("state"), ...(coupon && { coupon_code: coupon }) },
@@ -729,14 +731,14 @@ const handleCcavenueSubmit = (response: any) => {
                     <span>Subtotal</span>
                     <span>₹{cart_items?.data?.sub_total}</span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  {form.watch('state')!=='' && <div className="flex justify-between text-sm">
                     <span>Shipping</span>
                     <span className="text-green-600 font-medium">
                       {cart_items?.data?.shipping_charge === 0
                         ? "Free"
                         : cart_items?.data?.shipping_charge}
                     </span>
-                  </div>
+                  </div>}
                   <Separator />
                   <CouponSection setCoupon={setCoupon} cart_items={cart_items} />
                   <Separator />
