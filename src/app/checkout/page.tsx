@@ -736,7 +736,7 @@ const handleCcavenueSubmit = (response: any) => {
                     <span className="text-green-600 font-medium">
                       {cart_items?.data?.shipping_charge === 0
                         ? "Free"
-                        : cart_items?.data?.shipping_charge}
+                        : '₹'+ cart_items?.data?.shipping_charge}
                     </span>
                   </div>}
                   <Separator />
