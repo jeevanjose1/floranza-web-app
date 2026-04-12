@@ -118,7 +118,6 @@ export default function CheckoutPage() {
     },
   });
 
-  console.log(typeof form.watch('state'))
 
   const { data: cart_items } = useViewCart({
     token: token,
